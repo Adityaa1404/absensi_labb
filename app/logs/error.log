@@ -1,0 +1,100 @@
+[2026-08-27 11:31:19] [GET /absensi_labb/login] RuntimeException: Test audit exception for error logging in C:\Users\Ann\.gemini\antigravity-ide\brain\f0cb0f78-fe18-4ac3-bfbd-663a908cbc38\scratch\test_error_handling.php:27
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 12:06:08] [GET /absensi_labb/login] RuntimeException: Test audit exception for error logging in C:\Users\Ann\.gemini\antigravity-ide\brain\f0cb0f78-fe18-4ac3-bfbd-663a908cbc38\scratch\test_error_handling.php:27
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 12:09:27] [GET /absensi_labb/login] RuntimeException: Test audit exception for error logging in C:\Users\Ann\.gemini\antigravity-ide\brain\f0cb0f78-fe18-4ac3-bfbd-663a908cbc38\scratch\test_error_handling.php:27
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 20:02:00] [GET /absensi_labb/superadmin/users] ParseError: syntax error, unexpected token "else", expecting end of file in C:\laragon\www\absensi_labb\app\Views\SuperAdmin\users.php:384
+Stack trace:
+#0 [internal function]: App\Controllers\SuperAdminController->users()
+#1 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#2 C:\laragon\www\absensi_labb\public\index.php(46): Core\Router->dispatch()
+#3 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 20:44:06] [GET /absensi_labb/superadmin/dashboard] RuntimeException: Database Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'm.kode_matkul' in 'field list' [SQL: 
+            SELECT a.id_absensi, a.tanggal, a.pertemuan_ke, a.jam_mulai, a.jam_selesai, a.status_verifikasi, a.deskripsi_tugas,
+                   u.nama as nama_asdos, m.nama_matkul, m.kode_matkul, d.nama as nama_dosen
+            FROM absensi a
+            LEFT JOIN plotting p ON a.plotting_id = p.id_plotting
+            LEFT JOIN users u ON p.asdos_id = u.id_user
+            LEFT JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users d ON m.dosen_id = d.id_user
+            ORDER BY a.tanggal DESC
+        ] in C:\laragon\www\absensi_labb\Core\Database.php:65
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(84): Core\Database::query('\n            SE...', Array)
+#1 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(43): Core\Database::fetchAll('\n            SE...')
+#2 [internal function]: App\Controllers\SuperAdminController->dashboard()
+#3 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#4 C:\laragon\www\absensi_labb\public\index.php(49): Core\Router->dispatch()
+#5 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 20:44:16] [GET /absensi_labb/superadmin/dashboard] RuntimeException: Database Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'm.kode_matkul' in 'field list' [SQL: 
+            SELECT a.id_absensi, a.tanggal, a.pertemuan_ke, a.jam_mulai, a.jam_selesai, a.status_verifikasi, a.deskripsi_tugas,
+                   u.nama as nama_asdos, m.nama_matkul, m.kode_matkul, d.nama as nama_dosen
+            FROM absensi a
+            LEFT JOIN plotting p ON a.plotting_id = p.id_plotting
+            LEFT JOIN users u ON p.asdos_id = u.id_user
+            LEFT JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users d ON m.dosen_id = d.id_user
+            ORDER BY a.tanggal DESC
+        ] in C:\laragon\www\absensi_labb\Core\Database.php:65
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(84): Core\Database::query('\n            SE...', Array)
+#1 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(43): Core\Database::fetchAll('\n            SE...')
+#2 [internal function]: App\Controllers\SuperAdminController->dashboard()
+#3 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#4 C:\laragon\www\absensi_labb\public\index.php(49): Core\Router->dispatch()
+#5 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 20:44:22] [GET /absensi_labb/superadmin/matkul] ErrorException: Undefined array key "kode_matkul" in C:\laragon\www\absensi_labb\app\Views\SuperAdmin\matkul.php:215
+Stack trace:
+#0 C:\laragon\www\absensi_labb\app\Views\SuperAdmin\matkul.php(215): Core\ErrorHandler::handleError(2, 'Undefined array...', 'C:\\laragon\\www\\...', 215)
+#1 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(370): require_once('C:\\laragon\\www\\...')
+#2 [internal function]: App\Controllers\SuperAdminController->matkul()
+#3 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#4 C:\laragon\www\absensi_labb\public\index.php(49): Core\Router->dispatch()
+#5 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 20:45:53] [GET /absensi_labb/superadmin/monitoring] ErrorException: Undefined array key "kode_matkul" in C:\laragon\www\absensi_labb\app\Views\SuperAdmin\monitoring.php:214
+Stack trace:
+#0 C:\laragon\www\absensi_labb\app\Views\SuperAdmin\monitoring.php(214): Core\ErrorHandler::handleError(2, 'Undefined array...', 'C:\\laragon\\www\\...', 214)
+#1 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(680): require_once('C:\\laragon\\www\\...')
+#2 [internal function]: App\Controllers\SuperAdminController->monitoring()
+#3 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#4 C:\laragon\www\absensi_labb\public\index.php(49): Core\Router->dispatch()
+#5 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 20:45:58] [GET /absensi_labb/superadmin/monitoring] ErrorException: Undefined array key "kode_matkul" in C:\laragon\www\absensi_labb\app\Views\SuperAdmin\monitoring.php:214
+Stack trace:
+#0 C:\laragon\www\absensi_labb\app\Views\SuperAdmin\monitoring.php(214): Core\ErrorHandler::handleError(2, 'Undefined array...', 'C:\\laragon\\www\\...', 214)
+#1 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(680): require_once('C:\\laragon\\www\\...')
+#2 [internal function]: App\Controllers\SuperAdminController->monitoring()
+#3 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#4 C:\laragon\www\absensi_labb\public\index.php(49): Core\Router->dispatch()
+#5 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 20:46:02] [GET /absensi_labb/superadmin/plotting] ErrorException: Undefined array key "kode_matkul" in C:\laragon\www\absensi_labb\app\Views\SuperAdmin\plotting.php:208
+Stack trace:
+#0 C:\laragon\www\absensi_labb\app\Views\SuperAdmin\plotting.php(208): Core\ErrorHandler::handleError(2, 'Undefined array...', 'C:\\laragon\\www\\...', 208)
+#1 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(498): require_once('C:\\laragon\\www\\...')
+#2 [internal function]: App\Controllers\SuperAdminController->plotting()
+#3 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#4 C:\laragon\www\absensi_labb\public\index.php(49): Core\Router->dispatch()
+#5 {main}
+--------------------------------------------------------------------------------
+[2026-08-27 20:46:23] [GET /absensi_labb/superadmin/plotting] ErrorException: Undefined array key "kode_matkul" in C:\laragon\www\absensi_labb\app\Views\SuperAdmin\plotting.php:208
+Stack trace:
+#0 C:\laragon\www\absensi_labb\app\Views\SuperAdmin\plotting.php(208): Core\ErrorHandler::handleError(2, 'Undefined array...', 'C:\\laragon\\www\\...', 208)
+#1 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(498): require_once('C:\\laragon\\www\\...')
+#2 [internal function]: App\Controllers\SuperAdminController->plotting()
+#3 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#4 C:\laragon\www\absensi_labb\public\index.php(49): Core\Router->dispatch()
+#5 {main}
+--------------------------------------------------------------------------------

@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Arahkan root ke folder public
+    RewriteRule ^$ public/ [L]
+
+    # Teruskan semua request lainnya secara internal ke folder public/
+    RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+</IfModule>

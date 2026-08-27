@@ -110,7 +110,6 @@ ALTER TABLE users
 -- 2. Tabel mata kuliah
 CREATE TABLE mata_kuliah (
   id_matkul INT AUTO_INCREMENT PRIMARY KEY,
-  kode_matkul VARCHAR(20) NOT NULL UNIQUE,
   nama_matkul VARCHAR(100) NOT NULL,
   deskripsi TEXT,
   dosen_id INT NOT NULL,

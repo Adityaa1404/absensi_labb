@@ -110,6 +110,13 @@ class Guard
         }
     }
 
+    public static function requireAsdos() {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !=='asdos') {
+            header('Location: /login');
+            exit;
+        }
+    }
+
     /**
      * Guard: Wajib Akun Aktif (Sesuai Aturan Bisnis BR2 PRD)
      * Akun nonaktif diblokir dari semua aksi tulis (POST/CRUD/Upload)

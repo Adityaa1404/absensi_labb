@@ -99,7 +99,7 @@ class SuperAdminController
         $noHp           = trim($_POST['no_hp'] ?? '');
         $role           = trim($_POST['role'] ?? '');
         $password       = $_POST['password'] ?? '';
-        $isActive       = isset($_POST['is_active']) ? (int)$_POST['is_active'] : 1;
+        $isActive       = !empty($_POST['is_active']) ? 1 : 0;
 
         // Validasi input
         $validator = new Validator($_POST);
@@ -182,7 +182,7 @@ class SuperAdminController
         $noHp           = trim($_POST['no_hp'] ?? '');
         $role           = trim($_POST['role'] ?? '');
         $password       = $_POST['password'] ?? '';
-        $isActive       = isset($_POST['is_active']) ? (int)$_POST['is_active'] : 1;
+        $isActive       = !empty($_POST['is_active']) ? 1 : 0;
 
         // Validasi input
         $rules = [
@@ -266,15 +266,35 @@ class SuperAdminController
         Guard::verifyCsrf();
 
         $userId = (int)$id;
+        $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') 
+                  || (strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false);
 
         // Proteksi: Tidak boleh menonaktifkan akun sendiri
         if ($userId === Guard::id()) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(400);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Aksi ditolak: Anda tidak dapat menonaktifkan akun Anda sendiri.'
+                ]);
+                exit;
+            }
             Guard::setFlash('error', 'Aksi ditolak: Anda tidak dapat menonaktifkan akun Anda sendiri.');
             Guard::redirect('/superadmin/users');
         }
 
         $user = User::findById($userId);
         if (!$user) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(404);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Pengguna tidak ditemukan.'
+                ]);
+                exit;
+            }
             Guard::setFlash('error', 'Pengguna tidak ditemukan.');
             Guard::redirect('/superadmin/users');
         }
@@ -283,6 +303,16 @@ class SuperAdminController
 
         $newStatus = (int)$user['is_active'] === 1 ? 0 : 1;
         $statusText = $newStatus === 1 ? 'diaktifkan kembali' : 'dinonaktifkan';
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success'    => true,
+                'new_status' => $newStatus,
+                'message'    => "Akun pengguna [{$user['nama']}] berhasil {$statusText}."
+            ]);
+            exit;
+        }
 
         Guard::setFlash('success', "Akun pengguna [{$user['nama']}] berhasil {$statusText}.");
         Guard::redirect('/superadmin/users');

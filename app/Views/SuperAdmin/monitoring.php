@@ -48,50 +48,14 @@ $filters     = $filters ?? [
     <!-- Header / Navbar (Unified Desktop Navbar) -->
     <?php require_once __DIR__ . '/../Templates/superadmin_header.php'; ?>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
+    <div class="md:pl-64 flex flex-col flex-1 min-h-screen">
+        <!-- Main Content Container -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
 
         <!-- Page Header Banner -->
         <div class="bg-white border border-slate-200 p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-sm">
             <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <a href="<?= \Core\Guard::url('/superadmin/dashboard') ?>" class="inline-flex items-center gap-1 text-xs font-semibold text-[#1867c0] hover:underline">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Dashboard
-                    </a>
-                    <span class="text-slate-300">/</span>
-                    <span class="text-xs text-slate-500 font-medium">Monitoring Absensi</span>
-                </div>
                 <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Monitoring Seluruh Absensi & Verifikasi</h1>
-                <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-                    Pantau seluruh kehadiran pelaksanaan praktikum, kepatuhan bukti foto kegiatan, dan riwayat verifikasi Dosen Pengampu di seluruh sistem laboratorium secara terpusat (*read-only / audit*).
-                </p>
-            </div>
-            <div class="flex items-center gap-2 shrink-0">
-                <span class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-50 border border-blue-200 text-[#1867c0] text-xs font-bold rounded-xl shadow-2xs">
-                    <svg class="w-4 h-4 text-[#1867c0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                    </svg>
-                    <span>Mode Audit Super Admin</span>
-                </span>
-            </div>
-        </div>
-
-        <!-- Panduan Bantuan Cepat Ramah Pengguna (PRD F6 & BR5) -->
-        <div class="bg-blue-50/70 border border-blue-200/90 p-4 rounded-xl flex items-start gap-3">
-            <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            </div>
-            <div class="text-xs text-slate-700 space-y-1">
-                <p class="font-bold text-slate-900">Peran Super Admin pada Modul Absensi (PRD Poin 4.1 & BR5):</p>
-                <p class="text-slate-600 leading-relaxed">
-                    • Super Admin memiliki hak akses pemantauan menyeluruh (*monitoring/read-only*) untuk memeriksa keutuhan data dan bukti foto.<br>
-                    • Persetujuan atau penolakan verifikasi absensi merupakan **wewenang penuh Dosen Pengampu** pada masing-masing mata kuliah.
-                </p>
             </div>
         </div>
 
@@ -103,7 +67,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Absensi</p>
                     <p class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1"><?= $metrics['total'] ?></p>
-                    <p class="text-xs text-slate-400 mt-0.5">Seluruh laporan diajukan</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-blue-50 text-[#1867c0] flex items-center justify-center border border-blue-200">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,7 +80,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Disetujui Dosen</p>
                     <p class="text-2xl sm:text-3xl font-bold text-emerald-800 mt-1"><?= $metrics['disetujui'] ?></p>
-                    <p class="text-xs text-emerald-600/70 mt-0.5">Praktikum terverifikasi</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,7 +93,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider <?= $metrics['pending'] > 0 ? 'text-amber-700' : 'text-slate-500' ?>">Menunggu Review</p>
                     <p class="text-2xl sm:text-3xl font-bold <?= $metrics['pending'] > 0 ? 'text-amber-800' : 'text-slate-700' ?> mt-1"><?= $metrics['pending'] ?></p>
-                    <p class="text-xs <?= $metrics['pending'] > 0 ? 'text-amber-600' : 'text-slate-400' ?> mt-0.5">Pending verifikasi dosen</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl <?= $metrics['pending'] > 0 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500' ?> flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +106,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider <?= $metrics['ditolak'] > 0 ? 'text-red-700' : 'text-slate-500' ?>">Ditolak Dosen</p>
                     <p class="text-2xl sm:text-3xl font-bold <?= $metrics['ditolak'] > 0 ? 'text-red-800' : 'text-slate-700' ?> mt-1"><?= $metrics['ditolak'] ?></p>
-                    <p class="text-xs <?= $metrics['ditolak'] > 0 ? 'text-red-600' : 'text-slate-400' ?> mt-0.5">Perlu perbaikan laporan</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl <?= $metrics['ditolak'] > 0 ? 'bg-red-100 text-red-600' : 'bg-slate-100 text-slate-500' ?> flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,14 +124,7 @@ $filters     = $filters ?? [
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         <h2 class="text-base font-bold text-slate-900">Rekapitulasi Seluruh Absensi Praktikum</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">
-                            Gunakan filter di bawah untuk memfilter berdasarkan mata kuliah, status verifikasi, atau rentang tanggal.
-                        </p>
                     </div>
-                    <span class="text-xs font-semibold px-3 py-1.5 bg-slate-100 text-slate-700 rounded-full border border-slate-200 self-start sm:self-auto flex items-center gap-1.5 shadow-2xs">
-                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                        <span>Total: <strong id="displayedCount" class="text-slate-900"><?= count($absensiList) ?></strong> Laporan</span>
-                    </span>
                 </div>
 
                 <!-- Interactive Filters & Search Bar -->
@@ -217,16 +170,6 @@ $filters     = $filters ?? [
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
-
-                    <!-- Reset Filter Button -->
-                    <div class="sm:col-span-1 flex flex-col justify-end">
-                        <button type="button" onclick="resetAllFilters()" title="Reset semua filter" class="w-full h-[42px] bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 rounded-xl text-xs font-semibold flex items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer shadow-2xs">
-                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                            <span class="sm:hidden font-medium">Reset Filter</span>
-                        </button>
                     </div>
 
                 </div>
@@ -389,20 +332,10 @@ $filters     = $filters ?? [
                     <span>Tampilkan Semua Absensi</span>
                 </button>
             </div>
-
-            <!-- Footer -->
-            <div class="px-5 py-3.5 border-t border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-600 gap-2">
-                <p>
-                    <span class="font-bold text-slate-800">Integritas Timestamp (BR3):</span> Waktu kirim (`created_at`) dan waktu verifikasi (`updated_at`) dihasilkan otomatis oleh server dan bersifat permanen.
-                </p>
-                <p class="text-xs text-slate-400">
-                    Sistem Absensi Lab &copy; <?= date('Y') ?>
-                </p>
-            </div>
-
         </div>
 
-    </main>
+        </main>
+    </div>
 
     <!-- ========================================================================= -->
     <!-- MODAL: DETAIL LENGKAP ABSENSI & VERIFIKASI                                -->

@@ -7,10 +7,20 @@ use Core\Database;
 class Plotting
 {
     /**
+     * Otomatis nonaktifkan (is_active = 0) penugasan plotting yang sudah melewati periode selesai mengajar
+     */
+    public static function syncExpiredStatus(): void
+    {
+        Database::query("UPDATE plotting SET is_active = 0 WHERE is_active = 1 AND periode_selesai < CURDATE()");
+    }
+
+    /**
      * Ambil semua data plotting dengan relasi mata kuliah, asdos, dan dosen
      */
     public static function all(array $filters = []): array
     {
+        self::syncExpiredStatus();
+
         $sql = "
             SELECT p.*, m.nama_matkul, 
                    u.nama as nama_asdos, u.email as email_asdos, u.identity_number as npm_asdos, u.no_hp as nohp_asdos,
@@ -53,6 +63,7 @@ class Plotting
      */
     public static function getActive(): array
     {
+        self::syncExpiredStatus();
         return self::all(['is_active' => 1]);
     }
 
@@ -61,6 +72,8 @@ class Plotting
      */
     public static function findById(int $id): ?array
     {
+        self::syncExpiredStatus();
+
         $sql = "
             SELECT p.*, m.nama_matkul, 
                    u.nama as nama_asdos, u.email as email_asdos, u.identity_number as npm_asdos,
@@ -100,16 +113,23 @@ class Plotting
      */
     public static function getMetrics(): array
     {
-        $totalPlotting   = (int)(Database::fetch("SELECT COUNT(*) as total FROM plotting")['total'] ?? 0);
-        $totalActive     = (int)(Database::fetch("SELECT COUNT(*) as total FROM plotting WHERE is_active = 1")['total'] ?? 0);
-        $totalInactive   = (int)(Database::fetch("SELECT COUNT(*) as total FROM plotting WHERE is_active = 0")['total'] ?? 0);
-        $totalAsdosTerplot = (int)(Database::fetch("SELECT COUNT(DISTINCT asdos_id) as total FROM plotting WHERE is_active = 1")['total'] ?? 0);
+        self::syncExpiredStatus();
+
+        $sql = "
+            SELECT 
+                COUNT(*) as total,
+                SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active,
+                SUM(CASE WHEN is_active = 0 THEN 1 ELSE 0 END) as inactive,
+                COUNT(DISTINCT CASE WHEN is_active = 1 THEN asdos_id END) as asdos_terplot
+            FROM plotting
+        ";
+        $row = Database::fetch($sql) ?? [];
 
         return [
-            'total'          => $totalPlotting,
-            'active'         => $totalActive,
-            'inactive'       => $totalInactive,
-            'asdos_terplot'  => $totalAsdosTerplot,
+            'total'          => (int)($row['total'] ?? 0),
+            'active'         => (int)($row['active'] ?? 0),
+            'inactive'       => (int)($row['inactive'] ?? 0),
+            'asdos_terplot'  => (int)($row['asdos_terplot'] ?? 0),
         ];
     }
 
@@ -118,6 +138,9 @@ class Plotting
      */
     public static function create(array $data): int
     {
+        $today = date('Y-m-d');
+        $isActive = ($data['periode_selesai'] < $today) ? 0 : (isset($data['is_active']) ? (int)$data['is_active'] : 1);
+
         $sql = "INSERT INTO plotting (matkul_id, asdos_id, periode_mulai, periode_selesai, is_active)
                 VALUES (:matkul_id, :asdos_id, :periode_mulai, :periode_selesai, :is_active)";
 
@@ -126,7 +149,7 @@ class Plotting
             'asdos_id'        => (int)$data['asdos_id'],
             'periode_mulai'   => $data['periode_mulai'],
             'periode_selesai' => $data['periode_selesai'],
-            'is_active'       => isset($data['is_active']) ? (int)$data['is_active'] : 1,
+            'is_active'       => $isActive,
         ]);
 
         return (int)Database::lastInsertId();
@@ -137,6 +160,9 @@ class Plotting
      */
     public static function update(int $id, array $data): bool
     {
+        $today = date('Y-m-d');
+        $isActive = ($data['periode_selesai'] < $today) ? 0 : (isset($data['is_active']) ? (int)$data['is_active'] : 1);
+
         $sql = "UPDATE plotting 
                 SET matkul_id = :matkul_id, asdos_id = :asdos_id, 
                     periode_mulai = :periode_mulai, periode_selesai = :periode_selesai, is_active = :is_active
@@ -148,7 +174,7 @@ class Plotting
             'asdos_id'        => (int)$data['asdos_id'],
             'periode_mulai'   => $data['periode_mulai'],
             'periode_selesai' => $data['periode_selesai'],
-            'is_active'       => isset($data['is_active']) ? (int)$data['is_active'] : 1,
+            'is_active'       => $isActive,
         ]);
 
         return true;

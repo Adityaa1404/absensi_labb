@@ -94,16 +94,21 @@ class Absensi
      */
     public static function getMonitoringMetrics(): array
     {
-        $total     = (int)(Database::fetch("SELECT COUNT(*) as total FROM absensi")['total'] ?? 0);
-        $disetujui = (int)(Database::fetch("SELECT COUNT(*) as total FROM absensi WHERE status_verifikasi = 'disetujui'")['total'] ?? 0);
-        $pending   = (int)(Database::fetch("SELECT COUNT(*) as total FROM absensi WHERE status_verifikasi = 'pending'")['total'] ?? 0);
-        $ditolak   = (int)(Database::fetch("SELECT COUNT(*) as total FROM absensi WHERE status_verifikasi = 'ditolak'")['total'] ?? 0);
+        $sql = "
+            SELECT 
+                COUNT(*) as total,
+                SUM(CASE WHEN status_verifikasi = 'disetujui' THEN 1 ELSE 0 END) as disetujui,
+                SUM(CASE WHEN status_verifikasi = 'pending' THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN status_verifikasi = 'ditolak' THEN 1 ELSE 0 END) as ditolak
+            FROM absensi
+        ";
+        $row = Database::fetch($sql) ?? [];
 
         return [
-            'total'     => $total,
-            'disetujui' => $disetujui,
-            'pending'   => $pending,
-            'ditolak'   => $ditolak,
+            'total'     => (int)($row['total'] ?? 0),
+            'disetujui' => (int)($row['disetujui'] ?? 0),
+            'pending'   => (int)($row['pending'] ?? 0),
+            'ditolak'   => (int)($row['ditolak'] ?? 0),
         ];
     }
 

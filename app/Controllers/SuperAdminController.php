@@ -19,6 +19,8 @@ class SuperAdminController
     {
         Guard::requireRole('super_admin');
 
+        Plotting::syncExpiredStatus();
+
         $currentUser = Guard::user();
 
         // Ambil data statistik ringkasan
@@ -533,7 +535,8 @@ class SuperAdminController
         $asdosId        = (int)($_POST['asdos_id'] ?? 0);
         $periodeMulai   = trim($_POST['periode_mulai'] ?? '');
         $periodeSelesai = trim($_POST['periode_selesai'] ?? '');
-        $isActive       = isset($_POST['is_active']) ? (int)$_POST['is_active'] : 1;
+        $today          = date('Y-m-d');
+        $isActive       = ($periodeSelesai < $today) ? 0 : 1;
 
         $validator = new Validator($_POST);
         $validator->rules([
@@ -584,7 +587,8 @@ class SuperAdminController
         $asdosId        = (int)($_POST['asdos_id'] ?? 0);
         $periodeMulai   = trim($_POST['periode_mulai'] ?? '');
         $periodeSelesai = trim($_POST['periode_selesai'] ?? '');
-        $isActive       = isset($_POST['is_active']) ? (int)$_POST['is_active'] : 1;
+        $today          = date('Y-m-d');
+        $isActive       = ($periodeSelesai < $today) ? 0 : 1;
 
         $validator = new Validator($_POST);
         $validator->rules([

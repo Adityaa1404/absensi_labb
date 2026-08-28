@@ -16,10 +16,16 @@ $router = new Core\Router();
 $router->get('/', 'AuthController', 'login', ['guest']);
 $router->get('/login', 'AuthController', 'login', ['guest']);
 $router->post('/login', 'AuthController', 'processLogin', ['guest', 'csrf']);
-$router->get('/logout', 'AuthController', 'logout', ['auth']);
+$router->get('/logout', 'AuthController', 'logout');
 
 // ==========================================
-// 2. RUTE SUPER ADMIN
+// 2. RUTE ASDOS & DOSEN (PLACEHOLDER)
+// ==========================================
+$router->get('/asdos/dashboard', 'AuthController', 'asdosDashboard', ['auth', 'asdos']);
+$router->get('/dosen/dashboard', 'AuthController', 'dosenDashboard', ['auth', 'dosen']);
+
+// ==========================================
+// 3. RUTE SUPER ADMIN
 // ==========================================
 $router->get('/superadmin/dashboard', 'SuperAdminController', 'dashboard', ['auth', 'super_admin']);
 

@@ -48,26 +48,14 @@ $filters      = $filters ?? [
     <!-- Header / Navbar (Unified Desktop Navbar) -->
     <?php require_once __DIR__ . '/../Templates/superadmin_header.php'; ?>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
+    <div class="md:pl-64 flex flex-col flex-1 min-h-screen">
+        <!-- Main Content Container -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
 
         <!-- Page Header Banner -->
         <div class="bg-white border border-slate-200 p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-sm">
             <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <a href="<?= \Core\Guard::url('/superadmin/dashboard') ?>" class="inline-flex items-center gap-1 text-xs font-semibold text-[#1867c0] hover:underline">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        Dashboard
-                    </a>
-                    <span class="text-slate-300">/</span>
-                    <span class="text-xs text-slate-500 font-medium">Plotting Asdos</span>
-                </div>
                 <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Plotting & Penugasan Asdos</h1>
-                <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-                    Tetapkan Asisten Dosen (Asdos) untuk mengajar di mata kuliah praktikum tertentu. Asdos yang telah diplot dapat mencatatkan absensi harian secara digital.
-                </p>
             </div>
             <div class="flex items-center gap-2 shrink-0">
                 <button type="button" onclick="openCreatePlottingModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-semibold rounded-xl transition-all duration-150 shadow-xs hover:shadow-md cursor-pointer">
@@ -79,23 +67,6 @@ $filters      = $filters ?? [
             </div>
         </div>
 
-        <!-- Panduan Bantuan Cepat Ramah Pengguna -->
-        <div class="bg-blue-50/70 border border-blue-200/90 p-4 rounded-xl flex items-start gap-3">
-            <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-            </div>
-            <div class="text-xs text-slate-700 space-y-1">
-                <p class="font-bold text-slate-900">Apa Itu Plotting Asdos?</p>
-                <p class="text-slate-600 leading-relaxed">
-                    • <strong>Plotting</strong> adalah penugasan resmi dari Super Admin kepada Asisten Dosen untuk mengajar di mata kuliah tertentu.<br>
-                    • Satu mata kuliah bisa memiliki lebih dari satu asdos, dan asdos bisa mengajar lebih dari satu mata kuliah.<br>
-                    • Jika masa mengajar telah berakhir, Anda cukup menekan tombol <strong>"Selesaikan"</strong> agar plotting dinonaktifkan tanpa menghapus riwayat absensi lampau.
-                </p>
-            </div>
-        </div>
-
         <!-- Metric Cards (4 Columns with Lift Hover) -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
 
@@ -104,7 +75,6 @@ $filters      = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Penugasan</p>
                     <p class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1"><?= $metrics['total'] ?></p>
-                    <p class="text-xs text-slate-400 mt-0.5">Semua riwayat plotting</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +88,6 @@ $filters      = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Plotting Aktif</p>
                     <p class="text-2xl sm:text-3xl font-bold text-emerald-800 mt-1"><?= $metrics['active'] ?></p>
-                    <p class="text-xs text-emerald-600/70 mt-0.5">Semester berjalan</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,7 +101,6 @@ $filters      = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Plotting Selesai</p>
                     <p class="text-2xl sm:text-3xl font-bold text-slate-700 mt-1"><?= $metrics['inactive'] ?></p>
-                    <p class="text-xs text-slate-400 mt-0.5">Periode lampau</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +114,6 @@ $filters      = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-[#1867c0]">Asdos Terplot</p>
                     <p class="text-2xl sm:text-3xl font-bold text-[#1867c0] mt-1"><?= $metrics['asdos_terplot'] ?></p>
-                    <p class="text-xs text-blue-600/70 mt-0.5">Jumlah orang aktif</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-blue-100 text-[#1867c0] flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,14 +132,7 @@ $filters      = $filters ?? [
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         <h2 class="text-base font-bold text-slate-900">Daftar Penugasan Asisten Dosen</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">
-                            Menampilkan penugasan asdos ke mata kuliah, masa periode, dan status pengajarannya.
-                        </p>
                     </div>
-                    <span class="text-xs font-semibold px-3 py-1.5 bg-slate-100 text-slate-700 rounded-full border border-slate-200 self-start sm:self-auto flex items-center gap-1.5 shadow-2xs">
-                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                        <span>Total: <strong id="displayedCount" class="text-slate-900"><?= count($plottingList) ?></strong> Penugasan</span>
-                    </span>
                 </div>
 
                 <!-- Filters -->
@@ -219,16 +179,6 @@ $filters      = $filters ?? [
                             <option value="1" <?= $filters['is_active'] === '1' ? 'selected' : '' ?>>Sedang Aktif Mengajar</option>
                             <option value="0" <?= $filters['is_active'] === '0' ? 'selected' : '' ?>>Sudah Selesai (Nonaktif)</option>
                         </select>
-                    </div>
-
-                    <!-- Reset Button -->
-                    <div class="sm:col-span-1 flex flex-col justify-end">
-                        <button type="button" onclick="resetAllFilters()" title="Reset semua filter" class="w-full h-[42px] bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 rounded-xl text-xs font-semibold flex items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer shadow-2xs">
-                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                            <span class="sm:hidden font-medium">Reset Filter</span>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -318,13 +268,6 @@ $filters      = $filters ?? [
                                     <!-- 5. Aksi -->
                                     <td class="px-3.5 py-3 text-center whitespace-nowrap">
                                         <div class="inline-flex items-center justify-center gap-1.5">
-                                            <!-- Toggle Status -->
-                                            <form action="<?= \Core\Guard::url('/superadmin/plotting/' . $p['id_plotting'] . '/toggle') ?>" method="POST" class="inline">
-                                                <?= \Core\Guard::csrfField() ?>
-                                                <button type="submit" title="<?= $isActive ? 'Selesaikan plotting ini' : 'Aktifkan kembali plotting ini' ?>" class="px-2.5 py-1.5 rounded-lg text-xs font-bold border <?= $isActive ? 'border-amber-300 text-amber-800 bg-amber-50 hover:bg-amber-100' : 'border-emerald-300 text-emerald-800 bg-emerald-50 hover:bg-emerald-100' ?> transition-all duration-150 cursor-pointer shadow-2xs active:scale-95">
-                                                    <?= $isActive ? 'Selesaikan' : 'Aktifkan' ?>
-                                                </button>
-                                            </form>
 
                                             <!-- Edit -->
                                             <button type="button" onclick="openEditPlottingModal(this.closest('tr'))" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-amber-50 hover:border-amber-300 hover:text-amber-800 text-slate-700 text-xs font-bold border border-slate-300 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
@@ -368,20 +311,10 @@ $filters      = $filters ?? [
                     <span>Buat Plotting Asdos Pertama</span>
                 </button>
             </div>
-
-            <!-- Footer -->
-            <div class="px-5 py-3.5 border-t border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-600 gap-2">
-                <p>
-                    <span class="font-bold text-slate-800">Aturan PRD (F3 / BR1):</span> Asdos hanya dapat mengisi absensi pada mata kuliah tempatnya aktif diplot oleh Super Admin.
-                </p>
-                <p class="text-xs text-slate-400">
-                    Sistem Absensi Lab &copy; <?= date('Y') ?>
-                </p>
-            </div>
-
         </div>
 
-    </main>
+        </main>
+    </div>
 
     <!-- ========================================================================= -->
     <!-- MODAL: TAMBAH PLOTTING                                                    -->
@@ -398,7 +331,6 @@ $filters      = $filters ?? [
                     </div>
                     <div>
                         <h3 class="text-base font-bold text-slate-900">Plotting Asisten Dosen Baru</h3>
-                        <p class="text-xs text-slate-500">Tugaskan asdos ke mata kuliah praktikum</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeCreatePlottingModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition cursor-pointer">
@@ -557,18 +489,7 @@ $filters      = $filters ?? [
                     </div>
                 </div>
 
-                <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="text-xs sm:text-sm font-bold text-slate-800">Status Penugasan Aktif</span>
-                            <p class="text-xs text-slate-500">Centang jika asdos masih aktif mengajar semester ini.</p>
-                        </div>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="edit_is_active" name="is_active" value="1" class="sr-only peer">
-                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
-                        </label>
-                    </div>
-                </div>
+
 
                 <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
                     <button type="button" onclick="closeEditPlottingModal()" class="px-5 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs sm:text-sm font-bold rounded-xl transition cursor-pointer">
@@ -603,18 +524,6 @@ $filters      = $filters ?? [
                 <p class="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
                     Apakah Anda yakin ingin menghapus penugasan <strong><span id="deletePlottingName"></span></strong>?
                 </p>
-
-                <div class="mt-3 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-left text-xs text-amber-900 leading-relaxed">
-                    <p class="font-bold flex items-center gap-1.5 mb-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                        </svg>
-                        Pencegahan Integritas Riwayat:
-                    </p>
-                    <p>
-                        Jika asdos ini sudah pernah menginput absensi di mata kuliah ini, sistem tidak akan menghapus data tersebut demi menjaga arsip. Anda disarankan menekan tombol <strong>Selesaikan</strong> sebagai alternatif.
-                    </p>
-                </div>
 
                 <form id="deletePlottingForm" action="" method="POST" class="mt-6 flex items-center justify-center gap-3">
                     <?= \Core\Guard::csrfField() ?>
@@ -735,7 +644,6 @@ $filters      = $filters ?? [
             document.getElementById('edit_asdos_id').value = asdosId;
             document.getElementById('edit_periode_mulai').value = mulai;
             document.getElementById('edit_periode_selesai').value = selesai;
-            document.getElementById('edit_is_active').checked = active;
 
             document.getElementById('edit_plotting_subtitle').textContent = `Mengedit Plotting #${id}`;
 

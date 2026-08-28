@@ -41,44 +41,20 @@ $filters     = $filters ?? [
     <!-- Header / Navbar (Unified Desktop Navbar) -->
     <?php require_once __DIR__ . '/../Templates/superadmin_header.php'; ?>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
+    <div class="md:pl-64 flex flex-col flex-1 min-h-screen">
+        <!-- Main Content Container -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
 
         <!-- Page Header Banner -->
         <div class="bg-white border border-slate-200 p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-sm">
             <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <a href="<?= \Core\Guard::url('/superadmin/dashboard') ?>" class="inline-flex items-center gap-1 text-xs font-semibold text-[#1867c0] hover:underline">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                        Dashboard
-                    </a>
-                    <span class="text-slate-300">/</span>
-                    <span class="text-xs text-slate-500 font-medium">Mata Kuliah</span>
-                </div>
                 <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Master Data Mata Kuliah</h1>
-                <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-                    Daftar kurikulum praktikum laboratorium. Anda dapat menambah mata kuliah baru, mengubah silabus, serta menentukan Dosen Pengampu yang bertanggung jawab memverifikasi absensi.
-                </p>
             </div>
             <div class="flex items-center gap-2 shrink-0">
                 <button type="button" onclick="openCreateMatkulModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-semibold rounded-xl transition-all duration-150 shadow-xs hover:shadow-md cursor-pointer">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     <span>Tambah Mata Kuliah</span>
                 </button>
-            </div>
-        </div>
-
-        <!-- Panduan Bantuan Cepat Ramah Pengguna -->
-        <div class="bg-indigo-50/70 border border-indigo-200/90 p-4 rounded-xl flex items-start gap-3">
-            <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div class="text-xs text-slate-700 space-y-1">
-                <p class="font-bold text-slate-900">Petunjuk Mata Kuliah Praktikum:</p>
-                <p class="text-slate-600 leading-relaxed">
-                    • Setiap mata kuliah praktikum <strong>wajib memiliki 1 Dosen Pengampu</strong>.<br>
-                    • Setelah mata kuliah dibuat, Anda dapat menugaskan Asisten Dosen pada menu <strong>Plotting Asdos</strong>.
-                </p>
             </div>
         </div>
 
@@ -90,7 +66,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Mata Kuliah</p>
                     <p class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1"><?= $metrics['total'] ?></p>
-                    <p class="text-xs text-slate-400 mt-0.5">Kurikulum praktikum</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
@@ -102,7 +77,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Sudah Diplotkan</p>
                     <p class="text-2xl sm:text-3xl font-bold text-emerald-800 mt-1"><?= $metrics['berplot'] ?></p>
-                    <p class="text-xs text-emerald-600/70 mt-0.5">Memiliki asdos aktif</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -114,7 +88,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider <?= $metrics['belum_berplot'] > 0 ? 'text-amber-700' : 'text-slate-500' ?>">Belum Diplotkan</p>
                     <p class="text-2xl sm:text-3xl font-bold <?= $metrics['belum_berplot'] > 0 ? 'text-amber-800' : 'text-slate-700' ?> mt-1"><?= $metrics['belum_berplot'] ?></p>
-                    <p class="text-xs text-slate-400 mt-0.5">Perlu penugasan asdos</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl <?= $metrics['belum_berplot'] > 0 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500' ?> flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
@@ -126,7 +99,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-indigo-700">Dosen Pengampu</p>
                     <p class="text-2xl sm:text-3xl font-bold text-indigo-900 mt-1"><?= $metrics['total_dosen'] ?></p>
-                    <p class="text-xs text-indigo-600/70 mt-0.5">Terdaftar di matkul</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -143,14 +115,7 @@ $filters     = $filters ?? [
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         <h2 class="text-base font-bold text-slate-900">Daftar Mata Kuliah</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">
-                            Menampilkan seluruh kurikulum mata kuliah praktikum dan dosen penanggung jawab.
-                        </p>
                     </div>
-                    <span class="text-xs font-semibold px-3 py-1.5 bg-slate-100 text-slate-700 rounded-full border border-slate-200 self-start sm:self-auto flex items-center gap-1.5 shadow-2xs">
-                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                        <span>Total: <strong id="displayedCount" class="text-slate-900"><?= count($matkulList) ?></strong> Mata Kuliah</span>
-                    </span>
                 </div>
 
                 <!-- Filters -->
@@ -183,14 +148,6 @@ $filters     = $filters ?? [
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                    </div>
-
-                    <!-- Reset Button -->
-                    <div class="sm:col-span-1 flex flex-col justify-end">
-                        <button type="button" onclick="resetAllFilters()" title="Reset semua filter" class="w-full h-[42px] bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 rounded-xl text-xs font-semibold flex items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer shadow-2xs">
-                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                            <span class="sm:hidden font-medium">Reset Filter</span>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -312,19 +269,10 @@ $filters     = $filters ?? [
                 </button>
             </div>
 
-            <!-- Footer -->
-            <div class="px-5 py-3.5 border-t border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-600 gap-2">
-                <p>
-                    <span class="font-bold text-slate-800">Aturan PRD (F2):</span> Setiap mata kuliah wajib memiliki 1 dosen pengampu yang bertugas menyetujui atau menolak absensi asdos.
-                </p>
-                <p class="text-xs text-slate-400">
-                    Sistem Absensi Lab &copy; <?= date('Y') ?>
-                </p>
-            </div>
-
         </div>
 
-    </main>
+        </main>
+    </div>
 
     <!-- ========================================================================= -->
     <!-- MODAL: TAMBAH MATA KULIAH                                                 -->
@@ -339,7 +287,6 @@ $filters     = $filters ?? [
                     </div>
                     <div>
                         <h3 class="text-base font-bold text-slate-900">Tambah Mata Kuliah Baru</h3>
-                        <p class="text-xs text-slate-500">Daftarkan kurikulum praktikum laboratorium</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeCreateMatkulModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition cursor-pointer">
@@ -478,16 +425,6 @@ $filters     = $filters ?? [
                 <p class="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
                     Apakah Anda yakin ingin menghapus mata kuliah <strong><span id="deleteMatkulName"></span></strong>?
                 </p>
-
-                <div class="mt-3 p-3.5 bg-red-50 border border-red-200 rounded-xl text-left text-xs text-red-800 leading-relaxed">
-                    <p class="font-bold flex items-center gap-1.5 mb-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                        Pencegahan:
-                    </p>
-                    <p>
-                        Mata kuliah yang masih memiliki asisten dosen aktif tidak dapat dihapus demi menjaga konsistensi jadwal praktikum.
-                    </p>
-                </div>
 
                 <form id="deleteMatkulForm" action="" method="POST" class="mt-6 flex items-center justify-center gap-3">
                     <?= \Core\Guard::csrfField() ?>

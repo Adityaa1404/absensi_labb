@@ -43,24 +43,14 @@ $filters     = $filters ?? [
     <!-- Header / Navbar (Unified Desktop Navbar) -->
     <?php require_once __DIR__ . '/../Templates/superadmin_header.php'; ?>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
+    <div class="md:pl-64 flex flex-col flex-1 min-h-screen">
+        <!-- Main Content Container -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
 
         <!-- Page Header Banner -->
         <div class="bg-white border border-slate-200 p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all hover:shadow-sm">
             <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <a href="<?= \Core\Guard::url('/superadmin/dashboard') ?>" class="inline-flex items-center gap-1 text-xs font-semibold text-[#1867c0] hover:underline">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
-                        Dashboard
-                    </a>
-                    <span class="text-slate-300">/</span>
-                    <span class="text-xs text-slate-500 font-medium">Kelola Pengguna</span>
-                </div>
                 <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Kelola Data Pengguna</h1>
-                <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-3xl leading-relaxed">
-                    Daftar akun civitas lab (Dosen, Asisten Dosen, dan Admin). Anda dapat menambah pengguna baru, mengubah data, serta mengaktifkan atau menonaktifkan status akun secara aman.
-                </p>
             </div>
             <div class="flex items-center gap-2 shrink-0">
                 <button type="button" onclick="openCreateModal()" class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-semibold rounded-xl transition-all duration-150 shadow-xs hover:shadow-md cursor-pointer">
@@ -70,29 +60,14 @@ $filters     = $filters ?? [
             </div>
         </div>
 
-        <!-- Panduan Bantuan Cepat Ramah Pengguna (Help Accordion) -->
-        <div class="bg-blue-50/70 border border-blue-200/90 p-4 rounded-xl flex items-start gap-3">
-            <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center shrink-0 mt-0.5">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-            <div class="text-xs text-slate-700 space-y-1">
-                <p class="font-bold text-slate-900">Petunjuk Pengelolaan Akun:</p>
-                <p class="text-slate-600 leading-relaxed">
-                    • <strong>Status AKTIF (Hijau):</strong> Pengguna dapat login dan melakukan tugasnya (Dosen memverifikasi, Asdos mencatat absensi).<br>
-                    • <strong>Status NONAKTIF (Abu-abu):</strong> Pengguna hanya dapat melihat riwayat masa lalu (Mode Lihat Saja). Tombol input absensi otomatis dikunci oleh sistem.
-                </p>
-            </div>
-        </div>
-
-        <!-- Metric / Stat Cards Grid (4 Columns with Lift Hover) -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
+        <!-- Metric / Stat Cards Grid (3 Columns with Lift Hover) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
             
             <!-- 1. Total Pengguna -->
             <div class="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-blue-300">
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Pengguna</p>
                     <p class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1"><?= $metrics['total'] ?></p>
-                    <p class="text-xs text-slate-400 mt-0.5">Seluruh civitas lab</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -104,7 +79,6 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-indigo-700">Dosen Pengampu</p>
                     <p class="text-2xl sm:text-3xl font-bold text-indigo-900 mt-1"><?= $metrics['dosen'] ?></p>
-                    <p class="text-xs text-indigo-600/70 mt-0.5">Penanggung jawab matkul</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -116,25 +90,11 @@ $filters     = $filters ?? [
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wider text-[#1867c0]">Asisten Dosen</p>
                     <p class="text-2xl sm:text-3xl font-bold text-[#1867c0] mt-1"><?= $metrics['asdos'] ?></p>
-                    <p class="text-xs text-blue-600/70 mt-0.5">Pelaksana praktikum</p>
                 </div>
                 <div class="w-11 h-11 rounded-xl bg-blue-100 text-[#1867c0] flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                 </div>
             </div>
-
-            <!-- 4. Akun Nonaktif (Mode Read-Only) -->
-            <div class="bg-white p-4 sm:p-5 rounded-xl border <?= $metrics['inactive'] > 0 ? 'border-amber-300 bg-amber-50/30' : 'border-slate-200' ?> shadow-xs flex items-center justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-                <div>
-                    <p class="text-xs font-bold uppercase tracking-wider <?= $metrics['inactive'] > 0 ? 'text-amber-700' : 'text-slate-500' ?>">Akun Nonaktif</p>
-                    <p class="text-2xl sm:text-3xl font-bold <?= $metrics['inactive'] > 0 ? 'text-amber-800' : 'text-slate-700' ?> mt-1"><?= $metrics['inactive'] ?></p>
-                    <p class="text-xs <?= $metrics['inactive'] > 0 ? 'text-amber-600' : 'text-slate-400' ?> mt-0.5">Mode hanya lihat (BR2)</p>
-                </div>
-                <div class="w-11 h-11 rounded-xl <?= $metrics['inactive'] > 0 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500' ?> flex items-center justify-center">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
-                </div>
-            </div>
-
         </div>
 
         <!-- Content Card: Toolbar Filter & Users Data Table -->
@@ -145,14 +105,7 @@ $filters     = $filters ?? [
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
                         <h2 class="text-base font-bold text-slate-900">Daftar Pengguna Sistem</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">
-                            Gunakan kotak pencarian atau pilihan dropdown di bawah untuk menemukan pengguna tertentu.
-                        </p>
                     </div>
-                    <span id="userCountBadge" class="text-xs font-semibold px-3 py-1.5 bg-slate-100 text-slate-700 rounded-full border border-slate-200 self-start sm:self-auto flex items-center gap-1.5 shadow-2xs">
-                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                        <span>Menampilkan <strong id="displayedCount" class="text-slate-900"><?= count($users) ?></strong> dari <?= $metrics['total'] ?> Pengguna</span>
-                    </span>
                 </div>
 
                 <!-- Interactive Filters & Search Bar -->
@@ -178,7 +131,7 @@ $filters     = $filters ?? [
                     <div class="sm:col-span-3">
                         <label for="roleFilter" class="block text-xs font-bold text-slate-700 mb-1">Saring Berdasarkan Peran</label>
                         <select id="roleFilter" onchange="applyFilters()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 font-medium focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition duration-150 cursor-pointer shadow-2xs">
-                            <option value="">Semua Peran (Dosen, Asdos, Admin)</option>
+                            <option value="">Semua Peran</option>
                             <option value="dosen">Khusus Dosen</option>
                             <option value="asdos">Khusus Asisten Dosen</option>
                             <option value="super_admin">Khusus Super Admin</option>
@@ -194,15 +147,6 @@ $filters     = $filters ?? [
                             <option value="0">Nonaktif Saja</option>
                         </select>
                     </div>
-
-                    <!-- Reset Filter Button -->
-                    <div class="sm:col-span-1 flex flex-col justify-end">
-                        <button type="button" onclick="resetAllFilters()" title="Reset semua filter" class="w-full h-[42px] bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 rounded-xl text-xs font-semibold flex items-center justify-center gap-1 transition-all active:scale-95 cursor-pointer shadow-2xs">
-                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                            <span class="sm:hidden font-medium">Reset Filter</span>
-                        </button>
-                    </div>
-
                 </div>
             </div>
 
@@ -382,20 +326,10 @@ $filters     = $filters ?? [
                     Tampilkan Semua Pengguna
                 </button>
             </div>
-
-            <!-- Table Footer info -->
-            <div class="px-5 py-3.5 border-t border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-600 gap-2">
-                <p>
-                    <span class="font-bold text-slate-800">Aturan Akun PRD (BR2):</span> Akun yang dinonaktifkan tetap dapat login untuk mengecek rekap riwayat kehadiran (mode hanya lihat).
-                </p>
-                <p class="text-xs text-slate-400">
-                    Sistem Absensi Lab &copy; <?= date('Y') ?>
-                </p>
-            </div>
-
         </div>
 
-    </main>
+        </main>
+    </div>
 
     <!-- ========================================================================= -->
     <!-- 1. MODAL: TAMBAH PENGGUNA BARU                                           -->
@@ -411,7 +345,6 @@ $filters     = $filters ?? [
                     </div>
                     <div>
                         <h3 class="text-base font-bold text-slate-900 leading-tight">Tambah Pengguna Baru</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Daftarkan akun Dosen, Asisten Dosen, atau Super Admin</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeCreateModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition cursor-pointer">
@@ -431,7 +364,6 @@ $filters     = $filters ?? [
                             <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
                                 1. Pilih Peran Akun (Role) <span class="text-red-500">*</span>
                             </label>
-                            <span class="text-[11px] text-slate-400">Hak akses sistem</span>
                         </div>
                         <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
                             <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 has-checked:border-[#1867c0] has-checked:bg-blue-50/80 transition-all duration-150 shadow-2xs">
@@ -440,7 +372,6 @@ $filters     = $filters ?? [
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                 </div>
                                 <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-[#1867c0]">Asdos</span>
-                                <span class="text-[10px] text-slate-500">Praktikum</span>
                             </label>
                             <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 has-checked:border-indigo-600 has-checked:bg-indigo-50/80 transition-all duration-150 shadow-2xs">
                                 <input type="radio" name="role" value="dosen" onchange="updateIdentityLabel('create', this.value)" class="sr-only">
@@ -448,7 +379,6 @@ $filters     = $filters ?? [
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
                                 <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-indigo-900">Dosen</span>
-                                <span class="text-[10px] text-slate-500">Pengampu</span>
                             </label>
                             <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 has-checked:border-amber-600 has-checked:bg-amber-50/80 transition-all duration-150 shadow-2xs">
                                 <input type="radio" name="role" value="super_admin" onchange="updateIdentityLabel('create', this.value)" class="sr-only">
@@ -456,7 +386,6 @@ $filters     = $filters ?? [
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 </div>
                                 <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-amber-950">Admin</span>
-                                <span class="text-[10px] text-slate-500">Pengelola</span>
                             </label>
                         </div>
                     </div>
@@ -470,9 +399,6 @@ $filters     = $filters ?? [
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Nama Lengkap -->
                             <div>
-                                <label for="create_nama" class="block text-xs font-semibold text-slate-700 mb-1">
-                                    Nama Lengkap Beserta Gelar <span class="text-red-500">*</span>
-                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -485,9 +411,6 @@ $filters     = $filters ?? [
 
                             <!-- Nomor Identitas (NPM / NIDN) -->
                             <div>
-                                <label id="create_identity_label" for="create_identity_number" class="block text-xs font-semibold text-slate-700 mb-1">
-                                    Nomor Pokok Mahasiswa (NPM) <span class="text-red-500">*</span>
-                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
@@ -500,18 +423,11 @@ $filters     = $filters ?? [
                         </div>
                     </div>
 
-                    <!-- SECTION 3: KONTAK & KOMUNIKASI -->
+                    <!-- SECTION 2: KONTAK & KOMUNIKASI -->
                     <div class="space-y-3.5 pt-1">
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                            3. Kontak & Komunikasi
-                        </label>
-                        
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Email -->
                             <div>
-                                <label for="create_email" class="block text-xs font-semibold text-slate-700 mb-1">
-                                    Alamat Email Aktif <span class="text-red-500">*</span>
-                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -524,9 +440,7 @@ $filters     = $filters ?? [
 
                             <!-- No WhatsApp / HP -->
                             <div>
-                                <label for="create_nohp" class="block text-xs font-semibold text-slate-700 mb-1">
-                                    No. WhatsApp / HP
-                                </label>
+
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
@@ -539,17 +453,14 @@ $filters     = $filters ?? [
                         </div>
                     </div>
 
-                    <!-- SECTION 4: KEAMANAN & STATUS AKUN -->
+                    <!-- SECTION 3: KEAMANAN & STATUS AKUN -->
                     <div class="space-y-3.5 pt-1">
                         <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                            4. Keamanan & Status Keaktifan
+                            3. Keamanan & Status Keaktifan
                         </label>
                         
                         <!-- Kata Sandi -->
                         <div>
-                            <label for="create_password" class="block text-xs font-semibold text-slate-700 mb-1">
-                                Kata Sandi Awal Akun <span class="text-red-500">*</span> <span class="text-slate-400 font-normal">(Min. 6 Karakter)</span>
-                            </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
@@ -609,7 +520,6 @@ $filters     = $filters ?? [
                     </div>
                     <div>
                         <h3 class="text-base font-bold text-slate-900 leading-tight">Perbarui Data Pengguna</h3>
-                        <p class="text-xs text-slate-500 mt-0.5" id="edit_modal_subtitle">Edit data profil & hak akses akun</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeEditModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition cursor-pointer">
@@ -627,9 +537,8 @@ $filters     = $filters ?? [
                     <div>
                         <div class="flex items-center justify-between mb-2">
                             <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                                1. Peran Akun (Role) <span class="text-red-500">*</span>
+                                1. Pilih Peran Akun (Role) <span class="text-red-500">*</span>
                             </label>
-                            <span class="text-[11px] text-slate-400">Hak akses sistem</span>
                         </div>
                         <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
                             <label id="edit_role_asdos_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 has-checked:border-[#1867c0] has-checked:bg-blue-50/80 transition-all duration-150 shadow-2xs">
@@ -638,7 +547,6 @@ $filters     = $filters ?? [
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                 </div>
                                 <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-[#1867c0]">Asdos</span>
-                                <span class="text-[10px] text-slate-500">Praktikum</span>
                             </label>
                             <label id="edit_role_dosen_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 has-checked:border-indigo-600 has-checked:bg-indigo-50/80 transition-all duration-150 shadow-2xs">
                                 <input type="radio" id="edit_role_dosen" name="role" value="dosen" onchange="updateIdentityLabel('edit', this.value)" class="sr-only">
@@ -646,7 +554,6 @@ $filters     = $filters ?? [
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
                                 <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-indigo-900">Dosen</span>
-                                <span class="text-[10px] text-slate-500">Pengampu</span>
                             </label>
                             <label id="edit_role_admin_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 has-checked:border-amber-600 has-checked:bg-amber-50/80 transition-all duration-150 shadow-2xs">
                                 <input type="radio" id="edit_role_admin" name="role" value="super_admin" onchange="updateIdentityLabel('edit', this.value)" class="sr-only">
@@ -654,7 +561,6 @@ $filters     = $filters ?? [
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 </div>
                                 <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-amber-950">Admin</span>
-                                <span class="text-[10px] text-slate-500">Pengelola</span>
                             </label>
                         </div>
                     </div>
@@ -668,89 +574,74 @@ $filters     = $filters ?? [
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Nama Lengkap -->
                             <div>
-                                <label for="edit_nama" class="block text-xs font-semibold text-slate-700 mb-1">
-                                    Nama Lengkap Beserta Gelar <span class="text-red-500">*</span>
-                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                                     </div>
                                     <input type="text" id="edit_nama" name="nama" required maxlength="50"
-                                           class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                                           class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs"
+                                           placeholder="Nama lengkap...">
                                 </div>
                             </div>
 
                             <!-- Nomor Identitas (NPM / NIDN) -->
                             <div>
-                                <label id="edit_identity_label" for="edit_identity_number" class="block text-xs font-semibold text-slate-700 mb-1">
-                                    Nomor Identitas <span class="text-red-500">*</span>
-                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
                                     </div>
                                     <input type="text" id="edit_identity_number" name="identity_number" required maxlength="100"
-                                           class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                                           class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm font-mono text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs"
+                                           placeholder="Contoh NPM: 21082010001">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- SECTION 3: KONTAK & KOMUNIKASI -->
+                    <!-- SECTION 2: KONTAK & KOMUNIKASI -->
                     <div class="space-y-3.5 pt-1">
-                        <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                            3. Kontak & Komunikasi
-                        </label>
-                        
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Email -->
                             <div>
-                                <label for="edit_email" class="block text-xs font-semibold text-slate-700 mb-1">
-                                    Alamat Email Aktif <span class="text-red-500">*</span>
-                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                     </div>
                                     <input type="email" id="edit_email" name="email" required maxlength="80"
-                                           class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                                           class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs"
+                                           placeholder="nama@upnjatim.ac.id">
                                 </div>
                             </div>
 
                             <!-- No WhatsApp / HP -->
                             <div>
-                                <label for="edit_nohp" class="block text-xs font-semibold text-slate-700 mb-1">
-                                    No. WhatsApp / HP
-                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                                     </div>
                                     <input type="tel" id="edit_nohp" name="no_hp" maxlength="20"
-                                           class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                                           class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs"
+                                           placeholder="081234567890">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- SECTION 4: KEAMANAN & STATUS AKUN -->
+                    <!-- SECTION 3: KEAMANAN & STATUS AKUN -->
                     <div class="space-y-3.5 pt-1">
                         <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
-                            4. Keamanan & Status Keaktifan
+                            3. Keamanan & Status Keaktifan
                         </label>
                         
                         <!-- Reset Kata Sandi (Opsional) -->
                         <div>
-                            <label for="edit_password" class="block text-xs font-semibold text-slate-700 mb-1">
-                                Kata Sandi Baru <span class="text-slate-400 font-normal">(Biarkan kosong jika tidak ingin mengubah)</span>
-                            </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                 </div>
                                 <input type="password" id="edit_password" name="password" minlength="6"
                                        class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-10 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs"
-                                       placeholder="Ketik password baru jika ingin mengganti...">
+                                       placeholder="Kata sandi baru (kosongkan jika tidak diubah)...">
                                 <button type="button" onclick="togglePasswordVisibility('edit_password')" title="Lihat/Sembunyikan Kata Sandi" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 cursor-pointer">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 </button>
@@ -806,22 +697,12 @@ $filters     = $filters ?? [
                     Apakah Anda yakin ingin menghapus akun <strong><span id="deleteTargetName"></span></strong>? Tindakan ini tidak dapat dibatalkan.
                 </p>
 
-                <div class="mt-3 p-3.5 bg-red-50 border border-red-200 rounded-xl text-left text-xs text-red-800 leading-relaxed">
-                    <p class="font-bold flex items-center gap-1.5 mb-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                        Pencegahan Penghapusan Data:
-                    </p>
-                    <p>
-                        Jika pengguna ini telah terdaftar sebagai pengampu mata kuliah atau memiliki riwayat absensi, sistem akan secara otomatis menolak penghapusan untuk menjaga keutuhan dokumen. Anda dapat menggunakan tombol <strong>Nonaktifkan</strong> sebagai pilihan yang aman.
-                    </p>
-                </div>
-
-                <form id="deleteForm" action="" method="POST" class="mt-6 flex items-center justify-center gap-3">
+                <form id="deleteForm" action="" method="POST" class="mt-6 flex flex-row items-center justify-center gap-3 w-full">
                     <?= \Core\Guard::csrfField() ?>
-                    <button type="button" onclick="closeDeleteModal()" class="px-5 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs sm:text-sm font-bold rounded-xl transition cursor-pointer">
+                    <button type="button" onclick="closeDeleteModal()" class="px-5 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs sm:text-sm font-bold rounded-xl transition cursor-pointer shrink-0">
                         Batal
                     </button>
-                    <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition flex items-center gap-2 cursor-pointer">
+                    <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition inline-flex items-center justify-center gap-2 cursor-pointer shrink-0">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                         <span>Ya, Hapus Akun</span>
                     </button>
@@ -919,22 +800,30 @@ $filters     = $filters ?? [
         }
 
         // ---------------------------------------------------------------------
-        // 2. Dynamic Label Helper (NPM vs NIDN)
+        // 2. Dynamic Label & Placeholder Helper (NPM vs NIDN)
         // ---------------------------------------------------------------------
         function updateIdentityLabel(prefix, role) {
             const labelEl = document.getElementById(`${prefix}_identity_label`);
             const inputEl = document.getElementById(`${prefix}_identity_number`);
-            if (!labelEl || !inputEl) return;
+            
+            if (inputEl) {
+                if (role === 'dosen') {
+                    inputEl.placeholder = 'Contoh NIDN: 0012057801';
+                } else if (role === 'asdos') {
+                    inputEl.placeholder = 'Contoh NPM: 21082010001';
+                } else {
+                    inputEl.placeholder = 'Contoh ID: admin_lab';
+                }
+            }
 
-            if (role === 'dosen') {
-                labelEl.innerHTML = 'Nomor Induk Dosen Nasional (NIDN) <span class="text-red-500">*</span>';
-                inputEl.placeholder = 'Contoh NIDN: 0012057801';
-            } else if (role === 'asdos') {
-                labelEl.innerHTML = 'Nomor Pokok Mahasiswa (NPM) <span class="text-red-500">*</span>';
-                inputEl.placeholder = 'Contoh NPM: 21082010001';
-            } else {
-                labelEl.innerHTML = 'Username / Nomor Identitas Admin <span class="text-red-500">*</span>';
-                inputEl.placeholder = 'Contoh ID: admin_lab';
+            if (labelEl) {
+                if (role === 'dosen') {
+                    labelEl.innerHTML = 'Nomor Induk Dosen Nasional (NIDN) <span class="text-red-500">*</span>';
+                } else if (role === 'asdos') {
+                    labelEl.innerHTML = 'Nomor Pokok Mahasiswa (NPM) <span class="text-red-500">*</span>';
+                } else {
+                    labelEl.innerHTML = 'Username / Nomor Identitas Admin <span class="text-red-500">*</span>';
+                }
             }
         }
 
@@ -1015,7 +904,8 @@ $filters     = $filters ?? [
             updateModalStatusLabel('edit', active);
 
             // Subtitle info
-            document.getElementById('edit_modal_subtitle').textContent = `Mengedit ID #${id} — ${nama}`;
+            const subTitleEl = document.getElementById('edit_modal_subtitle');
+            if (subTitleEl) subTitleEl.textContent = `Mengedit ID #${id} — ${nama}`;
 
             // If editing self, disable status turning off and role changing
             const statusCheckbox = document.getElementById('edit_is_active');

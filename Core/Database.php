@@ -92,22 +92,4 @@ class Database
     {
         return self::getConnection()->lastInsertId();
     }
-
-    /**
-     * Helper Transaksi Database
-     */
-    public static function beginTransaction(): bool
-    {
-        return self::getConnection()->beginTransaction();
-    }
-
-    public static function commit(): bool
-    {
-        return self::getConnection()->commit();
-    }
-
-    public static function rollBack(): bool
-    {
-        return self::getConnection()->rollBack();
-    }
 }

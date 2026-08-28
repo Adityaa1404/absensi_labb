@@ -24,8 +24,319 @@ $calendarPlotting = $calendarPlotting ?? [];
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- FullCalendar v6 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
     <style>
         body { font-family: 'Inter', sans-serif; }
+
+        /* FullCalendar Custom Theme Tuning (High Contrast, Crisp & Clean) */
+        :root {
+            --fc-border-color: #e2e8f0;
+            --fc-page-bg-color: #ffffff;
+            --fc-neutral-bg-color: #f8fafc;
+            --fc-today-bg-color: transparent;
+            --fc-highlight-color: rgba(24, 103, 192, 0.06);
+            --fc-event-border-color: transparent;
+            --fc-event-text-color: #ffffff;
+        }
+
+        .fc {
+            font-family: inherit;
+        }
+
+        .fc .fc-toolbar {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.75rem !important;
+            border-radius: 0.75rem;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .fc .fc-toolbar-title {
+            font-size: 1.05rem !important;
+            font-weight: 700 !important;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+        }
+
+        .fc .fc-button {
+            font-size: 0.725rem !important;
+            font-weight: 600 !important;
+            border-radius: 0.5rem !important;
+            padding: 0.35rem 0.65rem !important;
+            border: 1px solid #cbd5e1 !important;
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+            transition: all 0.15s ease-in-out;
+            text-transform: capitalize !important;
+        }
+
+        .fc .fc-button:hover {
+            background-color: #f1f5f9 !important;
+            border-color: #94a3b8 !important;
+            color: #0f172a !important;
+        }
+
+        .fc .fc-button-primary:not(:disabled).fc-button-active,
+        .fc .fc-button-primary:not(:disabled):active {
+            background-color: #1867c0 !important;
+            border-color: #1867c0 !important;
+            color: #ffffff !important;
+            box-shadow: 0 1px 3px 0 rgba(24, 103, 192, 0.3) !important;
+        }
+
+        .fc .fc-button-primary:focus {
+            box-shadow: 0 0 0 3px rgba(24, 103, 192, 0.25) !important;
+        }
+
+        .fc .fc-button-group {
+            gap: 0.25rem;
+        }
+
+        .fc .fc-button-group > .fc-button {
+            border-radius: 0.5rem !important;
+        }
+
+        .fc .fc-col-header-cell-cushion {
+            font-size: 0.725rem;
+            font-weight: 700;
+            color: #334155;
+            padding: 0.5rem 0.25rem !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Posisi Nomor Tanggal (Top-Right Rapi & Jelas) */
+        .fc .fc-daygrid-day-top {
+            justify-content: flex-end;
+            padding: 0.3rem 0.4rem 0.1rem 0;
+        }
+
+        .fc .fc-daygrid-day-number {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #1e293b; /* Teks Gelap Jelas */
+            min-width: 1.6rem;
+            height: 1.6rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            transition: all 0.15s ease;
+        }
+
+        /* Hari di Luar Bulan Aktif (Sedikit Redup) */
+        .fc .fc-day-other .fc-daygrid-day-number {
+            color: #94a3b8 !important;
+            font-weight: 500;
+        }
+
+        /* 1. Hari Ini (Saat TIDAK sedang dipilih) */
+        .fc .fc-day-today:not(.fc-day-selected-custom) .fc-daygrid-day-number {
+            background-color: #dbeafe !important;
+            color: #1867c0 !important;
+            border: 1.5px solid #3b82f6 !important;
+            font-weight: 700;
+        }
+
+        /* 2. Hari yang Sedang DIPILIH (Aktif & Menonjol) */
+        .fc .fc-day-selected-custom {
+            background-color: #f0f7ff !important;
+        }
+
+        .fc .fc-day-selected-custom .fc-daygrid-day-number {
+            background-color: #1867c0 !important;
+            color: #ffffff !important;
+            font-weight: 700;
+            box-shadow: 0 2px 6px rgba(24, 103, 192, 0.4) !important;
+            transform: scale(1.05);
+        }
+
+        .fc .fc-daygrid-day {
+            cursor: pointer;
+            transition: background-color 0.12s ease;
+        }
+
+        .fc .fc-daygrid-day:hover:not(.fc-day-selected-custom) {
+            background-color: #f8fafc;
+        }
+
+        /* ========================================================================= */
+        /* STYLING BLOK EVENT KHUSUS TAMPILAN GRID BULAN & MINGGU (SOLID & TEGAS)   */
+        /* ========================================================================= */
+        .fc-daygrid-event,
+        .fc-timegrid-event {
+            border-radius: 0.375rem !important;
+            padding: 2.5px 5px !important;
+            margin: 1.5px 2px !important;
+            border: none !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+            transition: transform 0.12s ease, box-shadow 0.12s ease !important;
+        }
+
+        .fc-daygrid-event:hover,
+        .fc-timegrid-event:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15) !important;
+            filter: brightness(1.05) !important;
+        }
+
+        .fc-daygrid-event .fc-event-main,
+        .fc-daygrid-event .fc-event-title,
+        .fc-timegrid-event .fc-event-main,
+        .fc-timegrid-event .fc-event-title {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            font-size: 0.725rem !important;
+            line-height: 1.2 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        /* 1. Plotting Aktif (Solid Royal Blue pada Grid) */
+        .fc-daygrid-event.fc-event-plotting,
+        .fc-timegrid-event.fc-event-plotting {
+            background-color: #1867c0 !important;
+            border-color: #1867c0 !important;
+        }
+
+        /* 2. Absensi Disetujui (Solid Emerald Green pada Grid) */
+        .fc-daygrid-event.fc-event-disetujui,
+        .fc-timegrid-event.fc-event-disetujui {
+            background-color: #059669 !important;
+            border-color: #059669 !important;
+        }
+
+        /* 3. Absensi Pending / Menunggu Review (Solid Dark Amber pada Grid) */
+        .fc-daygrid-event.fc-event-pending,
+        .fc-timegrid-event.fc-event-pending {
+            background-color: #d97706 !important;
+            border-color: #d97706 !important;
+        }
+
+        /* 4. Absensi Ditolak (Solid Crimson Red pada Grid) */
+        .fc-daygrid-event.fc-event-ditolak,
+        .fc-timegrid-event.fc-event-ditolak {
+            background-color: #dc2626 !important;
+            border-color: #dc2626 !important;
+        }
+
+        .fc .fc-more-link {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #1867c0;
+            padding: 1px 4px;
+        }
+
+        .fc-theme-standard th, .fc-theme-standard td {
+            border-color: #e2e8f0;
+        }
+
+        /* ========================================================================= */
+        /* KHUSUS VIEW AGENDA (LIST VIEW): SUPER CLEAN, LATAR PUTIH, DOT WARNA      */
+        /* ========================================================================= */
+        .fc-list {
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 0.75rem !important;
+            overflow: hidden !important;
+            background-color: #ffffff !important;
+        }
+
+        .fc-list-table {
+            border-collapse: separate !important;
+        }
+
+        .fc-list-day-cushion {
+            background-color: #f8fafc !important;
+            padding: 0.6rem 1rem !important;
+            font-size: 0.75rem !important;
+            font-weight: 700 !important;
+            color: #334155 !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+        }
+
+        .fc-list-day-text {
+            font-weight: 700 !important;
+            color: #0f172a !important;
+        }
+
+        .fc-list-day-side-text {
+            font-weight: 600 !important;
+            color: #64748b !important;
+        }
+
+        .fc-list-event {
+            background-color: #ffffff !important;
+            transition: background-color 0.15s ease !important;
+            cursor: pointer !important;
+        }
+
+        .fc-list-event td {
+            background-color: transparent !important;
+            border-color: #f1f5f9 !important;
+            padding: 0.65rem 1rem !important;
+        }
+
+        .fc-list-event:hover td {
+            background-color: #f8fafc !important;
+        }
+
+        .fc-list-event-time {
+            font-size: 0.75rem !important;
+            font-weight: 600 !important;
+            color: #64748b !important;
+            white-space: nowrap !important;
+        }
+
+        .fc-list-event-title,
+        .fc-list-event-title a {
+            font-size: 0.8rem !important;
+            font-weight: 600 !important;
+            color: #1e293b !important;
+            text-decoration: none !important;
+            transition: color 0.15s ease !important;
+        }
+
+        .fc-list-event:hover .fc-list-event-title,
+        .fc-list-event:hover .fc-list-event-title a {
+            color: #1867c0 !important;
+        }
+
+        .fc-list-event-dot {
+            border-width: 5px !important;
+            border-radius: 9999px !important;
+        }
+
+        /* Warna Dot Lingkaran pada View Agenda */
+        .fc-list-event.fc-event-plotting .fc-list-event-dot {
+            border-color: #1867c0 !important;
+        }
+
+        .fc-list-event.fc-event-disetujui .fc-list-event-dot {
+            border-color: #059669 !important;
+        }
+
+        .fc-list-event.fc-event-pending .fc-list-event-dot {
+            border-color: #d97706 !important;
+        }
+
+        .fc-list-event.fc-event-ditolak .fc-list-event-dot {
+            border-color: #dc2626 !important;
+        }
+
+        .fc-list-empty {
+            background-color: #ffffff !important;
+            padding: 3rem 1rem !important;
+            text-align: center !important;
+            color: #94a3b8 !important;
+            font-size: 0.8rem !important;
+            font-weight: 500 !important;
+        }
     </style>
 </head>
 <body class="min-h-full flex flex-col bg-slate-50 text-slate-800 antialiased">
@@ -36,18 +347,18 @@ $calendarPlotting = $calendarPlotting ?? [];
     <!-- Header / Navbar (Unified Desktop Navbar) -->
     <?php require_once __DIR__ . '/../Templates/superadmin_header.php'; ?>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
+    <div class="md:pl-64 flex flex-col flex-1 min-h-screen">
+        <!-- Main Content Container -->
+        <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
 
         <!-- Page Header Banner -->
         <div class="bg-white border border-slate-200 p-5 sm:p-6 rounded-xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Dashboard Super Admin</h2>
-                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
-                    Selamat datang kembali, <strong><?= htmlspecialchars($currentUser['nama'] ?? 'Admin', ENT_QUOTES, 'UTF-8') ?></strong>. Kelola pengguna, plotting asisten, dan pantau aktivitas praktikum.
-                </p>
             </div>
-        </div>        <!-- Metric / Stat Cards Grid (Clickable to Respective Pages) -->
+        </div>        
+
+        <!-- Metric / Stat Cards Grid (3 Columns with Lift Hover) -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
             
             <!-- 1. Card Total Pengguna -> Kelola Pengguna -->
@@ -61,9 +372,8 @@ $calendarPlotting = $calendarPlotting ?? [];
                 </div>
                 <p class="text-2xl sm:text-3xl font-bold text-[#1867c0] mt-1 sm:mt-2"><?= $stats['total_users'] ?></p>
                 <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-blue-100/80">
-                    <p class="text-[11px] text-slate-500">Dosen, Asdos, & Admin</p>
                     <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-[#1867c0] bg-blue-100/70 px-2 py-0.5 rounded-full group-hover:bg-[#1867c0] group-hover:text-white transition-all duration-150">
-                        <span>Buka</span>
+                        <span>Kelola Pengguna</span>
                         <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                     </span>
                 </div>
@@ -80,9 +390,8 @@ $calendarPlotting = $calendarPlotting ?? [];
                 </div>
                 <p class="text-2xl sm:text-3xl font-bold text-indigo-700 mt-1 sm:mt-2"><?= $stats['total_matkul'] ?></p>
                 <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-indigo-100/80">
-                    <p class="text-[11px] text-slate-500">Praktikum Terdaftar</p>
                     <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-700 bg-indigo-100/80 px-2 py-0.5 rounded-full group-hover:bg-indigo-600 group-hover:text-white transition-all duration-150">
-                        <span>Buka</span>
+                        <span>Kelola Matkul</span>
                         <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                     </span>
                 </div>
@@ -99,9 +408,8 @@ $calendarPlotting = $calendarPlotting ?? [];
                 </div>
                 <p class="text-2xl sm:text-3xl font-bold text-emerald-700 mt-1 sm:mt-2"><?= $stats['total_plotting'] ?></p>
                 <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-emerald-100/80">
-                    <p class="text-[11px] text-slate-500">Penugasan Berjalan</p>
                     <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full group-hover:bg-emerald-600 group-hover:text-white transition-all duration-150">
-                        <span>Buka</span>
+                        <span>Kelola Plotting</span>
                         <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                     </span>
                 </div>
@@ -110,124 +418,83 @@ $calendarPlotting = $calendarPlotting ?? [];
         </div>
 
         <!-- ========================================== -->
-        <!-- CALENDAR & TRACKING PENUGASAN LAB          -->
+        <!-- CALENDAR & TRACKING (SPLIT VIEW 2-KOLOM)   -->
         <!-- ========================================== -->
         <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
             
-            <!-- Calendar Top Bar Header -->
-            <div class="p-4 sm:p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/50">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-lg bg-[#1867c0] text-white flex items-center justify-center shadow-xs">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        </div>
-                        <h3 class="text-base sm:text-lg font-bold text-slate-900">Tracking Penugasan & Absensi Lab</h3>
+            <!-- Calendar Top Bar Header & Filter Controls -->
+            <div class="p-4 sm:p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-50/50">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-[#1867c0] text-white flex items-center justify-center shadow-xs shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                     </div>
-                    <p class="text-xs text-slate-500 mt-1">
-                        Pantau periode penugasan asdos aktif dan riwayat absensi pelaksanaan praktikum per tanggal.
-                    </p>
-                </div>
-
-                <!-- Month Navigation Controls -->
-                <div class="flex items-center gap-2 self-start sm:self-auto">
-                    <button type="button" id="cal-prev-btn" 
-                            class="p-2 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs cursor-pointer" 
-                            title="Bulan Sebelumnya">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                    </button>
-                    
-                    <span id="cal-month-year" class="text-sm font-bold text-slate-800 min-w-[140px] text-center px-2">
-                        <!-- Dynamic Month Year -->
-                    </span>
-
-                    <button type="button" id="cal-next-btn" 
-                            class="p-2 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs cursor-pointer" 
-                            title="Bulan Berikutnya">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                    </button>
-
-                    <button type="button" id="cal-today-btn" 
-                            class="ml-1 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-[#1867c0] hover:bg-blue-50 transition shadow-2xs cursor-pointer">
-                        Hari Ini
-                    </button>
-                </div>
-            </div>
-
-            <!-- Legend Info Bar (Neat 2x2 Grid on Mobile, Inline Flex on Desktop) -->
-            <div class="px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-50 border-b border-slate-100">
-                <div class="grid grid-cols-2 md:flex md:flex-wrap md:items-center gap-2 sm:gap-3 text-[11px] text-slate-600">
-                    <span class="hidden md:inline-flex font-bold text-slate-700 mr-1">Keterangan:</span>
-                    
-                    <div class="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/80 shadow-2xs">
-                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
-                        <span class="font-medium text-slate-700 truncate">Plotting Aktif</span>
-                    </div>
-
-                    <div class="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/80 shadow-2xs">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
-                        <span class="font-medium text-slate-700 truncate">Absensi Disetujui</span>
-                    </div>
-
-                    <div class="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/80 shadow-2xs">
-                        <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
-                        <span class="font-medium text-slate-700 truncate">Absensi Pending</span>
-                    </div>
-
-                    <div class="flex items-center gap-2 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/80 shadow-2xs">
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0"></span>
-                        <span class="font-medium text-slate-700 truncate">Absensi Ditolak</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Calendar Grid & Detail Split Panel -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 sm:p-6">
-                
-                <!-- Left: Calendar Matrix Grid (8 Cols on LG) -->
-                <div class="lg:col-span-7 xl:col-span-8">
-                    <!-- Day Name Headers -->
-                    <div class="grid grid-cols-7 gap-1 text-center mb-1.5">
-                        <div class="py-1 text-[11px] font-bold text-red-500 uppercase tracking-wider">Min</div>
-                        <div class="py-1 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Sen</div>
-                        <div class="py-1 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Sel</div>
-                        <div class="py-1 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Rab</div>
-                        <div class="py-1 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Kam</div>
-                        <div class="py-1 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Jum</div>
-                        <div class="py-1 text-[11px] font-bold text-slate-600 uppercase tracking-wider">Sab</div>
-                    </div>
-
-                    <!-- Days Container -->
-                    <div id="cal-days-grid" class="grid grid-cols-7 gap-1 sm:gap-1.5">
-                        <!-- Dynamic Calendar Cells Generated by JS -->
-                    </div>
-                </div>
-
-                <!-- Right: Selected Date Assignment & Activity Details (4-5 Cols on LG) -->
-                <div class="lg:col-span-5 xl:col-span-4 bg-slate-50 border border-slate-200/80 rounded-xl p-4 sm:p-5 flex flex-col justify-between">
                     <div>
-                        <!-- Header Date Selected -->
-                        <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-3.5">
+                        <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Tracking Penugasan & Absensi Lab</h3>
+                    </div>
+                </div>
+
+                <!-- Event Type Filter Pills -->
+                <div class="flex flex-wrap items-center gap-1.5 text-xs font-semibold">
+                    <button type="button" onclick="filterCalendar('all')" id="btn-filter-all" class="filter-btn px-3 py-1.5 rounded-lg bg-[#1867c0] text-white shadow-2xs transition cursor-pointer">
+                        Semua
+                    </button>
+                    <button type="button" onclick="filterCalendar('plotting')" id="btn-filter-plotting" class="filter-btn px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer">
+                        <span class="inline-block w-2 h-2 rounded-full bg-[#1867c0] mr-1"></span>Plotting
+                    </button>
+                    <button type="button" onclick="filterCalendar('disetujui')" id="btn-filter-disetujui" class="filter-btn px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 mr-1"></span>Disetujui
+                    </button>
+                    <button type="button" onclick="filterCalendar('pending')" id="btn-filter-pending" class="filter-btn px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer">
+                        <span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-1"></span>Pending
+                    </button>
+                    <button type="button" onclick="filterCalendar('ditolak')" id="btn-filter-ditolak" class="filter-btn px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer">
+                        <span class="inline-block w-2 h-2 rounded-full bg-red-600 mr-1"></span>Ditolak
+                    </button>
+                </div>
+            </div>
+
+            <!-- Split Grid Layout (Left: FullCalendar, Right: List Tugas Tanggal Terpilih) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+                
+                <!-- Left: FullCalendar Engine (7-8 Kolom pada Desktop) -->
+                <div class="lg:col-span-7 xl:col-span-8 p-3 sm:p-5 bg-white">
+                    <div id="fullcalendar-container" class="min-h-[540px]"></div>
+                </div>
+
+                <!-- Right: Panel Daftar Tugas Hari Terpilih (4-5 Kolom pada Desktop) -->
+                <div class="lg:col-span-5 xl:col-span-4 bg-slate-50/60 p-4 sm:p-5 flex flex-col justify-between">
+                    <div>
+                        <!-- Header Tanggal yang Diklik -->
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3.5 mb-4">
                             <div>
-                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Detail Penugasan</span>
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Jadwal Tanggal</span>
                                 <h4 id="selected-date-title" class="text-sm sm:text-base font-bold text-slate-900 mt-0.5">
-                                    Pilih Tanggal
+                                    Memuat tanggal...
                                 </h4>
                             </div>
-                            <span id="selected-events-count" class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-[#1867c0]">
-                                0 Aktivitas
-                            </span>
+                            <div class="flex items-center gap-1.5">
+                                <button type="button" id="btn-quick-today" onclick="selectToday()" class="hidden px-2 py-1 text-[10px] font-bold text-[#1867c0] bg-blue-50 hover:bg-blue-100 rounded-md border border-blue-200 transition cursor-pointer">
+                                    Hari Ini
+                                </button>
+                                <span id="selected-tasks-count" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-100 text-[#1867c0]">
+                                    0 Tugas
+                                </span>
+                            </div>
                         </div>
 
-                        <!-- Activity Events List on Selected Day -->
-                        <div id="selected-events-list" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
-                            <!-- Injected by JavaScript -->
+                        <!-- Container List Tugas yang Berjalan di Tanggal Ini -->
+                        <div id="selected-tasks-list" class="space-y-3.5 max-h-[460px] overflow-y-auto pr-1">
+                            <!-- Injected dynamically by JavaScript -->
                         </div>
                     </div>
 
-                    <!-- Bottom Quick Links -->
-                    <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
-                        <a href="<?= \Core\Guard::url('/superadmin/plotting') ?>" class="text-slate-600 hover:text-[#1867c0] font-semibold inline-flex items-center gap-1">
-                            Kelola Plotting &rarr;
+                    <!-- Shortcut Tautan Bawah -->
+                    <div class="mt-4 pt-3.5 border-t border-slate-200 flex items-center justify-between text-xs">
+                        <a href="<?= \Core\Guard::url('/superadmin/plotting') ?>" class="text-[#1867c0] hover:text-[#14529d] font-semibold inline-flex items-center gap-1 transition">
+                            <span>Kelola Plotting</span> &rarr;
+                        </a>
+                        <a href="<?= \Core\Guard::url('/superadmin/monitoring') ?>" class="text-slate-600 hover:text-[#1867c0] font-semibold inline-flex items-center gap-1 transition">
+                            <span>Monitoring Absensi</span> &rarr;
                         </a>
                     </div>
                 </div>
@@ -238,7 +505,7 @@ $calendarPlotting = $calendarPlotting ?? [];
 
     </main>
 
-    <!-- Calendar Interactive Script -->
+    <!-- FullCalendar Logic Script -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Data dari Controller PHP
@@ -251,17 +518,14 @@ $calendarPlotting = $calendarPlotting ?? [];
         ];
         const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-        let currentDate = new Date();
-        let selectedDateStr = formatDateKey(new Date());
+        const todayKey = formatDateKey(new Date());
+        let currentFilter = 'all';
+        let selectedDateStr = todayKey;
 
-        const monthYearEl  = document.getElementById('cal-month-year');
-        const daysGridEl   = document.getElementById('cal-days-grid');
-        const prevBtn      = document.getElementById('cal-prev-btn');
-        const nextBtn      = document.getElementById('cal-next-btn');
-        const todayBtn     = document.getElementById('cal-today-btn');
-        const dateTitleEl  = document.getElementById('selected-date-title');
-        const eventsListEl = document.getElementById('selected-events-list');
-        const countBadgeEl = document.getElementById('selected-events-count');
+        const dateTitleEl = document.getElementById('selected-date-title');
+        const tasksListEl = document.getElementById('selected-tasks-list');
+        const countBadgeEl = document.getElementById('selected-tasks-count');
+        const quickTodayBtn = document.getElementById('btn-quick-today');
 
         function formatDateKey(d) {
             const year  = d.getFullYear();
@@ -278,7 +542,7 @@ $calendarPlotting = $calendarPlotting ?? [];
             return `${dayName}, ${dayNumber} ${monthName} ${year}`;
         }
 
-        // Ambil data penugasan & absensi untuk tanggal tertentu
+        // Ambil data aktivitas/tugas untuk tanggal tertentu
         function getEventsForDate(dateStr) {
             const result = {
                 absensi: [],
@@ -288,7 +552,9 @@ $calendarPlotting = $calendarPlotting ?? [];
             // 1. Cek Absensi pada tanggal ini
             absensiList.forEach(item => {
                 if (item.tanggal && item.tanggal.substring(0, 10) === dateStr) {
-                    result.absensi.push(item);
+                    if (currentFilter === 'all' || item.status_verifikasi === currentFilter) {
+                        result.absensi.push(item);
+                    }
                 }
             });
 
@@ -298,7 +564,9 @@ $calendarPlotting = $calendarPlotting ?? [];
                     const start = item.periode_mulai.substring(0, 10);
                     const end   = item.periode_selesai.substring(0, 10);
                     if (dateStr >= start && dateStr <= end) {
-                        result.plotting.push(item);
+                        if (currentFilter === 'all' || currentFilter === 'plotting') {
+                            result.plotting.push(item);
+                        }
                     }
                 }
             });
@@ -306,226 +574,284 @@ $calendarPlotting = $calendarPlotting ?? [];
             return result;
         }
 
-        function renderCalendar() {
-            const year  = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-
-            monthYearEl.textContent = `${monthNames[month]} ${year}`;
-            daysGridEl.innerHTML = '';
-
-            const firstDayOfMonth = new Date(year, month, 1).getDay(); // 0 = Minggu
-            const daysInMonth     = new Date(year, month + 1, 0).getDate();
-            const daysInPrevMonth = new Date(year, month, 0).getDate();
-
-            const todayStr = formatDateKey(new Date());
-
-            // 1. Hari dari Bulan Sebelumnya (Filler)
-            for (let i = firstDayOfMonth - 1; i >= 0; i--) {
-                const dayNum = daysInPrevMonth - i;
-                const prevDate = new Date(year, month - 1, dayNum);
-                const prevDateStr = formatDateKey(prevDate);
-                const cell = createDateCell(dayNum, prevDateStr, false, false);
-                daysGridEl.appendChild(cell);
-            }
-
-            // 2. Hari Bulan Ini
-            for (let dayNum = 1; dayNum <= daysInMonth; dayNum++) {
-                const dateObj = new Date(year, month, dayNum);
-                const dateStr = formatDateKey(dateObj);
-                const isToday = (dateStr === todayStr);
-                const isSelected = (dateStr === selectedDateStr);
-                const cell = createDateCell(dayNum, dateStr, true, isToday, isSelected);
-                daysGridEl.appendChild(cell);
-            }
-
-            // 3. Hari dari Bulan Berikutnya (Filler sisa 42 sel grid)
-            const totalCellsRendered = firstDayOfMonth + daysInMonth;
-            const remainingCells = (totalCellsRendered > 35 ? 42 : 35) - totalCellsRendered;
-            for (let dayNum = 1; dayNum <= remainingCells; dayNum++) {
-                const nextDate = new Date(year, month + 1, dayNum);
-                const nextDateStr = formatDateKey(nextDate);
-                const cell = createDateCell(dayNum, nextDateStr, false, false);
-                daysGridEl.appendChild(cell);
-            }
-
-            renderSelectedDateDetails();
-        }
-
-        function createDateCell(dayNum, dateStr, isCurrentMonth, isToday, isSelected = false) {
-            const cell = document.createElement('button');
-            cell.type = 'button';
-            cell.className = `min-h-[64px] sm:min-h-[74px] p-1.5 sm:p-2 rounded-xl border text-left flex flex-col justify-between transition-all duration-150 cursor-pointer ${
-                isCurrentMonth ? 'bg-white hover:border-[#1867c0]' : 'bg-slate-50/60 text-slate-300 border-slate-100 hover:bg-slate-100/80'
-            } ${
-                isSelected ? 'ring-2 ring-[#1867c0] border-[#1867c0] bg-blue-50/30' : 'border-slate-200/80'
-            }`;
-
-            // Bagian Nomor Tanggal
-            const topRow = document.createElement('div');
-            topRow.className = 'flex items-center justify-between w-full';
-
-            const numSpan = document.createElement('span');
-            numSpan.className = `text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full ${
-                isToday 
-                    ? 'bg-[#1867c0] text-white shadow-2xs' 
-                    : isCurrentMonth ? 'text-slate-700' : 'text-slate-400'
-            }`;
-            numSpan.textContent = dayNum;
-            topRow.appendChild(numSpan);
-
-            cell.appendChild(topRow);
-
-            // Indikator Penugasan & Absensi
-            const events = getEventsForDate(dateStr);
-            const totalEvents = events.absensi.length + events.plotting.length;
-
-            const indicatorsContainer = document.createElement('div');
-            indicatorsContainer.className = 'flex flex-wrap gap-1 mt-1 w-full';
-
-            if (events.plotting.length > 0) {
-                const dot = document.createElement('span');
-                dot.className = 'inline-block w-2 h-2 rounded-full bg-blue-500';
-                dot.title = `${events.plotting.length} Plotting Aktif`;
-                indicatorsContainer.appendChild(dot);
-            }
-
-            if (events.absensi.length > 0) {
-                events.absensi.forEach(ab => {
-                    const dot = document.createElement('span');
-                    let colorClass = 'bg-amber-500';
-                    if (ab.status_verifikasi === 'disetujui') colorClass = 'bg-emerald-500';
-                    if (ab.status_verifikasi === 'ditolak') colorClass = 'bg-red-500';
-                    dot.className = `inline-block w-2 h-2 rounded-full ${colorClass}`;
-                    dot.title = `Absensi: ${ab.status_verifikasi}`;
-                    indicatorsContainer.appendChild(dot);
-                });
-            }
-
-            // Teks ringkas jika di layar tablet/desktop
-            if (totalEvents > 0) {
-                const badge = document.createElement('span');
-                badge.className = 'hidden sm:block text-[9px] font-semibold text-slate-500 truncate mt-0.5';
-                badge.textContent = `${totalEvents} tugas`;
-                indicatorsContainer.appendChild(badge);
-            }
-
-            cell.appendChild(indicatorsContainer);
-
-            // Handler Klik Tanggal
-            cell.addEventListener('click', () => {
-                selectedDateStr = dateStr;
-                renderCalendar();
-            });
-
-            return cell;
-        }
-
-        function renderSelectedDateDetails() {
+        // Render Panel Samping Kanan (Tugas Hari Terpilih)
+        function renderSelectedDateTasks() {
             const parts = selectedDateStr.split('-');
-            const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
             dateTitleEl.textContent = formatIndonesianDate(d);
+
+            // Tombol pintas "Hari Ini" jika melihat tanggal lain
+            if (selectedDateStr !== todayKey) {
+                quickTodayBtn.classList.remove('hidden');
+            } else {
+                quickTodayBtn.classList.add('hidden');
+            }
 
             const events = getEventsForDate(selectedDateStr);
             const totalCount = events.absensi.length + events.plotting.length;
-            countBadgeEl.textContent = `${totalCount} Aktivitas`;
+            countBadgeEl.textContent = `${totalCount} Tugas`;
 
-            eventsListEl.innerHTML = '';
+            tasksListEl.innerHTML = '';
 
             if (totalCount === 0) {
-                eventsListEl.innerHTML = `
-                    <div class="text-center py-8 text-slate-400">
-                        <svg class="w-10 h-10 mx-auto text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                        </svg>
-                        <p class="text-xs font-semibold text-slate-600">Tidak ada jadwal pada tanggal ini</p>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Belum ada plotting aktif atau absensi praktikum yang tercatat.</p>
+                tasksListEl.innerHTML = `
+                    <div class="text-center py-12 text-slate-400">
+                        <div class="w-12 h-12 mx-auto mb-2.5 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <p class="text-xs font-bold text-slate-700">Tidak ada jadwal pada tanggal ini</p>
+                        <p class="text-[11px] text-slate-400 mt-1 max-w-[220px] mx-auto">Klik tanggal lain pada kalender untuk melihat riwayat absensi atau plotting aktif.</p>
                     </div>
                 `;
                 return;
             }
 
-            // Render Plotting Aktif
-            if (events.plotting.length > 0) {
-                events.plotting.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'p-3 bg-white border border-blue-200/90 rounded-xl shadow-2xs';
-                    card.innerHTML = `
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-blue-50 text-[#1867c0] border border-blue-200">
-                                Plotting Aktif
-                            </span>
-                        </div>
-                        <h5 class="text-xs font-bold text-slate-900">${escapeHtml(p.nama_matkul || 'Mata Kuliah')}</h5>
-                        <p class="text-[11px] text-slate-600 mt-1 flex items-center gap-1">
-                            <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                            <span>Asdos: <strong>${escapeHtml(p.nama_asdos || '—')}</strong></span>
-                        </p>
-                        <p class="text-[10px] text-slate-500 mt-0.5">
-                            Dosen: ${escapeHtml(p.nama_dosen || '—')} &bull; Periode: ${escapeHtml(p.periode_mulai || '')} s/d ${escapeHtml(p.periode_selesai || '')}
-                        </p>
-                    `;
-                    eventsListEl.appendChild(card);
-                });
-            }
-
-            // Render Riwayat Absensi
+            // 1. Render Riwayat / Sesi Absensi Praktikum
             if (events.absensi.length > 0) {
+                const sectionTitle = document.createElement('div');
+                sectionTitle.className = 'text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5';
+                sectionTitle.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Absensi Praktikum (${events.absensi.length})</span>`;
+                tasksListEl.appendChild(sectionTitle);
+
                 events.absensi.forEach(a => {
-                    let statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-amber-50 text-amber-700 border border-amber-200">Pending</span>';
+                    let statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-amber-50 text-amber-700 border border-amber-200">Pending Review</span>';
                     if (a.status_verifikasi === 'disetujui') {
-                        statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-emerald-50 text-emerald-700 border border-emerald-200">Disetujui</span>';
+                        statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">Disetujui</span>';
                     } else if (a.status_verifikasi === 'ditolak') {
-                        statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-red-50 text-red-700 border border-red-200">Ditolak</span>';
+                        statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-red-50 text-red-700 border border-red-200">Ditolak</span>';
                     }
 
                     const card = document.createElement('div');
-                    card.className = 'p-3 bg-white border border-slate-200 rounded-xl shadow-2xs';
+                    card.className = 'p-3.5 bg-white border border-slate-200/90 rounded-xl shadow-2xs hover:shadow-xs transition duration-150';
                     card.innerHTML = `
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[10px] font-bold text-slate-700">Pertemuan Ke-${escapeHtml(String(a.pertemuan_ke || '1'))}</span>
+                        <div class="flex items-center justify-between gap-2 mb-1.5">
+                            <span class="text-[11px] font-bold text-slate-800">Pertemuan Ke-${escapeHtml(String(a.pertemuan_ke || '1'))}</span>
                             ${statusBadge}
                         </div>
-                        <h5 class="text-xs font-bold text-slate-900">${escapeHtml(a.nama_matkul || 'Praktikum Lab')}</h5>
-                        <p class="text-[11px] text-slate-600 mt-0.5">
-                            Asdos: <strong>${escapeHtml(a.nama_asdos || '—')}</strong>
-                            ${a.jam_mulai ? `&bull; <span class="text-slate-500 font-mono text-[10px]">${a.jam_mulai} - ${a.jam_selesai || ''}</span>` : ''}
-                        </p>
-                        ${a.deskripsi_tugas ? `<p class="text-[11px] text-slate-500 mt-1 italic line-clamp-2">"${escapeHtml(a.deskripsi_tugas)}"</p>` : ''}
+                        <h5 class="text-xs font-bold text-slate-900 leading-snug">${escapeHtml(a.nama_matkul || 'Praktikum Lab')}</h5>
+                        
+                        <div class="mt-2.5 pt-2 border-t border-slate-100 text-[11px] space-y-1.5 text-slate-600">
+                            <div class="flex items-center justify-between">
+                                <span class="text-slate-500">Asdos: <strong class="text-slate-800 font-semibold">${escapeHtml(a.nama_asdos || '—')}</strong></span>
+                                ${a.jam_mulai ? `<span class="font-mono text-[10px] text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">${a.jam_mulai}</span>` : ''}
+                            </div>
+                            <div class="flex items-center justify-between text-[10px] text-slate-500">
+                                <span>Dosen: <span class="text-slate-700 font-medium">${escapeHtml(a.nama_dosen || '—')}</span></span>
+                            </div>
+                            ${a.deskripsi_tugas ? `
+                                <div class="p-2 bg-slate-50 rounded-lg border border-slate-100 text-[10px] text-slate-600 italic">
+                                    "${escapeHtml(a.deskripsi_tugas)}"
+                                </div>
+                            ` : ''}
+                        </div>
                     `;
-                    eventsListEl.appendChild(card);
+                    tasksListEl.appendChild(card);
+                });
+            }
+
+            // 2. Render Plotting Penugasan Aktif
+            if (events.plotting.length > 0) {
+                const sectionTitle = document.createElement('div');
+                sectionTitle.className = 'text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-3 mb-1 flex items-center gap-1.5';
+                sectionTitle.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-[#1867c0]"></span><span>Plotting Aktif (${events.plotting.length})</span>`;
+                tasksListEl.appendChild(sectionTitle);
+
+                events.plotting.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'p-3.5 bg-white border border-blue-200/80 bg-blue-50/10 rounded-xl shadow-2xs hover:shadow-xs transition duration-150';
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-blue-50 text-[#1867c0] border border-blue-200">
+                                Plotting Aktif
+                            </span>
+                            <span class="text-[10px] font-mono text-slate-400">${escapeHtml(p.periode_mulai || '')} s/d ${escapeHtml(p.periode_selesai || '')}</span>
+                        </div>
+                        <h5 class="text-xs font-bold text-slate-900 leading-snug">${escapeHtml(p.nama_matkul || 'Mata Kuliah')}</h5>
+                        <div class="mt-2.5 pt-2 border-t border-blue-100/60 text-[11px] space-y-1 text-slate-600">
+                            <p class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                <span>Asdos: <strong class="text-slate-800 font-semibold">${escapeHtml(p.nama_asdos || '—')}</strong></span>
+                            </p>
+                            <p class="text-[10px] text-slate-500">
+                                Dosen Pengampu: <span class="font-medium text-slate-700">${escapeHtml(p.nama_dosen || '—')}</span>
+                            </p>
+                        </div>
+                    `;
+                    tasksListEl.appendChild(card);
                 });
             }
         }
 
+        // Format SEMUA data ke standar FullCalendar Event Object (Solid Colors & Text Putih Jelas)
+        function buildEvents() {
+            const events = [];
+
+            // 1. Absensi Praktikum (Event Utama pada Kalender Harian)
+            absensiList.forEach(a => {
+                let statusClass = 'fc-event-pending';
+                let solidBg = '#d97706'; // Amber
+                if (a.status_verifikasi === 'disetujui') {
+                    statusClass = 'fc-event-disetujui';
+                    solidBg = '#059669'; // Emerald
+                } else if (a.status_verifikasi === 'ditolak') {
+                    statusClass = 'fc-event-ditolak';
+                    solidBg = '#dc2626'; // Red
+                }
+
+                events.push({
+                    id: 'abs-' + a.id_absensi,
+                    title: `Pert. ${a.pertemuan_ke || '1'}: ${a.nama_matkul}`,
+                    start: a.tanggal,
+                    allDay: true,
+                    backgroundColor: solidBg,
+                    borderColor: solidBg,
+                    textColor: '#ffffff',
+                    classNames: [statusClass],
+                    extendedProps: {
+                        type: 'absensi',
+                        category: a.status_verifikasi,
+                        data: a
+                    }
+                });
+            });
+
+            // 2. Plotting Aktif (Solid Royal Blue)
+            plottingList.forEach(p => {
+                let endDate = p.periode_selesai;
+                if (endDate && endDate.length === 10) {
+                    const d = new Date(endDate);
+                    d.setDate(d.getDate() + 1);
+                    const y = d.getFullYear();
+                    const m = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    endDate = `${y}-${m}-${day}`;
+                }
+
+                events.push({
+                    id: 'plot-' + p.id_plotting,
+                    title: `Plot: ${p.nama_matkul} (${p.nama_asdos})`,
+                    start: p.periode_mulai,
+                    end: endDate,
+                    allDay: true,
+                    backgroundColor: '#1867c0',
+                    borderColor: '#1867c0',
+                    textColor: '#ffffff',
+                    classNames: ['fc-event-plotting'],
+                    extendedProps: {
+                        type: 'plotting',
+                        category: 'plotting',
+                        data: p
+                    }
+                });
+            });
+
+            return events;
+        }
+
+        const allCalendarEvents = buildEvents();
+
+        // Highlight sel tanggal yang sedang dipilih
+        function highlightCalendarDay(dateStr) {
+            document.querySelectorAll('.fc-day-selected-custom').forEach(el => {
+                el.classList.remove('fc-day-selected-custom');
+            });
+            const cell = document.querySelector(`.fc-daygrid-day[data-date="${dateStr}"]`);
+            if (cell) {
+                cell.classList.add('fc-day-selected-custom');
+            }
+        }
+
+        // Inisialisasi FullCalendar
+        const calendarEl = document.getElementById('fullcalendar-container');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'id',
+            firstDay: 1, // Mulai dari Senin
+            dayMaxEvents: 2,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,listMonth'
+            },
+            buttonText: {
+                today: 'Hari Ini',
+                month: 'Bulan',
+                week: 'Minggu',
+                list: 'Agenda'
+            },
+            events: function(fetchInfo, successCallback, failureCallback) {
+                if (currentFilter === 'all') {
+                    successCallback(allCalendarEvents);
+                } else {
+                    const filtered = allCalendarEvents.filter(ev => ev.extendedProps.category === currentFilter);
+                    successCallback(filtered);
+                }
+            },
+            dateClick: function(info) {
+                selectedDateStr = info.dateStr;
+                highlightCalendarDay(info.dateStr);
+                renderSelectedDateTasks();
+            },
+            eventClick: function(info) {
+                info.jsEvent.preventDefault();
+                const eventDate = info.event.startStr ? info.event.startStr.substring(0, 10) : selectedDateStr;
+                if (eventDate) {
+                    selectedDateStr = eventDate;
+                    highlightCalendarDay(eventDate);
+                    renderSelectedDateTasks();
+                }
+            },
+            datesSet: function() {
+                setTimeout(() => {
+                    highlightCalendarDay(selectedDateStr);
+                }, 40);
+            }
+        });
+
+        calendar.render();
+
+        // Pilih Hari Ini
+        window.selectToday = function() {
+            selectedDateStr = todayKey;
+            calendar.today();
+            highlightCalendarDay(todayKey);
+            renderSelectedDateTasks();
+        };
+
+        // Inisialisasi awal render tugas hari ini
+        renderSelectedDateTasks();
+        setTimeout(() => {
+            highlightCalendarDay(selectedDateStr);
+        }, 100);
+
+        // Global Filter Handler
+        window.filterCalendar = function(category) {
+            currentFilter = category;
+
+            // Update UI Button Styles
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = 'filter-btn px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer';
+            });
+            const activeBtn = document.getElementById('btn-filter-' + category);
+            if (activeBtn) {
+                activeBtn.className = 'filter-btn px-3 py-1.5 rounded-lg bg-[#1867c0] text-white shadow-2xs transition cursor-pointer';
+            }
+
+            calendar.refetchEvents();
+            renderSelectedDateTasks();
+        };
+
         function escapeHtml(str) {
             if (!str) return '';
-            return str
+            return String(str)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
         }
-
-        // Event Listeners
-        prevBtn.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            renderCalendar();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            renderCalendar();
-        });
-
-        todayBtn.addEventListener('click', () => {
-            currentDate = new Date();
-            selectedDateStr = formatDateKey(new Date());
-            renderCalendar();
-        });
-
-        // Inisialisasi awal
-        renderCalendar();
     });
     </script>
 
@@ -535,6 +861,7 @@ $calendarPlotting = $calendarPlotting ?? [];
             &copy; <?= date('Y') ?> Laboratorium Sistem Informasi. All rights reserved.
         </div>
     </footer>
+    </div>
 
     <!-- Floating Bottom Navbar (Khusus Mobile) -->
     <?php require_once __DIR__ . '/../Templates/superadmin_bottom_nav.php'; ?>

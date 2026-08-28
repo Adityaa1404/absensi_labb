@@ -191,7 +191,10 @@ class ErrorHandler
                     <p class='text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed'>{$desc}</p>
                 </div>
                 <div class='pt-2 flex flex-col sm:flex-row gap-2 justify-center'>
-                    <a href='{$baseUrl}/login' class='px-4 py-2 bg-[#1867c0] hover:bg-[#14529d] text-white text-xs font-semibold rounded-lg transition shadow-xs'>
+                    <a href='{$baseUrl}/logout' class='px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition shadow-xs'>
+                        Keluar / Ganti Akun
+                    </a>
+                    <a href='{$baseUrl}/' class='px-4 py-2 bg-[#1867c0] hover:bg-[#14529d] text-white text-xs font-semibold rounded-lg transition shadow-xs'>
                         &larr; Ke Halaman Utama
                     </a>
                     <button onclick='window.history.back()' class='px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition'>

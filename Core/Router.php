@@ -2,9 +2,6 @@
 
 namespace Core;
 
-require_once __DIR__ . '/Guard.php';
-require_once __DIR__ . '/ErrorHandler.php';
-
 class Router
 {
     private array $routes = [];

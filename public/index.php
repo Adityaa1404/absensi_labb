@@ -4,10 +4,14 @@ date_default_timezone_set('Asia/Jakarta');
 
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../Core/Autoload.php';
+require_once __DIR__ . '/../App/Controllers/AsdosController.php';
+
+use App\Controllers\AsdosController;
 
 // Inisialisasi Global Error & Exception Handler
 Core\ErrorHandler::register();
 
+$asdosController = new AsdosController();
 $router = new Core\Router();
 
 // ==========================================
@@ -21,7 +25,16 @@ $router->get('/logout', 'AuthController', 'logout');
 // ==========================================
 // 2. RUTE ASDOS & DOSEN (PLACEHOLDER)
 // ==========================================
-$router->get('/asdos/dashboard', 'AuthController', 'asdosDashboard', ['auth', 'asdos']);
+
+$router->get('/asdos/dashboard', 'asdosController', 'dashboard', ['auth', 'asdos']);
+
+$router->get('/asdos/matkul', 'asdosController', 'matkul');
+$router->get('/asdos/absensi', 'asdosController', 'absensi');
+$router->post('/asdos/absensi', 'asdosController', 'storeAbsensi');
+$router->post('asdos/absensi/create', 'asdosController', 'createAbsensi');
+$router->get('/asdos/history', 'asdosController', 'history');
+
+
 $router->get('/dosen/dashboard', 'AuthController', 'dosenDashboard', ['auth', 'dosen']);
 
 // ==========================================

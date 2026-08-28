@@ -212,4 +212,66 @@ class Plotting
         }
         return $relations;
     }
+
+    // =========================================================================
+    // MODUL: KHUSUS ASISTEN DOSEN (F4 - PRD)
+    // =========================================================================
+
+    /**
+     * Ambil plotting AKTIF milik seorang asdos beserta deskripsi matkul & dosen pembimbing.
+     * Dipakai untuk dropdown pilihan matkul di form absensi (hanya matkul yang boleh diisi - BR1).
+     */
+    public static function getActiveForAsdos(int $asdosId): array
+    {
+        self::syncExpiredStatus();
+
+        $sql = "
+            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul,
+                   d.nama as nama_dosen, d.email as email_dosen
+            FROM plotting p
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users d ON m.dosen_id = d.id_user
+            WHERE p.asdos_id = :asdos_id AND p.is_active = 1
+            ORDER BY m.nama_matkul ASC
+        ";
+        return Database::fetchAll($sql, ['asdos_id' => $asdosId]);
+    }
+
+    /**
+     * Ambil SELURUH plotting (aktif & riwayat/nonaktif) milik seorang asdos.
+     * Dipakai di halaman "Matkul Saya" agar riwayat penugasan lama tetap terlihat (F3 - audit trail).
+     */
+    public static function getAllForAsdos(int $asdosId): array
+    {
+        self::syncExpiredStatus();
+
+        $sql = "
+            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul,
+                   d.nama as nama_dosen, d.email as email_dosen
+            FROM plotting p
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users d ON m.dosen_id = d.id_user
+            WHERE p.asdos_id = :asdos_id
+            ORDER BY p.is_active DESC, m.nama_matkul ASC
+        ";
+        return Database::fetchAll($sql, ['asdos_id' => $asdosId]);
+    }
+
+    /**
+     * Validasi kepemilikan: cari 1 plotting AKTIF berdasarkan id_plotting DAN pastikan
+     * memang milik asdos yang sedang login (BR1 - cegah asdos mengisi absensi di matkul orang lain).
+     */
+    public static function findActiveForAsdos(int $plottingId, int $asdosId): ?array
+    {
+        self::syncExpiredStatus();
+
+        $sql = "
+            SELECT p.*, m.nama_matkul
+            FROM plotting p
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            WHERE p.id_plotting = :id AND p.asdos_id = :asdos_id AND p.is_active = 1
+            LIMIT 1
+        ";
+        return Database::fetch($sql, ['id' => $plottingId, 'asdos_id' => $asdosId]);
+    }
 }

@@ -98,3 +98,120 @@ Stack trace:
 #4 C:\laragon\www\absensi_labb\public\index.php(49): Core\Router->dispatch()
 #5 {main}
 --------------------------------------------------------------------------------
+[2026-08-28 19:09:57] [POST /absensi_labb/login] ErrorException: Undefined variable $asdosController in C:\xampp\htdocs\absensi_labb\public\index.php:27
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\public\index.php(27): Core\ErrorHandler::handleError(2, 'Undefined varia...', 'C:\\xampp\\htdocs...', 27)
+#1 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:11:09] [POST /absensi_labb/login] Error: Class "asdosController" not found in C:\xampp\htdocs\absensi_labb\public\index.php:25
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:11:42] [POST /absensi_labb/login] Error: Class "asdosController" not found in C:\xampp\htdocs\absensi_labb\public\index.php:25
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:11:47] [POST /absensi_labb/login] Error: Class "asdosController" not found in C:\xampp\htdocs\absensi_labb\public\index.php:25
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:12:08] [POST /absensi_labb/login] Error: Class "asdosController" not found in C:\xampp\htdocs\absensi_labb\public\index.php:12
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:13:59] [POST /absensi_labb/login] Error: Class "AsdosController" not found in C:\xampp\htdocs\absensi_labb\public\index.php:12
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:14:06] [POST /absensi_labb/login] Error: Class "AsdosController" not found in C:\xampp\htdocs\absensi_labb\public\index.php:12
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:14:10] [GET /absensi_labb/] Error: Class "AsdosController" not found in C:\xampp\htdocs\absensi_labb\public\index.php:12
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:17:35] [GET /absensi_labb/] Error: Class "app" not found in C:\xampp\htdocs\absensi_labb\public\index.php:12
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:17:36] [GET /absensi_labb/] Error: Class "app" not found in C:\xampp\htdocs\absensi_labb\public\index.php:12
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:18:09] [GET /absensi_labb/] Error: Class "App" not found in C:\xampp\htdocs\absensi_labb\public\index.php:12
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:19:11] [GET /absensi_labb/] Error: Class "app" not found in C:\xampp\htdocs\absensi_labb\public\index.php:12
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:23:30] [GET /absensi_labb/] Error: Class "App" not found in C:\xampp\htdocs\absensi_labb\public\index.php:14
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:23:31] [GET /absensi_labb/] Error: Class "App" not found in C:\xampp\htdocs\absensi_labb\public\index.php:14
+Stack trace:
+#0 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:23:46] [GET /absensi_labb/] TypeError: Core\Router::get(): Argument #2 ($controller) must be of type string, array given, called in C:\xampp\htdocs\absensi_labb\public\index.php on line 31 in C:\xampp\htdocs\absensi_labb\Core\Router.php:12
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\public\index.php(31): Core\Router->get('/asdos/matkul', Array)
+#1 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:52:09] [GET /absensi_labb/] TypeError: Core\Router::get(): Argument #2 ($controller) must be of type string, App\Controllers\AsdosController given, called in C:\xampp\htdocs\absensi_labb\public\index.php on line 31 in C:\xampp\htdocs\absensi_labb\Core\Router.php:12
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\public\index.php(31): Core\Router->get('/asdos/matkul', Object(App\Controllers\AsdosController), 'matkul')
+#1 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 19:55:45] [GET /absensi_labb/asdos/dashboard] RuntimeException: Method [dashboard] tidak ditemukan pada Controller [AuthController]. in C:\xampp\htdocs\absensi_labb\Core\Router.php:86
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\public\index.php(67): Core\Router->dispatch()
+#1 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 20:09:44] [GET /absensi_labb/asdos/dashboard] RuntimeException: Method [asdosDashboard] tidak ditemukan pada Controller [AuthController]. in C:\xampp\htdocs\absensi_labb\Core\Router.php:86
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\public\index.php(67): Core\Router->dispatch()
+#1 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 20:13:31] [GET /absensi_labb/asdos/dashboard] ErrorException: require_once(C:\xampp\htdocs\absensi_labb\app\Views\Asdos/../Templates/asdos_bottom_nav.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\absensi_labb\app\Views\Asdos\dashboard.php:225
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\app\Views\Asdos\dashboard.php(225): Core\ErrorHandler::handleError(2, 'require_once(C:...', 'C:\\xampp\\htdocs...', 225)
+#1 C:\xampp\htdocs\absensi_labb\app\Views\Asdos\dashboard.php(225): require_once()
+#2 C:\xampp\htdocs\absensi_labb\app\Controllers\AsdosController.php(31): require_once('C:\\xampp\\htdocs...')
+#3 [internal function]: App\Controllers\AsdosController->dashboard()
+#4 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\absensi_labb\public\index.php(67): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 20:16:09] [GET /absensi_labb/asdos/matkul] ErrorException: require_once(C:\xampp\htdocs\absensi_labb\app\Views\Asdos/../Templates/asdos_bottom.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\absensi_labb\app\Views\Asdos\matkul.php:236
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\app\Views\Asdos\matkul.php(236): Core\ErrorHandler::handleError(2, 'require_once(C:...', 'C:\\xampp\\htdocs...', 236)
+#1 C:\xampp\htdocs\absensi_labb\app\Views\Asdos\matkul.php(236): require_once()
+#2 C:\xampp\htdocs\absensi_labb\app\Controllers\AsdosController.php(46): require_once('C:\\xampp\\htdocs...')
+#3 [internal function]: App\Controllers\AsdosController->matkul()
+#4 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\absensi_labb\public\index.php(67): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 20:16:41] [GET /absensi_labb/asdos/absensi] ErrorException: require_once(C:\xampp\htdocs\absensi_labb\app\Views\Asdos/../Templates/asdos_bottom.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\absensi_labb\app\Views\Asdos\absensi.php:726
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\app\Views\Asdos\absensi.php(726): Core\ErrorHandler::handleError(2, 'require_once(C:...', 'C:\\xampp\\htdocs...', 726)
+#1 C:\xampp\htdocs\absensi_labb\app\Views\Asdos\absensi.php(726): require_once()
+#2 C:\xampp\htdocs\absensi_labb\app\Controllers\AsdosController.php(72): require_once('C:\\xampp\\htdocs...')
+#3 [internal function]: App\Controllers\AsdosController->absensi()
+#4 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\absensi_labb\public\index.php(67): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------
+[2026-08-28 20:17:00] [GET /absensi_labb/asdos/history] ErrorException: require_once(C:\xampp\htdocs\absensi_labb\app\Views\Asdos/../Templates/asdos_bottom.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\absensi_labb\app\Views\Asdos\history.php:522
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\app\Views\Asdos\history.php(522): Core\ErrorHandler::handleError(2, 'require_once(C:...', 'C:\\xampp\\htdocs...', 522)
+#1 C:\xampp\htdocs\absensi_labb\app\Views\Asdos\history.php(522): require_once()
+#2 C:\xampp\htdocs\absensi_labb\app\Controllers\AsdosController.php(280): require_once('C:\\xampp\\htdocs...')
+#3 [internal function]: App\Controllers\AsdosController->history()
+#4 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\absensi_labb\public\index.php(67): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------

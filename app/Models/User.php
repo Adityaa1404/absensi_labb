@@ -25,8 +25,12 @@ class User
         }
 
         if (!empty($filters['search'])) {
-            $sql .= " AND (nama LIKE :search OR identity_number LIKE :search OR email LIKE :search OR no_hp LIKE :search)";
-            $params['search'] = '%' . $filters['search'] . '%';
+            $sql .= " AND (nama LIKE :s1 OR identity_number LIKE :s2 OR email LIKE :s3 OR no_hp LIKE :s4)";
+            $searchTerm = '%' . $filters['search'] . '%';
+            $params['s1'] = $searchTerm;
+            $params['s2'] = $searchTerm;
+            $params['s3'] = $searchTerm;
+            $params['s4'] = $searchTerm;
         }
 
         $sql .= " ORDER BY CASE role WHEN 'super_admin' THEN 1 WHEN 'dosen' THEN 2 WHEN 'asdos' THEN 3 ELSE 4 END, nama ASC";

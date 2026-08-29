@@ -262,8 +262,13 @@ $filters     = $filters ?? [
                                     <td class="px-3 py-3 text-center whitespace-nowrap">
                                         <div class="inline-flex items-center justify-center gap-1.5">
                                             <?php if (!empty($a['foto_kegiatan'])): ?>
+                                                <?php 
+                                                $kegiatanSrc = (str_starts_with($a['foto_kegiatan'], 'http') || str_starts_with($a['foto_kegiatan'], '/')) 
+                                                    ? $a['foto_kegiatan'] 
+                                                    : \Core\Guard::url('/uploads/absensi/' . $a['foto_kegiatan']); 
+                                                ?>
                                                 <button type="button"
-                                                    onclick="previewImage('<?= htmlspecialchars($a['foto_kegiatan'], ENT_QUOTES, 'UTF-8') ?>', 'Bukti Praktikum — <?= htmlspecialchars(addslashes($a['nama_asdos']), ENT_QUOTES, 'UTF-8') ?>')"
+                                                    onclick="previewImage('<?= htmlspecialchars($kegiatanSrc, ENT_QUOTES, 'UTF-8') ?>', 'Bukti Praktikum — <?= htmlspecialchars(addslashes($a['nama_asdos']), ENT_QUOTES, 'UTF-8') ?>')"
                                                     title="Lihat Foto Kegiatan Praktikum"
                                                     class="px-2 py-1 rounded-md bg-slate-100 hover:bg-blue-50 hover:text-[#1867c0] border border-slate-300 text-[11px] font-semibold transition flex items-center gap-1 cursor-pointer">
                                                     <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -276,8 +281,13 @@ $filters     = $filters ?? [
                                             <?php endif; ?>
 
                                             <?php if (!empty($a['foto_selfie'])): ?>
+                                                <?php 
+                                                $selfieSrc = (str_starts_with($a['foto_selfie'], 'http') || str_starts_with($a['foto_selfie'], '/')) 
+                                                    ? $a['foto_selfie'] 
+                                                    : \Core\Guard::url('/uploads/absensi/' . $a['foto_selfie']); 
+                                                ?>
                                                 <button type="button"
-                                                    onclick="previewImage('<?= htmlspecialchars($a['foto_selfie'], ENT_QUOTES, 'UTF-8') ?>', 'Foto Selfie — <?= htmlspecialchars(addslashes($a['nama_asdos']), ENT_QUOTES, 'UTF-8') ?>')"
+                                                    onclick="previewImage('<?= htmlspecialchars($selfieSrc, ENT_QUOTES, 'UTF-8') ?>', 'Foto Selfie — <?= htmlspecialchars(addslashes($a['nama_asdos']), ENT_QUOTES, 'UTF-8') ?>')"
                                                     title="Lihat Foto Selfie Kehadiran"
                                                     class="px-2 py-1 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-300 text-[11px] font-semibold transition flex items-center gap-1 cursor-pointer">
                                                     <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -645,7 +655,13 @@ $filters     = $filters ?? [
         // 3. Full Image Preview Modal Logic
         // ---------------------------------------------------------------------
         function previewImage(src, title) {
-            document.getElementById('imagePreviewSrc').src = src;
+            if (!src) return;
+            const finalSrc = (src.startsWith('http') || src.startsWith('/')) 
+                ? src 
+                : `${BASE_URL}/uploads/absensi/${src}`;
+                
+            const imgEl = document.getElementById('imagePreviewSrc');
+            imgEl.src = finalSrc;
             document.getElementById('imagePreviewTitle').textContent = title || 'Pratinjau Foto';
             document.getElementById('imagePreviewModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';

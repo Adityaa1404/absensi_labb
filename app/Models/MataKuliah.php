@@ -21,8 +21,10 @@ class MataKuliah
         $params = [];
 
         if (!empty($filters['search'])) {
-            $sql .= " AND (m.nama_matkul LIKE :search OR u.nama LIKE :search)";
-            $params['search'] = '%' . $filters['search'] . '%';
+            $sql .= " AND (m.nama_matkul LIKE :s1 OR u.nama LIKE :s2)";
+            $searchTerm = '%' . $filters['search'] . '%';
+            $params['s1'] = $searchTerm;
+            $params['s2'] = $searchTerm;
         }
 
         if (!empty($filters['dosen_id'])) {

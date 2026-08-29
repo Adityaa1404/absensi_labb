@@ -75,13 +75,18 @@ class Absensi
         // Filter Pencarian Teks (Search)
         if (!empty($filters['search'])) {
             $sql .= " AND (
-                u_asdos.nama LIKE :search 
-                OR u_asdos.identity_number LIKE :search 
-                OR m.nama_matkul LIKE :search 
-                OR u_dosen.nama LIKE :search 
-                OR a.deskripsi_tugas LIKE :search
+                u_asdos.nama LIKE :s1 
+                OR u_asdos.identity_number LIKE :s2 
+                OR m.nama_matkul LIKE :s3 
+                OR u_dosen.nama LIKE :s4 
+                OR a.deskripsi_tugas LIKE :s5
             )";
-            $params['search'] = '%' . $filters['search'] . '%';
+            $searchTerm = '%' . $filters['search'] . '%';
+            $params['s1'] = $searchTerm;
+            $params['s2'] = $searchTerm;
+            $params['s3'] = $searchTerm;
+            $params['s4'] = $searchTerm;
+            $params['s5'] = $searchTerm;
         }
 
         $sql .= " ORDER BY a.tanggal DESC, a.created_at DESC";

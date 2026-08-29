@@ -49,8 +49,11 @@ class Plotting
         }
 
         if (!empty($filters['search'])) {
-            $sql .= " AND (m.nama_matkul LIKE :search OR u.nama LIKE :search OR u.identity_number LIKE :search)";
-            $params['search'] = '%' . $filters['search'] . '%';
+            $sql .= " AND (m.nama_matkul LIKE :s1 OR u.nama LIKE :s2 OR u.identity_number LIKE :s3)";
+            $searchTerm = '%' . $filters['search'] . '%';
+            $params['s1'] = $searchTerm;
+            $params['s2'] = $searchTerm;
+            $params['s3'] = $searchTerm;
         }
 
         $sql .= " ORDER BY p.is_active DESC, p.created_at DESC";

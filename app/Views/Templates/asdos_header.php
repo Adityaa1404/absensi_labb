@@ -37,6 +37,51 @@ $desktopNavItems = [
 ?>
 
 <!-- ========================================================================= -->
+<!-- MOBILE TOP APP BAR / HEADER (KHUSUS MOBILE md:hidden)                      -->
+<!-- ========================================================================= -->
+<header class="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs px-4 py-2.5 flex items-center justify-between select-none">
+    <!-- Brand -->
+    <a href="<?= \Core\Guard::url('/asdos/dashboard') ?>" class="flex items-center gap-2.5 group">
+        <div class="w-8 h-8 rounded-lg bg-[#1867c0] flex items-center justify-center text-white font-bold text-xs shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
+            LAB
+        </div>
+        <div>
+            <div class="flex items-center gap-1.5">
+                <span class="text-xs font-bold text-slate-900 leading-tight">Absensi Lab</span>
+                <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider bg-blue-50 text-[#1867c0] border border-blue-200 rounded">
+                    ASDOS
+                </span>
+            </div>
+            <p class="text-[10px] text-slate-400 leading-tight">Lab Sistem Informasi</p>
+        </div>
+    </a>
+
+    <!-- User & Logout Action -->
+    <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5 bg-slate-100/90 px-2.5 py-1 rounded-xl border border-slate-200/80 shadow-2xs">
+            <div class="w-5 h-5 rounded-full bg-blue-100 text-[#1867c0] flex items-center justify-center text-[10px] font-bold shrink-0">
+                <?= strtoupper(substr($currentUser['nama'] ?? 'A', 0, 1)) ?>
+            </div>
+            <span class="text-[11px] font-bold text-slate-700 max-w-[85px] truncate">
+                <?= htmlspecialchars(explode(' ', trim($currentUser['nama'] ?? 'Asdos'))[0], ENT_QUOTES, 'UTF-8') ?>
+            </span>
+            <?php if (!$isActive): ?>
+                <span class="px-1 py-0.2 text-[8px] font-bold uppercase bg-slate-200 text-slate-600 rounded">Off</span>
+            <?php endif; ?>
+        </div>
+
+        <a href="<?= \Core\Guard::url('/logout') ?>" 
+           title="Keluar dari sistem"
+           aria-label="Keluar dari sistem"
+           class="p-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 transition duration-150 flex items-center justify-center cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+            </svg>
+        </a>
+    </div>
+</header>
+
+<!-- ========================================================================= -->
 <!-- DESKTOP SIDEBAR NAVIGATION (FIXED LEFT BAR KHUSUS DESKTOP)                -->
 <!-- ========================================================================= -->
 <aside class="hidden md:flex fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex-col justify-between shadow-xs select-none">

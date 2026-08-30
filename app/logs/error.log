@@ -215,3 +215,45 @@ Stack trace:
 #5 C:\xampp\htdocs\absensi_labb\public\index.php(67): Core\Router->dispatch()
 #6 {main}
 --------------------------------------------------------------------------------
+[2026-08-29 16:23:20] [GET /absensi_labb/superadmin/plotting] RuntimeException: Gagal menghubungkan ke Database MySQL: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in C:\laragon\www\absensi_labb\Core\Database.php:48
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(61): Core\Database::getConnection()
+#1 C:\laragon\www\absensi_labb\app\Models\Plotting.php(14): Core\Database::query('UPDATE plotting...')
+#2 C:\laragon\www\absensi_labb\app\Models\Plotting.php(119): App\Models\Plotting::syncExpiredStatus()
+#3 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(516): App\Models\Plotting::getMetrics()
+#4 [internal function]: App\Controllers\SuperAdminController->plotting()
+#5 C:\laragon\www\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#6 C:\laragon\www\absensi_labb\public\index.php(68): Core\Router->dispatch()
+#7 {main}
+--------------------------------------------------------------------------------
+[2026-08-29 16:23:35] [GET /absensi_labb/superadmin/matkul] RuntimeException: Gagal menghubungkan ke Database MySQL: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in C:\laragon\www\absensi_labb\Core\Database.php:48
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(61): Core\Database::getConnection()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(74): Core\Database::query('SELECT COUNT(*)...', Array)
+#2 C:\laragon\www\absensi_labb\app\Models\MataKuliah.php(60): Core\Database::fetch('SELECT COUNT(*)...')
+#3 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(384): App\Models\MataKuliah::getMetrics()
+#4 [internal function]: App\Controllers\SuperAdminController->matkul()
+#5 C:\laragon\www\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#6 C:\laragon\www\absensi_labb\public\index.php(68): Core\Router->dispatch()
+#7 {main}
+--------------------------------------------------------------------------------
+[2026-08-29 16:23:39] [GET /absensi_labb/superadmin/dashboard] RuntimeException: Gagal menghubungkan ke Database MySQL: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in C:\laragon\www\absensi_labb\Core\Database.php:48
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(61): Core\Database::getConnection()
+#1 C:\laragon\www\absensi_labb\app\Models\Plotting.php(14): Core\Database::query('UPDATE plotting...')
+#2 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(22): App\Models\Plotting::syncExpiredStatus()
+#3 [internal function]: App\Controllers\SuperAdminController->dashboard()
+#4 C:\laragon\www\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\laragon\www\absensi_labb\public\index.php(68): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------
+[2026-08-29 16:23:46] [GET /absensi_labb/superadmin/dashboard] RuntimeException: Gagal menghubungkan ke Database MySQL: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in C:\laragon\www\absensi_labb\Core\Database.php:48
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(61): Core\Database::getConnection()
+#1 C:\laragon\www\absensi_labb\app\Models\Plotting.php(14): Core\Database::query('UPDATE plotting...')
+#2 C:\laragon\www\absensi_labb\app\Controllers\SuperAdminController.php(22): App\Models\Plotting::syncExpiredStatus()
+#3 [internal function]: App\Controllers\SuperAdminController->dashboard()
+#4 C:\laragon\www\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\laragon\www\absensi_labb\public\index.php(68): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------

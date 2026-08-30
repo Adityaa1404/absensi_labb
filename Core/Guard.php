@@ -253,8 +253,15 @@ class Guard
      */
     public static function url(string $path = ''): string
     {
+        $baseUrl = self::getBaseUrl();
         $cleanPath = '/' . ltrim($path, '/');
-        return self::getBaseUrl() . $cleanPath;
+
+        // Jika path sudah diawali dengan baseUrl, jangan lakukan prepend ganda
+        if ($baseUrl !== '' && (str_starts_with($cleanPath, $baseUrl . '/') || $cleanPath === $baseUrl)) {
+            return $cleanPath;
+        }
+
+        return $baseUrl . $cleanPath;
     }
 
     /**

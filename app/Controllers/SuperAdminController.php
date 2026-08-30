@@ -384,11 +384,31 @@ class SuperAdminController
         $metrics    = MataKuliah::getMetrics();
         $matkulList = MataKuliah::all($filters);
 
+        // Ambil seluruh plotting untuk dikelompokkan per mata kuliah
+        $allPlottings = Plotting::all();
+        $plottingsByMatkul = [];
+        foreach ($allPlottings as $p) {
+            $plottingsByMatkul[$p['matkul_id']][] = $p;
+        }
+
+        foreach ($matkulList as &$m) {
+            $m['plottings'] = $plottingsByMatkul[$m['id_matkul']] ?? [];
+        }
+        unset($m);
+
         // Ambil daftar dosen untuk dropdown pengampu
         $dosenList  = Database::fetchAll("
             SELECT id_user, nama, identity_number, email 
             FROM users 
             WHERE role = 'dosen' AND is_active = 1 
+            ORDER BY nama ASC
+        ");
+
+        // Ambil daftar asdos aktif untuk form plotting baru khusus matkul
+        $asdosList  = Database::fetchAll("
+            SELECT id_user, nama, identity_number, email 
+            FROM users 
+            WHERE role = 'asdos' AND is_active = 1 
             ORDER BY nama ASC
         ");
 
@@ -503,24 +523,7 @@ class SuperAdminController
     public function plotting(): void
     {
         Guard::requireRole('super_admin');
-        $currentUser = Guard::user();
-
-        $filters = [
-            'search'    => trim($_GET['q'] ?? ''),
-            'matkul_id' => $_GET['matkul'] ?? '',
-            'asdos_id'  => $_GET['asdos'] ?? '',
-            'is_active' => $_GET['status'] ?? '',
-        ];
-
-        // Ambil metrik & data plotting
-        $metrics      = Plotting::getMetrics();
-        $plottingList = Plotting::all($filters);
-
-        // Ambil daftar matkul & asdos aktif untuk form modal
-        $matkulList = Database::fetchAll("SELECT id_matkul, nama_matkul FROM mata_kuliah ORDER BY nama_matkul ASC");
-        $asdosList  = Database::fetchAll("SELECT id_user, nama, identity_number, email FROM users WHERE role = 'asdos' AND is_active = 1 ORDER BY nama ASC");
-
-        require_once __DIR__ . '/../Views/SuperAdmin/plotting.php';
+        Guard::redirect('/superadmin/matkul');
     }
 
     /**
@@ -531,6 +534,7 @@ class SuperAdminController
         Guard::requireRole('super_admin');
         Guard::verifyCsrf();
 
+        $redirectTo     = $_POST['redirect_to'] ?? '/superadmin/matkul';
         $matkulId       = (int)($_POST['matkul_id'] ?? 0);
         $asdosId        = (int)($_POST['asdos_id'] ?? 0);
         $periodeMulai   = trim($_POST['periode_mulai'] ?? '');
@@ -553,13 +557,13 @@ class SuperAdminController
 
         if ($validator->fails()) {
             $validator->flashErrors();
-            Guard::redirect('/superadmin/plotting');
+            Guard::redirect($redirectTo);
         }
 
         // Cek apakah kombinasi matkul & asdos sudah pernah diplot
         if (Plotting::exists($matkulId, $asdosId)) {
             Guard::setFlash('error', 'Asisten dosen yang dipilih sudah pernah diplot pada mata kuliah ini.');
-            Guard::redirect('/superadmin/plotting');
+            Guard::redirect($redirectTo);
         }
 
         Plotting::create([
@@ -571,7 +575,7 @@ class SuperAdminController
         ]);
 
         Guard::setFlash('success', 'Penugasan plotting asisten dosen berhasil dibuat.');
-        Guard::redirect('/superadmin/plotting');
+        Guard::redirect($redirectTo);
     }
 
     /**
@@ -582,6 +586,7 @@ class SuperAdminController
         Guard::requireRole('super_admin');
         Guard::verifyCsrf();
 
+        $redirectTo     = $_POST['redirect_to'] ?? '/superadmin/matkul';
         $plottingId     = (int)$id;
         $matkulId       = (int)($_POST['matkul_id'] ?? 0);
         $asdosId        = (int)($_POST['asdos_id'] ?? 0);
@@ -600,12 +605,12 @@ class SuperAdminController
 
         if ($validator->fails()) {
             $validator->flashErrors();
-            Guard::redirect('/superadmin/plotting');
+            Guard::redirect($redirectTo);
         }
 
         if (Plotting::exists($matkulId, $asdosId, $plottingId)) {
             Guard::setFlash('error', 'Kombinasi mata kuliah dan asisten dosen ini sudah ada di penugasan lain.');
-            Guard::redirect('/superadmin/plotting');
+            Guard::redirect($redirectTo);
         }
 
         Plotting::update($plottingId, [
@@ -617,7 +622,7 @@ class SuperAdminController
         ]);
 
         Guard::setFlash('success', 'Data plotting asisten dosen berhasil diperbarui.');
-        Guard::redirect('/superadmin/plotting');
+        Guard::redirect($redirectTo);
     }
 
     /**
@@ -628,12 +633,13 @@ class SuperAdminController
         Guard::requireRole('super_admin');
         Guard::verifyCsrf();
 
+        $redirectTo = $_POST['redirect_to'] ?? $_GET['redirect_to'] ?? '/superadmin/matkul';
         $plottingId = (int)$id;
-        $plotting = Plotting::findById($plottingId);
+        $plotting   = Plotting::findById($plottingId);
 
         if (!$plotting) {
             Guard::setFlash('error', 'Data plotting tidak ditemukan.');
-            Guard::redirect('/superadmin/plotting');
+            Guard::redirect($redirectTo);
         }
 
         Plotting::toggleStatus($plottingId);
@@ -642,7 +648,7 @@ class SuperAdminController
         $statusText = $newStatus === 1 ? 'diaktifkan kembali' : 'dinonaktifkan (selesai)';
 
         Guard::setFlash('success', "Status penugasan asdos [{$plotting['nama_asdos']}] pada [{$plotting['nama_matkul']}] berhasil {$statusText}.");
-        Guard::redirect('/superadmin/plotting');
+        Guard::redirect($redirectTo);
     }
 
     /**
@@ -653,24 +659,25 @@ class SuperAdminController
         Guard::requireRole('super_admin');
         Guard::verifyCsrf();
 
+        $redirectTo = $_POST['redirect_to'] ?? $_GET['redirect_to'] ?? '/superadmin/matkul';
         $plottingId = (int)$id;
-        $plotting = Plotting::findById($plottingId);
+        $plotting   = Plotting::findById($plottingId);
 
         if (!$plotting) {
             Guard::setFlash('error', 'Data plotting tidak ditemukan.');
-            Guard::redirect('/superadmin/plotting');
+            Guard::redirect($redirectTo);
         }
 
         $relations = Plotting::checkRelations($plottingId);
         if (!empty($relations['absensi'])) {
             Guard::setFlash('error', "Plotting tidak dapat dihapus karena sudah memiliki {$relations['absensi']} data absensi praktikum tersimpan. Anda disarankan untuk menonaktifkan status plotting.");
-            Guard::redirect('/superadmin/plotting');
+            Guard::redirect($redirectTo);
         }
 
         Plotting::delete($plottingId);
 
         Guard::setFlash('success', 'Data plotting berhasil dihapus.');
-        Guard::redirect('/superadmin/plotting');
+        Guard::redirect($redirectTo);
     }
 
     // =========================================================================
@@ -696,5 +703,86 @@ class SuperAdminController
         $matkulList = MataKuliah::all();
 
         require_once __DIR__ . '/../Views/SuperAdmin/monitoring.php';
+    }
+
+    /**
+     * Ubah Status Verifikasi Absensi (Hak Akses Super Admin)
+     */
+    public function updateAbsensiStatus(string $id): void
+    {
+        Guard::requireRole('super_admin');
+        Guard::verifyCsrf();
+
+        $absensiId = (int)$id;
+        $absensi   = Absensi::findByIdWithDetails($absensiId);
+
+        if (!$absensi) {
+            Guard::setFlash('error', 'Data absensi tidak ditemukan.');
+            Guard::redirect('/superadmin/monitoring');
+        }
+
+        $status     = trim($_POST['status_verifikasi'] ?? '');
+        $pesanDosen = trim($_POST['pesan_dosen'] ?? '');
+
+        $validator = new Validator($_POST);
+        $validator->rules([
+            'status_verifikasi' => 'required|in:pending,disetujui,ditolak',
+        ], [
+            'status_verifikasi.required' => 'Status verifikasi wajib dipilih.',
+            'status_verifikasi.in'       => 'Pilihan status verifikasi tidak valid.',
+        ]);
+
+        if ($validator->fails()) {
+            $validator->flashErrors();
+            Guard::redirect('/superadmin/monitoring');
+        }
+
+        Absensi::updateStatusVerifikasi($absensiId, $status, $pesanDosen);
+
+        $statusLabel = match ($status) {
+            'disetujui' => 'Disetujui',
+            'ditolak'   => 'Ditolak',
+            default     => 'Menunggu Verifikasi (Pending)'
+        };
+
+        Guard::setFlash('success', "Status verifikasi absensi [#{$absensiId}] ({$absensi['nama_asdos']} - {$absensi['nama_matkul']}) berhasil diubah menjadi: {$statusLabel}.");
+        Guard::redirect('/superadmin/monitoring');
+    }
+
+    /**
+     * Hapus Data Absensi (Hak Akses Super Admin)
+     */
+    public function deleteAbsensi(string $id): void
+    {
+        Guard::requireRole('super_admin');
+        Guard::verifyCsrf();
+
+        $absensiId = (int)$id;
+        $absensi   = Absensi::findByIdWithDetails($absensiId);
+
+        if (!$absensi) {
+            Guard::setFlash('error', 'Data absensi tidak ditemukan.');
+            Guard::redirect('/superadmin/monitoring');
+        }
+
+        // Hapus berkas foto fisik dari disk jika ada
+        $uploadDir = __DIR__ . '/../../public/uploads/absensi/';
+        if (!empty($absensi['foto_kegiatan'])) {
+            $path = $uploadDir . basename($absensi['foto_kegiatan']);
+            if (is_file($path)) {
+                @unlink($path);
+            }
+        }
+        if (!empty($absensi['foto_selfie'])) {
+            $path = $uploadDir . basename($absensi['foto_selfie']);
+            if (is_file($path)) {
+                @unlink($path);
+            }
+        }
+
+        Absensi::delete($absensiId);
+
+        Guard::setFlash('success', "Data absensi [#{$absensiId}] ({$absensi['nama_asdos']} - {$absensi['nama_matkul']}) berhasil dihapus secara permanen.");
+        Guard::redirect('/superadmin/monitoring');
     }
 }

@@ -185,7 +185,7 @@ $filters     = $filters ?? [
                             <th class="px-3.5 py-3.5">Mata Kuliah & Dosen Pengampu</th>
                             <th class="px-3 py-3.5 text-center">Bukti Foto</th>
                             <th class="px-3 py-3.5 text-center">Status Verifikasi</th>
-                            <th class="px-3.5 py-3.5 text-center">Detail Audit</th>
+                            <th class="px-3.5 py-3.5 text-center">Aksi & Audit</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-200" id="monitoringTableBody">
@@ -307,17 +307,43 @@ $filters     = $filters ?? [
                                         </span>
                                     </td>
 
-                                    <!-- 6. Detail Audit -->
+                                    <!-- 6. Aksi & Detail Audit -->
                                     <td class="px-3.5 py-3 text-center whitespace-nowrap">
-                                        <button type="button"
-                                            onclick="openDetailModal(<?= htmlspecialchars(json_encode($a), ENT_QUOTES, 'UTF-8') ?>)"
-                                            class="px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-[#1867c0] hover:text-white text-[#1867c0] text-xs font-bold border border-blue-200 hover:border-[#1867c0] transition-all duration-150 inline-flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                            </svg>
-                                            <span>Lihat Detail</span>
-                                        </button>
+                                        <div class="inline-flex items-center justify-center gap-1.5">
+                                            <!-- Tombol Ubah Status (Super Admin) -->
+                                            <button type="button"
+                                                onclick="openUpdateStatusModal(<?= htmlspecialchars(json_encode($a), ENT_QUOTES, 'UTF-8') ?>)"
+                                                title="Ubah Status Verifikasi Absensi"
+                                                class="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-800 text-xs font-bold border border-amber-300 hover:border-amber-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                                <span>Ubah Status</span>
+                                            </button>
+
+                                            <!-- Tombol Detail -->
+                                            <button type="button"
+                                                onclick="openDetailModal(<?= htmlspecialchars(json_encode($a), ENT_QUOTES, 'UTF-8') ?>)"
+                                                title="Lihat Detail Lengkap Absensi"
+                                                class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-[#1867c0] hover:text-white text-[#1867c0] text-xs font-bold border border-blue-200 hover:border-[#1867c0] transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                                </svg>
+                                                <span>Detail</span>
+                                            </button>
+
+                                            <!-- Tombol Hapus -->
+                                            <button type="button"
+                                                onclick="openDeleteModal(<?= (int)$a['id_absensi'] ?>, '<?= htmlspecialchars(addslashes($a['nama_asdos'] ?? ''), ENT_QUOTES, 'UTF-8') ?>', '<?= htmlspecialchars(addslashes($a['nama_matkul'] ?? ''), ENT_QUOTES, 'UTF-8') ?>', <?= (int)($a['pertemuan_ke'] ?? 1) ?>)"
+                                                title="Hapus Data Absensi"
+                                                class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-600 hover:text-white text-red-600 text-xs font-bold border border-red-200 hover:border-red-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                                <span>Hapus</span>
+                                            </button>
+                                        </div>
                                     </td>
 
                                 </tr>
@@ -462,12 +488,172 @@ $filters     = $filters ?? [
             </div>
 
             <!-- Modal Footer -->
-            <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-end">
+            <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3 flex-wrap">
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="openUpdateStatusFromDetail()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        <span>Ubah Status</span>
+                    </button>
+                    <button type="button" onclick="openDeleteFromDetail()" class="px-4 py-2.5 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white border border-red-200 hover:border-red-600 active:scale-[0.98] text-xs sm:text-sm font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        <span>Hapus Absensi</span>
+                    </button>
+                </div>
                 <button type="button" onclick="closeDetailModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs sm:text-sm font-bold rounded-xl transition cursor-pointer shadow-xs">
                     Tutup Detail
                 </button>
             </div>
 
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL: UBAH STATUS VERIFIKASI (HAK AKSES SUPER ADMIN)                     -->
+    <!-- ========================================================================= -->
+    <div id="updateStatusModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden transition-all transform animate-in fade-in duration-200 my-8">
+
+            <!-- Header Modal -->
+            <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/80">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-2xs">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900" id="status_modal_title">Ubah Status Verifikasi</h3>
+                    </div>
+                </div>
+                <button type="button" onclick="closeUpdateStatusModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <form id="updateStatusForm" method="POST" action="">
+                <?= \Core\Guard::csrfField() ?>
+
+                <!-- Modal Body -->
+                <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+
+                    <!-- Summary Info Card -->
+                    <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-slate-400 font-semibold uppercase text-[10px] tracking-wider">Asisten Dosen</span>
+                                <p class="font-bold text-slate-900 text-sm" id="status_asdos_nama">-</p>
+                                <p class="text-slate-500 text-[11px]" id="status_asdos_npm">NPM: -</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-slate-400 font-semibold uppercase text-[10px] tracking-wider">Mata Kuliah</span>
+                                <p class="font-bold text-slate-800 text-xs" id="status_matkul_nama">-</p>
+                                <p class="text-slate-500 text-[11px]" id="status_pertemuan_tanggal">-</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status Selection (Radio Cards) -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-800 mb-2">
+                            Pilih Status Verifikasi <span class="text-red-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-3 gap-2.5">
+                            <!-- Pending -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="status_verifikasi" value="pending" id="status_radio_pending" class="peer sr-only">
+                                <div class="p-3 rounded-xl border border-slate-200 peer-checked:border-amber-500 peer-checked:bg-amber-50/70 hover:bg-slate-50 transition text-center space-y-1 shadow-2xs">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-amber-500 mx-auto"></div>
+                                    <span class="block text-xs font-bold text-slate-700 peer-checked:text-amber-900">Pending</span>
+                                </div>
+                            </label>
+
+                            <!-- Disetujui -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="status_verifikasi" value="disetujui" id="status_radio_disetujui" class="peer sr-only">
+                                <div class="p-3 rounded-xl border border-slate-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/70 hover:bg-slate-50 transition text-center space-y-1 shadow-2xs">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto"></div>
+                                    <span class="block text-xs font-bold text-slate-700 peer-checked:text-emerald-900">Setujui</span>
+                                </div>
+                            </label>
+
+                            <!-- Ditolak -->
+                            <label class="cursor-pointer">
+                                <input type="radio" name="status_verifikasi" value="ditolak" id="status_radio_ditolak" class="peer sr-only">
+                                <div class="p-3 rounded-xl border border-slate-200 peer-checked:border-red-500 peer-checked:bg-red-50/70 hover:bg-slate-50 transition text-center space-y-1 shadow-2xs">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-red-500 mx-auto"></div>
+                                    <span class="block text-xs font-bold text-slate-700 peer-checked:text-red-900">Tolak</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Catatan / Pesan Verifikasi -->
+                    <div>
+                        <label for="status_pesan_input" class="block text-xs font-bold text-slate-800 mb-1">
+                            Catatan / Alasan Verifikasi <span class="text-slate-400 font-normal">(opsional / disarankan jika ditolak)</span>:
+                        </label>
+                        <textarea name="pesan_dosen" id="status_pesan_input" rows="3"
+                            placeholder="Tuliskan catatan verifikasi atau alasan jika laporan absensi ditolak..."
+                            class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition leading-relaxed"></textarea>
+                    </div>
+
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="px-6 py-4 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeUpdateStatusModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition cursor-pointer">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Simpan Perubahan Status</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL: KONFIRMASI HAPUS ABSENSI (SUPER ADMIN)                             -->
+    <!-- ========================================================================= -->
+    <div id="deleteAbsensiModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transition-all transform animate-in fade-in duration-200 my-8">
+            <div class="p-6 text-center">
+                <div class="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4 border border-red-300 shadow-2xs">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </div>
+                
+                <h3 class="text-lg font-bold text-slate-900">Hapus Data Absensi?</h3>
+                
+                <p class="mt-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    Apakah Anda yakin ingin menghapus data absensi <strong id="deleteAbsensiTarget"></strong>? Tindakan ini akan menghapus data riwayat absensi beserta berkas foto buktinya secara permanen dari server.
+                </p>
+
+                <form id="deleteAbsensiForm" action="" method="POST" class="mt-6 flex flex-row items-center justify-center gap-3 w-full">
+                    <?= \Core\Guard::csrfField() ?>
+                    <button type="button" onclick="closeDeleteModal()" class="px-5 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs sm:text-sm font-bold rounded-xl transition cursor-pointer shrink-0">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2.5 bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition inline-flex items-center justify-center gap-2 cursor-pointer shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        <span>Ya, Hapus Permanen</span>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -572,8 +758,11 @@ $filters     = $filters ?? [
         // ---------------------------------------------------------------------
         // 2. Detail Modal Logic
         // ---------------------------------------------------------------------
+        let currentDetailData = null;
+
         function openDetailModal(data) {
             if (!data) return;
+            currentDetailData = data;
 
             document.getElementById('detail_modal_title').textContent = `Absensi #${data.id_absensi} — ${data.nama_asdos || ''}`;
             document.getElementById('detail_modal_subtitle').textContent = data.nama_matkul || '';
@@ -652,7 +841,78 @@ $filters     = $filters ?? [
         }
 
         // ---------------------------------------------------------------------
-        // 3. Full Image Preview Modal Logic
+        // 3. Update Status Modal Logic (Super Admin)
+        // ---------------------------------------------------------------------
+        function openUpdateStatusModal(data) {
+            if (!data) return;
+
+            const form = document.getElementById('updateStatusForm');
+            form.action = `${BASE_URL}/superadmin/absensi/${data.id_absensi}/status`;
+
+            document.getElementById('status_modal_title').textContent = `Ubah Status Absensi #${data.id_absensi}`;
+            document.getElementById('status_asdos_nama').textContent = data.nama_asdos || '-';
+            document.getElementById('status_asdos_npm').textContent = `NPM: ${data.npm_asdos || '-'}`;
+            document.getElementById('status_matkul_nama').textContent = data.nama_matkul || '-';
+            document.getElementById('status_pertemuan_tanggal').textContent = `Pertemuan ${data.pertemuan_ke || '1'} (${data.tanggal || ''})`;
+
+            const status = data.status_verifikasi || 'pending';
+            if (status === 'disetujui') {
+                document.getElementById('status_radio_disetujui').checked = true;
+            } else if (status === 'ditolak') {
+                document.getElementById('status_radio_ditolak').checked = true;
+            } else {
+                document.getElementById('status_radio_pending').checked = true;
+            }
+
+            document.getElementById('status_pesan_input').value = data.pesan_dosen || '';
+
+            // Tutup modal detail jika sedang terbuka
+            closeDetailModal();
+
+            document.getElementById('updateStatusModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openUpdateStatusFromDetail() {
+            if (currentDetailData) {
+                openUpdateStatusModal(currentDetailData);
+            }
+        }
+
+        function closeUpdateStatusModal() {
+            document.getElementById('updateStatusModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // ---------------------------------------------------------------------
+        // 4. Delete Absensi Modal Logic (Super Admin)
+        // ---------------------------------------------------------------------
+        function openDeleteModal(id, asdosNama, matkulNama, pertemuanKe) {
+            const form = document.getElementById('deleteAbsensiForm');
+            form.action = `${BASE_URL}/superadmin/absensi/${id}/delete`;
+            document.getElementById('deleteAbsensiTarget').textContent = `${asdosNama} (${matkulNama} - Pertemuan ${pertemuanKe})`;
+            document.getElementById('deleteAbsensiModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteAbsensiModal').classList.add('hidden');
+            if (document.getElementById('detailModal').classList.contains('hidden') && 
+                document.getElementById('updateStatusModal').classList.contains('hidden') &&
+                document.getElementById('imagePreviewModal').classList.contains('hidden')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function openDeleteFromDetail() {
+            if (!currentDetailData) return;
+            const data = currentDetailData;
+            closeDetailModal();
+            openDeleteModal(data.id_absensi, data.nama_asdos || '-', data.nama_matkul || '-', data.pertemuan_ke || 1);
+        }
+
+        // ---------------------------------------------------------------------
+        // 5. Full Image Preview Modal Logic
         // ---------------------------------------------------------------------
         function previewImage(src, title) {
             if (!src) return;
@@ -669,7 +929,9 @@ $filters     = $filters ?? [
 
         function closeImagePreview() {
             document.getElementById('imagePreviewModal').classList.add('hidden');
-            if (document.getElementById('detailModal').classList.contains('hidden')) {
+            if (document.getElementById('detailModal').classList.contains('hidden') && 
+                document.getElementById('updateStatusModal').classList.contains('hidden') &&
+                document.getElementById('deleteAbsensiModal').classList.contains('hidden')) {
                 document.body.style.overflow = '';
             }
         }
@@ -679,6 +941,8 @@ $filters     = $filters ?? [
             if (e.key === 'Escape') {
                 closeImagePreview();
                 closeDetailModal();
+                closeUpdateStatusModal();
+                closeDeleteModal();
             }
         });
     </script>

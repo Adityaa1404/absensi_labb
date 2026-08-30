@@ -11,28 +11,10 @@ $isActive    = (int)($currentUser['is_active'] ?? 0) === 1;
 $desktopNavItems = [
     [
         'id'     => 'dashboard',
-        'label'  => 'Dashboard',
+        'label'  => 'Dashboard & Presensi',
         'url'    => \Core\Guard::url('/asdos/dashboard'),
-        'active' => str_contains($reqUri, '/asdos/dashboard') || $reqUri === \Core\Guard::url('/') || $reqUri === \Core\Guard::url(''),
+        'active' => true,
     ],
-    [
-        'id'     => 'matkul',
-        'label'  => 'Matkul Saya',
-        'url'    => \Core\Guard::url('/asdos/matkul'),
-        'active' => str_contains($reqUri, '/asdos/matkul'),
-    ],
-    // [
-    //     'id'     => 'absensi',
-    //     'label'  => 'Isi Absensi',
-    //     'url'    => \Core\Guard::url('/asdos/absensi'),
-    //     'active' => str_contains($reqUri, '/asdos/absensi'),
-    // ],
-    // [
-    //     'id'     => 'history',
-    //     'label'  => 'Riwayat Absensi',
-    //     'url'    => \Core\Guard::url('/asdos/history'),
-    //     'active' => str_contains($reqUri, '/asdos/history'),
-    // ],
 ];
 ?>
 

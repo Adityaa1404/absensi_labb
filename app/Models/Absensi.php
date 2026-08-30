@@ -313,4 +313,18 @@ class Absensi
         Database::query($sql, ['id' => $id]);
         return true;
     }
+
+    /**
+     * Ubah status verifikasi absensi dan catatan/pesan (oleh Super Admin atau Dosen Pengampu)
+     */
+    public static function updateStatusVerifikasi(int $id, string $status, ?string $pesanDosen = null): bool
+    {
+        $sql = "UPDATE absensi SET status_verifikasi = :status, pesan_dosen = :pesan_dosen WHERE id_absensi = :id";
+        Database::query($sql, [
+            'id'          => $id,
+            'status'      => $status,
+            'pesan_dosen' => !empty($pesanDosen) ? trim($pesanDosen) : null,
+        ]);
+        return true;
+    }
 }

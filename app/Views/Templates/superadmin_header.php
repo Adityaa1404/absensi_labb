@@ -22,15 +22,9 @@ $desktopNavItems = [
     ],
     [
         'id'     => 'matkul',
-        'label'  => 'Mata Kuliah',
+        'label'  => 'Mata Kuliah & Plotting',
         'url'    => \Core\Guard::url('/superadmin/matkul'),
-        'active' => str_contains($reqUri, '/superadmin/matkul'),
-    ],
-    [
-        'id'     => 'plotting',
-        'label'  => 'Plotting Asdos',
-        'url'    => \Core\Guard::url('/superadmin/plotting'),
-        'active' => str_contains($reqUri, '/superadmin/plotting'),
+        'active' => str_contains($reqUri, '/superadmin/matkul') || str_contains($reqUri, '/superadmin/plotting'),
     ],
     [
         'id'     => 'monitoring',

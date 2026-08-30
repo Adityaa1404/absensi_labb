@@ -71,6 +71,25 @@ class Plotting
     }
 
     /**
+     * Ambil seluruh asdos yang diplotkan pada mata kuliah tertentu
+     */
+    public static function getByMatkul(int $matkulId): array
+    {
+        self::syncExpiredStatus();
+
+        $sql = "
+            SELECT p.*, 
+                   u.id_user as asdos_id, u.nama as nama_asdos, u.email as email_asdos, 
+                   u.identity_number as npm_asdos, u.no_hp as nohp_asdos, u.is_active as user_is_active
+            FROM plotting p
+            JOIN users u ON p.asdos_id = u.id_user
+            WHERE p.matkul_id = :matkul_id
+            ORDER BY p.is_active DESC, u.nama ASC
+        ";
+        return Database::fetchAll($sql, ['matkul_id' => $matkulId]);
+    }
+
+    /**
      * Cari plotting berdasarkan ID
      */
     public static function findById(int $id): ?array

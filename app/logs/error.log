@@ -257,3 +257,21 @@ Stack trace:
 #5 C:\laragon\www\absensi_labb\public\index.php(68): Core\Router->dispatch()
 #6 {main}
 --------------------------------------------------------------------------------
+[2026-08-29 20:58:48] [POST /absensi_labb/login] RuntimeException: Gagal menghubungkan ke Database MySQL: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it in C:\xampp\htdocs\absensi_labb\Core\Database.php:48
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\Core\Database.php(61): Core\Database::getConnection()
+#1 C:\xampp\htdocs\absensi_labb\Core\Database.php(74): Core\Database::query('SELECT * FROM u...', Array)
+#2 C:\xampp\htdocs\absensi_labb\app\Models\User.php(74): Core\Database::fetch('SELECT * FROM u...', Array)
+#3 C:\xampp\htdocs\absensi_labb\app\Controllers\AuthController.php(45): App\Models\User::findByEmail('ola@gmail.com')
+#4 [internal function]: App\Controllers\AuthController->processLogin()
+#5 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#6 C:\xampp\htdocs\absensi_labb\public\index.php(68): Core\Router->dispatch()
+#7 {main}
+--------------------------------------------------------------------------------
+[2026-08-29 21:49:48] [GET /absensi_labb/asdos/absensi] ParseError: syntax error, unexpected token "endforeach", expecting end of file in C:\xampp\htdocs\absensi_labb\app\Views\Asdos\absensi.php:297
+Stack trace:
+#0 [internal function]: App\Controllers\AsdosController->absensi()
+#1 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#2 C:\xampp\htdocs\absensi_labb\public\index.php(68): Core\Router->dispatch()
+#3 {main}
+--------------------------------------------------------------------------------

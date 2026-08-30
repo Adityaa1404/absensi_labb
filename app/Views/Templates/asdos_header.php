@@ -21,18 +21,18 @@ $desktopNavItems = [
         'url'    => \Core\Guard::url('/asdos/matkul'),
         'active' => str_contains($reqUri, '/asdos/matkul'),
     ],
-    [
-        'id'     => 'absensi',
-        'label'  => 'Isi Absensi',
-        'url'    => \Core\Guard::url('/asdos/absensi'),
-        'active' => str_contains($reqUri, '/asdos/absensi'),
-    ],
-    [
-        'id'     => 'history',
-        'label'  => 'Riwayat Absensi',
-        'url'    => \Core\Guard::url('/asdos/history'),
-        'active' => str_contains($reqUri, '/asdos/history'),
-    ],
+    // [
+    //     'id'     => 'absensi',
+    //     'label'  => 'Isi Absensi',
+    //     'url'    => \Core\Guard::url('/asdos/absensi'),
+    //     'active' => str_contains($reqUri, '/asdos/absensi'),
+    // ],
+    // [
+    //     'id'     => 'history',
+    //     'label'  => 'Riwayat Absensi',
+    //     'url'    => \Core\Guard::url('/asdos/history'),
+    //     'active' => str_contains($reqUri, '/asdos/history'),
+    // ],
 ];
 ?>
 

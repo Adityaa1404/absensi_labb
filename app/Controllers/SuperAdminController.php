@@ -103,6 +103,9 @@ class SuperAdminController
         $password       = $_POST['password'] ?? '';
         $isActive       = !empty($_POST['is_active']) ? 1 : 0;
 
+        $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') 
+                  || (strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false);
+
         // Validasi input
         $validator = new Validator($_POST);
         $validator->rules([
@@ -124,19 +127,43 @@ class SuperAdminController
         ]);
 
         if ($validator->fails()) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(422);
+                echo json_encode([
+                    'success' => false,
+                    'message' => $validator->firstError(),
+                    'errors'  => $validator->errors()
+                ]);
+                exit;
+            }
             $validator->flashErrors();
             Guard::redirect('/superadmin/users');
         }
 
         // Cek Keunikan Email
         if (!User::isUniqueEmail($email)) {
-            Guard::setFlash('error', 'Alamat email "' . htmlspecialchars($email) . '" sudah digunakan oleh pengguna lain.');
+            $msg = 'Alamat email "' . htmlspecialchars($email) . '" sudah digunakan oleh pengguna lain.';
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(422);
+                echo json_encode(['success' => false, 'message' => $msg]);
+                exit;
+            }
+            Guard::setFlash('error', $msg);
             Guard::redirect('/superadmin/users');
         }
 
         // Cek Keunikan Nomor Identitas
         if (!User::isUniqueIdentityNumber($identityNumber)) {
-            Guard::setFlash('error', 'Nomor identitas "' . htmlspecialchars($identityNumber) . '" sudah terdaftar.');
+            $msg = 'Nomor identitas "' . htmlspecialchars($identityNumber) . '" sudah terdaftar.';
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(422);
+                echo json_encode(['success' => false, 'message' => $msg]);
+                exit;
+            }
+            Guard::setFlash('error', $msg);
             Guard::redirect('/superadmin/users');
         }
 
@@ -158,7 +185,18 @@ class SuperAdminController
             default       => 'Pengguna'
         };
 
-        Guard::setFlash('success', "Pengguna baru [{$nama}] ({$roleLabel}) berhasil ditambahkan ke sistem.");
+        $successMsg = "Pengguna baru [{$nama}] ({$roleLabel}) berhasil ditambahkan ke sistem.";
+        Guard::setFlash('success', $successMsg);
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'message' => $successMsg
+            ]);
+            exit;
+        }
+
         Guard::redirect('/superadmin/users');
     }
 
@@ -173,7 +211,16 @@ class SuperAdminController
         $userId = (int)$id;
         $user = User::findById($userId);
 
+        $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') 
+                  || (strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false);
+
         if (!$user) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'Pengguna tidak ditemukan dalam sistem.']);
+                exit;
+            }
             Guard::setFlash('error', 'Pengguna tidak ditemukan dalam sistem.');
             Guard::redirect('/superadmin/users');
         }
@@ -210,31 +257,69 @@ class SuperAdminController
         ]);
 
         if ($validator->fails()) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(422);
+                echo json_encode([
+                    'success' => false,
+                    'message' => $validator->firstError(),
+                    'errors'  => $validator->errors()
+                ]);
+                exit;
+            }
             $validator->flashErrors();
             Guard::redirect('/superadmin/users');
         }
 
         // Proteksi: Super admin tidak boleh menonaktifkan akun miliknya sendiri
         if ($userId === Guard::id() && $isActive === 0) {
-            Guard::setFlash('error', 'Aksi ditolak: Anda tidak dapat menonaktifkan akun Super Admin Anda sendiri yang sedang aktif.');
+            $msg = 'Aksi ditolak: Anda tidak dapat menonaktifkan akun Super Admin Anda sendiri yang sedang aktif.';
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => $msg]);
+                exit;
+            }
+            Guard::setFlash('error', $msg);
             Guard::redirect('/superadmin/users');
         }
 
         // Proteksi: Super admin tidak boleh mengubah rolenya sendiri jika hanya dia yang aktif
         if ($userId === Guard::id() && $role !== 'super_admin') {
-            Guard::setFlash('error', 'Aksi ditolak: Anda tidak dapat mengubah peran akun Anda sendiri saat sedang login.');
+            $msg = 'Aksi ditolak: Anda tidak dapat mengubah peran akun Anda sendiri saat sedang login.';
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => $msg]);
+                exit;
+            }
+            Guard::setFlash('error', $msg);
             Guard::redirect('/superadmin/users');
         }
 
         // Cek Keunikan Email
         if (!User::isUniqueEmail($email, $userId)) {
-            Guard::setFlash('error', 'Alamat email "' . htmlspecialchars($email) . '" sudah digunakan oleh pengguna lain.');
+            $msg = 'Alamat email "' . htmlspecialchars($email) . '" sudah digunakan oleh pengguna lain.';
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(422);
+                echo json_encode(['success' => false, 'message' => $msg]);
+                exit;
+            }
+            Guard::setFlash('error', $msg);
             Guard::redirect('/superadmin/users');
         }
 
         // Cek Keunikan Nomor Identitas
         if (!User::isUniqueIdentityNumber($identityNumber, $userId)) {
-            Guard::setFlash('error', 'Nomor identitas "' . htmlspecialchars($identityNumber) . '" sudah terdaftar.');
+            $msg = 'Nomor identitas "' . htmlspecialchars($identityNumber) . '" sudah terdaftar.';
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                http_response_code(422);
+                echo json_encode(['success' => false, 'message' => $msg]);
+                exit;
+            }
+            Guard::setFlash('error', $msg);
             Guard::redirect('/superadmin/users');
         }
 
@@ -255,7 +340,18 @@ class SuperAdminController
             $_SESSION['user']['email'] = $email;
         }
 
-        Guard::setFlash('success', "Data pengguna [{$nama}] berhasil diperbarui.");
+        $successMsg = "Data pengguna [{$nama}] berhasil diperbarui.";
+        Guard::setFlash('success', $successMsg);
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'message' => $successMsg
+            ]);
+            exit;
+        }
+
         Guard::redirect('/superadmin/users');
     }
 

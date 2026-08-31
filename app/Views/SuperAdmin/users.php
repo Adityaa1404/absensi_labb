@@ -353,10 +353,16 @@ $filters     = $filters ?? [
             </div>
 
             <!-- Modal Form -->
-            <form action="<?= \Core\Guard::url('/superadmin/users/create') ?>" method="POST">
+            <form id="createForm" action="<?= \Core\Guard::url('/superadmin/users/create') ?>" method="POST">
                 <?= \Core\Guard::csrfField() ?>
 
                 <div class="p-5 sm:p-6 space-y-5 max-h-[75vh] overflow-y-auto">
+
+                    <!-- Alert Box untuk Error Validasi Form -->
+                    <div id="create_error_alert" class="hidden p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl flex items-start gap-2.5 shadow-2xs">
+                        <svg class="w-4 h-4 text-red-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <div class="flex-1 min-w-0" id="create_error_message"></div>
+                    </div>
 
                     <!-- SECTION 1: PERAN AKUN (ROLE) -->
                     <div>
@@ -366,43 +372,26 @@ $filters     = $filters ?? [
                             </label>
                         </div>
                         <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
-                            <!-- ROLE: ASDOS -->
-                            <label class="relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 transition-all duration-150 shadow-sm">
-                                <input type="radio" name="role" value="asdos" checked onchange="updateIdentityLabel('create', this.value)" class="peer sr-only">
-                                
-                                <!-- Ring Glow & Border Modifier via peer-checked -->
-                                <div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-[#1867c0] peer-checked:bg-blue-50/80 peer-checked:ring-2 peer-checked:ring-[#1867c0]/20 pointer-events-none transition-all"></div>
-
-                                <div class="relative z-10 w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center mb-1.5 peer-checked:bg-[#1867c0] peer-checked:text-white transition">
+                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 has-checked:border-[#1867c0] has-checked:bg-blue-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" name="role" value="asdos" checked onchange="updateIdentityLabel('create', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center mb-1.5 group-has-checked:bg-[#1867c0] group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                 </div>
-                                <span class="relative z-10 text-xs sm:text-sm font-bold text-slate-800 peer-checked:text-[#1867c0]">Asdos</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-[#1867c0]">Asdos</span>
                             </label>
-
-                            <!-- ROLE: DOSEN -->
-                            <label class="relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 transition-all duration-150 shadow-sm">
-                                <input type="radio" name="role" value="dosen" onchange="updateIdentityLabel('create', this.value)" class="peer sr-only">
-                                
-                                <!-- Ring Glow & Border Modifier via peer-checked -->
-                                <div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-50/80 peer-checked:ring-2 peer-checked:ring-indigo-600/20 pointer-events-none transition-all"></div>
-
-                                <div class="relative z-10 w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-1.5 peer-checked:bg-indigo-700 peer-checked:text-white transition">
+                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 has-checked:border-indigo-600 has-checked:bg-indigo-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" name="role" value="dosen" onchange="updateIdentityLabel('create', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-1.5 group-has-checked:bg-indigo-700 group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <span class="relative z-10 text-xs sm:text-sm font-bold text-slate-800 peer-checked:text-indigo-900">Dosen</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-indigo-900">Dosen</span>
                             </label>
-
-                            <!-- ROLE: ADMIN -->
-                            <label class="relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 transition-all duration-150 shadow-sm">
-                                <input type="radio" name="role" value="super_admin" onchange="updateIdentityLabel('create', this.value)" class="peer sr-only">
-                                
-                                <!-- Ring Glow & Border Modifier via peer-checked -->
-                                <div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-amber-600 peer-checked:bg-amber-50/80 peer-checked:ring-2 peer-checked:ring-amber-600/20 pointer-events-none transition-all"></div>
-
-                                <div class="relative z-10 w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-1.5 peer-checked:bg-amber-700 peer-checked:text-white transition">
+                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 has-checked:border-amber-600 has-checked:bg-amber-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" name="role" value="super_admin" onchange="updateIdentityLabel('create', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-1.5 group-has-checked:bg-amber-700 group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 </div>
-                                <span class="relative z-10 text-xs sm:text-sm font-bold text-slate-800 peer-checked:text-amber-950">Admin</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-amber-950">Admin</span>
                             </label>
                         </div>
                     </div>
@@ -416,6 +405,9 @@ $filters     = $filters ?? [
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Nama Lengkap -->
                             <div>
+                                <label for="create_nama" class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Nama Lengkap <span class="text-red-500">*</span>
+                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -428,6 +420,9 @@ $filters     = $filters ?? [
 
                             <!-- Nomor Identitas (NPM / NIDN) -->
                             <div>
+                                <label for="create_identity_number" id="create_identity_label" class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Nomor Pokok Mahasiswa (NPM) <span class="text-red-500">*</span>
+                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
@@ -440,11 +435,14 @@ $filters     = $filters ?? [
                         </div>
                     </div>
 
-                    <!-- SECTION 2: KONTAK & KOMUNIKASI -->
+                    <!-- SECTION 3: KONTAK & KOMUNIKASI -->
                     <div class="space-y-3.5 pt-1">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Email -->
                             <div>
+                                <label for="create_email" class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Alamat Email <span class="text-red-500">*</span>
+                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -457,7 +455,9 @@ $filters     = $filters ?? [
 
                             <!-- No WhatsApp / HP -->
                             <div>
-
+                                <label for="create_nohp" class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Nomor WhatsApp / HP
+                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
@@ -470,7 +470,7 @@ $filters     = $filters ?? [
                         </div>
                     </div>
 
-                    <!-- SECTION 3: KEAMANAN & STATUS AKUN -->
+                    <!-- SECTION 4: KEAMANAN & STATUS AKUN -->
                     <div class="space-y-3.5 pt-1">
                         <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
                             3. Keamanan & Status Keaktifan
@@ -478,6 +478,9 @@ $filters     = $filters ?? [
                         
                         <!-- Kata Sandi -->
                         <div>
+                            <label for="create_password" class="block text-xs font-semibold text-slate-700 mb-1">
+                                Kata Sandi Awal <span class="text-red-500">*</span>
+                            </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
@@ -514,7 +517,7 @@ $filters     = $filters ?? [
                     <button type="button" onclick="closeCreateModal()" class="px-5 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs sm:text-sm font-bold rounded-xl transition cursor-pointer">
                         Batal
                     </button>
-                    <button type="submit" class="px-5 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition flex items-center gap-2 cursor-pointer">
+                    <button type="submit" id="createSubmitBtn" class="px-5 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition flex items-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         <span>Simpan Pengguna</span>
                     </button>
@@ -550,6 +553,12 @@ $filters     = $filters ?? [
 
                 <div class="p-5 sm:p-6 space-y-5 max-h-[75vh] overflow-y-auto">
 
+                    <!-- Alert Box untuk Error Validasi Form -->
+                    <div id="edit_error_alert" class="hidden p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs font-semibold rounded-xl flex items-start gap-2.5 shadow-2xs">
+                        <svg class="w-4 h-4 text-red-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <div class="flex-1 min-w-0" id="edit_error_message"></div>
+                    </div>
+
                     <!-- SECTION 1: PERAN AKUN (ROLE) -->
                     <div>
                         <div class="flex items-center justify-between mb-2">
@@ -558,47 +567,26 @@ $filters     = $filters ?? [
                             </label>
                         </div>
                         <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
-                            
-                            <!-- ROLE: ASDOS -->
-                            <label id="edit_role_asdos_label" class="relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 transition-all duration-150 shadow-xs">
-                                <!-- INPUT DIBERI CLASS 'peer' -->
-                                <input type="radio" id="edit_role_asdos" name="role" value="asdos" onchange="updateIdentityLabel('edit', this.value)" class="peer sr-only">
-                                
-                                <!-- OVERLAY GLOW & BORDER MERESPON peer-checked -->
-                                <div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-[#1867c0] peer-checked:bg-blue-50/80 peer-checked:ring-2 peer-checked:ring-[#1867c0]/30 pointer-events-none transition-all"></div>
-
-                                <div class="relative z-10 w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center mb-1.5 peer-checked:bg-[#1867c0] peer-checked:text-white transition">
+                            <label id="edit_role_asdos_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 has-checked:border-[#1867c0] has-checked:bg-blue-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" id="edit_role_asdos" name="role" value="asdos" onchange="updateIdentityLabel('edit', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center mb-1.5 group-has-checked:bg-[#1867c0] group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                 </div>
-                                <span class="relative z-10 text-xs sm:text-sm font-bold text-slate-800 peer-checked:text-[#1867c0]">Asdos</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-[#1867c0]">Asdos</span>
                             </label>
-
-                            <!-- ROLE: DOSEN -->
-                            <label id="edit_role_dosen_label" class="relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 transition-all duration-150 shadow-xs">
-                                <!-- INPUT DIBERI CLASS 'peer' -->
-                                <input type="radio" id="edit_role_dosen" name="role" value="dosen" onchange="updateIdentityLabel('edit', this.value)" class="peer sr-only">
-                                
-                                <!-- OVERLAY GLOW & BORDER MERESPON peer-checked -->
-                                <div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-indigo-600 peer-checked:bg-indigo-50/80 peer-checked:ring-2 peer-checked:ring-indigo-600/30 pointer-events-none transition-all"></div>
-
-                                <div class="relative z-10 w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-1.5 peer-checked:bg-indigo-700 peer-checked:text-white transition">
+                            <label id="edit_role_dosen_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 has-checked:border-indigo-600 has-checked:bg-indigo-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" id="edit_role_dosen" name="role" value="dosen" onchange="updateIdentityLabel('edit', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-1.5 group-has-checked:bg-indigo-700 group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <span class="relative z-10 text-xs sm:text-sm font-bold text-slate-800 peer-checked:text-indigo-900">Dosen</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-indigo-900">Dosen</span>
                             </label>
-
-                            <!-- ROLE: ADMIN -->
-                            <label id="edit_role_admin_label" class="relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 transition-all duration-150 shadow-xs">
-                                <!-- INPUT DIBERI CLASS 'peer' -->
-                                <input type="radio" id="edit_role_admin" name="role" value="super_admin" onchange="updateIdentityLabel('edit', this.value)" class="peer sr-only">
-                                
-                                <!-- OVERLAY GLOW & BORDER MERESPON peer-checked -->
-                                <div class="absolute inset-0 rounded-xl border-2 border-transparent peer-checked:border-amber-600 peer-checked:bg-amber-50/80 peer-checked:ring-2 peer-checked:ring-amber-600/30 pointer-events-none transition-all"></div>
-
-                                <div class="relative z-10 w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-1.5 peer-checked:bg-amber-700 peer-checked:text-white transition">
+                            <label id="edit_role_admin_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 has-checked:border-amber-600 has-checked:bg-amber-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" id="edit_role_admin" name="role" value="super_admin" onchange="updateIdentityLabel('edit', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-1.5 group-has-checked:bg-amber-700 group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 </div>
-                                <span class="relative z-10 text-xs sm:text-sm font-bold text-slate-800 peer-checked:text-amber-950">Admin</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-amber-950">Admin</span>
                             </label>
 
                         </div>
@@ -613,6 +601,9 @@ $filters     = $filters ?? [
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Nama Lengkap -->
                             <div>
+                                <label for="edit_nama" class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Nama Lengkap <span class="text-red-500">*</span>
+                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
@@ -625,6 +616,9 @@ $filters     = $filters ?? [
 
                             <!-- Nomor Identitas (NPM / NIDN) -->
                             <div>
+                                <label for="edit_identity_number" id="edit_identity_label" class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Nomor Identitas <span class="text-red-500">*</span>
+                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>
@@ -637,11 +631,14 @@ $filters     = $filters ?? [
                         </div>
                     </div>
 
-                    <!-- SECTION 2: KONTAK & KOMUNIKASI -->
+                    <!-- SECTION 3: KONTAK & KOMUNIKASI -->
                     <div class="space-y-3.5 pt-1">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                             <!-- Email -->
                             <div>
+                                <label for="edit_email" class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Alamat Email <span class="text-red-500">*</span>
+                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
@@ -654,6 +651,9 @@ $filters     = $filters ?? [
 
                             <!-- No WhatsApp / HP -->
                             <div>
+                                <label for="edit_nohp" class="block text-xs font-semibold text-slate-700 mb-1">
+                                    Nomor WhatsApp / HP
+                                </label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
@@ -666,7 +666,7 @@ $filters     = $filters ?? [
                         </div>
                     </div>
 
-                    <!-- SECTION 3: KEAMANAN & STATUS AKUN -->
+                    <!-- SECTION 4: KEAMANAN & STATUS AKUN -->
                     <div class="space-y-3.5 pt-1">
                         <label class="block text-xs font-bold text-slate-800 uppercase tracking-wider">
                             3. Keamanan & Status Keaktifan
@@ -674,13 +674,16 @@ $filters     = $filters ?? [
                         
                         <!-- Reset Kata Sandi (Opsional) -->
                         <div>
+                            <label for="edit_password" class="block text-xs font-semibold text-slate-700 mb-1">
+                                Ubah Kata Sandi <span class="text-slate-400 font-normal">(Kosongkan jika tidak diubah)</span>
+                            </label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                 </div>
                                 <input type="password" id="edit_password" name="password" minlength="6"
                                        class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-10 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs"
-                                       placeholder="Kata sandi baru (kosongkan jika tidak diubah)...">
+                                       placeholder="Kata sandi baru (minimal 6 karakter)...">
                                 <button type="button" onclick="togglePasswordVisibility('edit_password')" title="Lihat/Sembunyikan Kata Sandi" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 cursor-pointer">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                 </button>
@@ -710,7 +713,7 @@ $filters     = $filters ?? [
                     <button type="button" onclick="closeEditModal()" class="px-5 py-2.5 border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs sm:text-sm font-bold rounded-xl transition cursor-pointer">
                         Batal
                     </button>
-                    <button type="submit" class="px-5 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition flex items-center gap-2 cursor-pointer">
+                    <button type="submit" id="editSubmitBtn" class="px-5 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition flex items-center gap-2 cursor-pointer">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         <span>Simpan Perubahan</span>
                     </button>
@@ -753,12 +756,12 @@ $filters     = $filters ?? [
 
     <!-- Floating Bottom Navigation Bar (Khusus Tampilan Mobile) -->
     <?php require_once __DIR__ . '/../Templates/superadmin_bottom_nav.php'; ?>
-
+x
     <!-- ========================================================================= -->
     <!-- JAVASCRIPT LOGIC: MODALS, LIVE FILTER & DYNAMIC BEHAVIOR                  -->
     <!-- ========================================================================= -->
     <script>
-        const BASE_URL = '<?= \Core\Guard::url('') ?>';
+        const BASE_URL = '<?= \Core\Guard::getBaseUrl() ?>';
 
         // ---------------------------------------------------------------------
         // 1. Live Filter & Search Functionality
@@ -898,13 +901,26 @@ $filters     = $filters ?? [
         // 5. Modal Handlers: CREATE
         // ---------------------------------------------------------------------
         function openCreateModal() {
+            const alertEl = document.getElementById('create_error_alert');
+            if (alertEl) alertEl.classList.add('hidden');
+
             document.getElementById('createModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            updateIdentityLabel('create', document.querySelector('input[name="role"]:checked')?.value || 'asdos');
+            
+            // Set default checked to asdos if none selected
+            const checkedRole = document.querySelector('#createModal input[name="role"]:checked');
+            if (!checkedRole) {
+                const defaultRadio = document.getElementById('create_role_asdos');
+                if (defaultRadio) defaultRadio.checked = true;
+            }
+            updateIdentityLabel('create', document.querySelector('#createModal input[name="role"]:checked')?.value || 'asdos');
             updateModalStatusLabel('create', true);
         }
 
         function closeCreateModal() {
+            const alertEl = document.getElementById('create_error_alert');
+            if (alertEl) alertEl.classList.add('hidden');
+
             document.getElementById('createModal').classList.add('hidden');
             document.body.style.overflow = '';
         }
@@ -913,7 +929,7 @@ $filters     = $filters ?? [
         // 6. Modal Handlers: EDIT
         // ---------------------------------------------------------------------
         function openEditModal(row) {
-        if (!row) return;
+            if (!row) return;
 
         const id       = row.dataset.id;
         const nama     = row.dataset.nama;
@@ -952,22 +968,25 @@ $filters     = $filters ?? [
         const subTitleEl = document.getElementById('edit_modal_subtitle');
         if (subTitleEl) subTitleEl.textContent = `Mengedit ID #${id} — ${nama}`;
 
-        // If editing self, disable status turning off and role changing
-        const statusCheckbox = document.getElementById('edit_is_active');
-        const statusDesc     = document.getElementById('edit_status_desc');
+            // If editing self, disable status turning off and role changing
+            const statusCheckbox = document.getElementById('edit_is_active');
+            const statusDesc     = document.getElementById('edit_status_desc');
 
-        if (isSelf) {
-            statusCheckbox.disabled = true;
-            statusDesc.textContent  = 'Anda tidak dapat menonaktifkan akun Anda sendiri saat sedang login.';
-        } else {
-            statusCheckbox.disabled = false;
-        }
+            if (isSelf) {
+                statusCheckbox.disabled = true;
+                statusDesc.textContent  = 'Anda tidak dapat menonaktifkan akun Anda sendiri saat sedang login.';
+            } else {
+                statusCheckbox.disabled = false;
+            }
 
         document.getElementById('editModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
 
         function closeEditModal() {
+            const alertEl = document.getElementById('edit_error_alert');
+            if (alertEl) alertEl.classList.add('hidden');
+
             document.getElementById('editModal').classList.add('hidden');
             document.body.style.overflow = '';
         }
@@ -1081,7 +1100,108 @@ $filters     = $filters ?? [
         }
 
         // ---------------------------------------------------------------------
-        // 7. Modal Handlers: DELETE
+        // 7. Form Submit Handlers with In-Modal Error Validation (No form close on error)
+        // ---------------------------------------------------------------------
+        const createForm = document.getElementById('createForm');
+        if (createForm) {
+            createForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const submitBtn = document.getElementById('createSubmitBtn');
+                const alertEl   = document.getElementById('create_error_alert');
+                const msgEl     = document.getElementById('create_error_message');
+
+                alertEl.classList.add('hidden');
+                submitBtn.disabled = true;
+                const originalBtnContent = submitBtn.innerHTML;
+                submitBtn.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Menyimpan...</span>
+                `;
+
+                try {
+                    const formData = new FormData(createForm);
+                    const response = await fetch(createForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        window.location.reload();
+                    } else {
+                        throw new Error(result.message || 'Terjadi kesalahan saat menyimpan data pengguna.');
+                    }
+                } catch (err) {
+                    msgEl.textContent = err.message || 'Terjadi kesalahan pada sistem.';
+                    alertEl.classList.remove('hidden');
+                    const modalBody = alertEl.closest('.overflow-y-auto');
+                    if (modalBody) modalBody.scrollTo({ top: 0, behavior: 'smooth' });
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnContent;
+                }
+            });
+        }
+
+        const editForm = document.getElementById('editForm');
+        if (editForm) {
+            editForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const submitBtn = document.getElementById('editSubmitBtn');
+                const alertEl   = document.getElementById('edit_error_alert');
+                const msgEl     = document.getElementById('edit_error_message');
+
+                alertEl.classList.add('hidden');
+                submitBtn.disabled = true;
+                const originalBtnContent = submitBtn.innerHTML;
+                submitBtn.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Menyimpan...</span>
+                `;
+
+                try {
+                    const formData = new FormData(editForm);
+                    const response = await fetch(editForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        window.location.reload();
+                    } else {
+                        throw new Error(result.message || 'Terjadi kesalahan saat memperbarui data pengguna.');
+                    }
+                } catch (err) {
+                    msgEl.textContent = err.message || 'Terjadi kesalahan pada sistem.';
+                    alertEl.classList.remove('hidden');
+                    const modalBody = alertEl.closest('.overflow-y-auto');
+                    if (modalBody) modalBody.scrollTo({ top: 0, behavior: 'smooth' });
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnContent;
+                }
+            });
+        }
+
+        // ---------------------------------------------------------------------
+        // 8. Modal Handlers: DELETE
         // ---------------------------------------------------------------------
         function openDeleteModal(id, nama) {
             document.getElementById('deleteForm').action = `${BASE_URL}/superadmin/users/${id}/delete`;

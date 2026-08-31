@@ -124,7 +124,7 @@ class Router
     }
 
     /**
-     * Membersihkan URI dari subfolder Laragon/XAMPP dan Query String
+     * Membersihkan URI dari subfolder Laragon/XAMPP, multiple slashes, dan Query String
      */
     private function getCleanUri(): string
     {
@@ -140,6 +140,9 @@ class Router
         if (strpos($uri, '/public') === 0) {
             $uri = substr($uri, 7);
         }
+
+        // Normalisasi multiple consecutive slashes menjadi single slash
+        $uri = preg_replace('#/{2,}#', '/', (string)$uri);
 
         $clean = '/' . trim($uri, '/');
         return $clean === '//' ? '/' : $clean;
@@ -158,6 +161,6 @@ class Router
             $scriptDir = substr($scriptDir, 0, -7);
         }
 
-        return ($scriptDir === '/' || $scriptDir === '\\') ? '' : rtrim($scriptDir, '/');
+        return ($scriptDir === '/' || $scriptDir === '\\' || $scriptDir === '.') ? '' : rtrim($scriptDir, '/');
     }
 }

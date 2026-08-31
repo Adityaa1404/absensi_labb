@@ -648,7 +648,7 @@ if (empty($dosenList)) {
 
     <!-- JavaScript Logic -->
     <script>
-        const BASE_URL = '<?= \Core\Guard::url('') ?>';
+        const BASE_URL = '<?= \Core\Guard::getBaseUrl() ?>';
         let currentActiveMatkulData = null;
 
         // Filter Logic

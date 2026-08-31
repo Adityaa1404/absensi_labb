@@ -233,7 +233,7 @@ class Guard
     }
 
     /**
-     * Mendapatkan Base URL proyek tanpa akhiran /public
+     * Mendapatkan Base URL proyek tanpa akhiran /public dan tanpa trailing slash
      */
     public static function getBaseUrl(): string
     {
@@ -245,7 +245,7 @@ class Guard
             $scriptDir = substr($scriptDir, 0, -7);
         }
 
-        return ($scriptDir === '/' || $scriptDir === '\\') ? '' : rtrim($scriptDir, '/');
+        return ($scriptDir === '/' || $scriptDir === '\\' || $scriptDir === '.') ? '' : rtrim($scriptDir, '/');
     }
 
     /**
@@ -254,6 +254,11 @@ class Guard
     public static function url(string $path = ''): string
     {
         $baseUrl = self::getBaseUrl();
+
+        if ($path === '' || $path === '/') {
+            return $baseUrl === '' ? '/' : $baseUrl;
+        }
+
         $cleanPath = '/' . ltrim($path, '/');
 
         // Jika path sudah diawali dengan baseUrl, jangan lakukan prepend ganda

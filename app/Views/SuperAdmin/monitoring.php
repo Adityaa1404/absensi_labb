@@ -681,7 +681,7 @@ $filters     = $filters ?? [
 
     <!-- JavaScript Handlers -->
     <script>
-        const BASE_URL = '<?= \Core\Guard::url('') ?>';
+        const BASE_URL = '<?= \Core\Guard::getBaseUrl() ?>';
 
         // ---------------------------------------------------------------------
         // 1. Live Filter & Instant Search Logic (Tanpa Reload / Scroll Jump)

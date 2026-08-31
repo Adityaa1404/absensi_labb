@@ -557,7 +557,7 @@ $statusBadge = static function (string $status): string {
     <!-- JAVASCRIPT SINGLE-PAGE WORKSPACE LOGIC                                    -->
     <!-- ========================================================================= -->
     <script>
-        const BASE_URL = '<?= \Core\Guard::url('') ?>';
+        const BASE_URL = '<?= \Core\Guard::getBaseUrl() ?>';
         const IS_USER_ACTIVE = <?= $isActive ? 'true' : 'false' ?>;
         let currentActivePlotData = null;
 

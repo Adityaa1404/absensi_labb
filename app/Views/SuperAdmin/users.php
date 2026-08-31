@@ -171,7 +171,7 @@ $filters     = $filters ?? [
                                     $role = $u['role'];
                                     $isActive = (int)$u['is_active'] === 1;
 
-                                    // Role badge style
+                                    // Role style
                                     $roleBadge = match ($role) {
                                         'dosen'       => ['label' => 'DOSEN', 'bg' => 'bg-indigo-50', 'text' => 'text-indigo-800', 'border' => 'border-indigo-300'],
                                         'asdos'       => ['label' => 'ASDOS', 'bg' => 'bg-blue-50', 'text' => 'text-[#1867c0]', 'border' => 'border-blue-300'],

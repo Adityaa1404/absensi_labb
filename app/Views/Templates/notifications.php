@@ -132,37 +132,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = toast.id;
 
         // Mulai animasi progress bar mengecil
-        // requestAnimationFrame(() => {
-        //     if (progressBar) {
-        //         progressBar.style.width = '0%';
-        //     }
-        // });
+        requestAnimationFrame(() => {
+            if (progressBar) {
+                progressBar.style.width = '0%';
+            }
+        });
 
         // Auto dismiss setelah 2 detik (2000ms)
-        // let timer = setTimeout(() => {
-        //     dismissToast(id);
-        // }, 2000);
+        let timer = setTimeout(() => {
+            dismissToast(id);
+        }, 2000);
 
         // Pause countdown saat hover mouse
-        // toast.addEventListener('mouseenter', () => {
-        //     clearTimeout(timer);
-        //     if (progressBar) {
-        //         const computedWidth = window.getComputedStyle(progressBar).width;
-        //         progressBar.style.transition = 'none';
-        //         progressBar.style.width = computedWidth;
-        //     }
-        // });
+        toast.addEventListener('mouseenter', () => {
+            clearTimeout(timer);
+            if (progressBar) {
+                const computedWidth = window.getComputedStyle(progressBar).width;
+                progressBar.style.transition = 'none';
+                progressBar.style.width = computedWidth;
+            }
+        });
 
         // Resume countdown saat mouse leave
-        // toast.addEventListener('mouseleave', () => {
-        //     timer = setTimeout(() => {
-        //         dismissToast(id);
-        //     }, 800); // beri sisa 0.8 detik setelah mouse pergi
-        //     if (progressBar) {
-        //         progressBar.style.transition = 'width 800ms linear';
-        //         progressBar.style.width = '0%';
-        //     }
-        // });
+        toast.addEventListener('mouseleave', () => {
+            timer = setTimeout(() => {
+                dismissToast(id);
+            }, 800); // beri sisa 0.8 detik setelah mouse pergi
+            if (progressBar) {
+                progressBar.style.transition = 'width 800ms linear';
+                progressBar.style.width = '0%';
+            }
+        });
     });
 });
 </script>

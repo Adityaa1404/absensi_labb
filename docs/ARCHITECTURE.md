@@ -1,6 +1,6 @@
 # 🏗️ Arsitektur Sistem & Spesifikasi Teknis (ARCHITECTURE.md)
 
-Dokumen ini menjelaskan arsitektur perangkat lunak, pola desain (*design patterns*), serta alur siklus hidup *request* (*Request Lifecycle*) yang diimplementasikan pada aplikasi **Sistem Informasi Absensi & Penugasan Asisten Laboratorium (Absensi Lab)**.
+Dokumen ini menjelaskan arsitektur perangkat lunak, pola desain (_design patterns_), serta alur siklus hidup _request_ (_Request Lifecycle_) yang diimplementasikan pada aplikasi **Sistem Informasi Absensi & Penugasan Asisten Laboratorium (Absensi Asdos)**.
 
 ---
 
@@ -101,31 +101,37 @@ graph TD
 Codebase ini menerapkan sejumlah pola desain terstandar untuk memastikan modularitas, kemudahan pemeliharaan, serta keamanan tingkat tinggi:
 
 ### 1. Front Controller Pattern
-* **Implementasi:** [`public/index.php`](file:///c:/laragon/www/absensi_labb/public/index.php) dan [`.htaccess`](file:///c:/laragon/www/absensi_labb/.htaccess).
-* **Penjelasan:** Seluruh *request* HTTP yang masuk ke server dialihkan ke satu file pintu masuk tunggal (`public/index.php`). File ini bertanggung jawab menginisialisasi sesi, zona waktu, konstanta konfigurasi, *autoloader*, *global error handler*, dan mendelegasikan eksekusi rute ke *Router*.
-* **Keuntungan:** Keamanan terpusat, menghindari celah akses file PHP langsung di subdirektori publik, dan struktur URL yang bersih (*clean URL*).
+
+- **Implementasi:** [`public/index.php`](file:///c:/laragon/www/absensi_labb/public/index.php) dan [`.htaccess`](file:///c:/laragon/www/absensi_labb/.htaccess).
+- **Penjelasan:** Seluruh _request_ HTTP yang masuk ke server dialihkan ke satu file pintu masuk tunggal (`public/index.php`). File ini bertanggung jawab menginisialisasi sesi, zona waktu, konstanta konfigurasi, _autoloader_, _global error handler_, dan mendelegasikan eksekusi rute ke _Router_.
+- **Keuntungan:** Keamanan terpusat, menghindari celah akses file PHP langsung di subdirektori publik, dan struktur URL yang bersih (_clean URL_).
 
 ### 2. Model-View-Controller (MVC) Pattern
-* **Implementasi:**
+
+- **Implementasi:**
   - **Model (`app/Models/`):** [`User.php`](file:///c:/laragon/www/absensi_labb/app/Models/User.php), [`MataKuliah.php`](file:///c:/laragon/www/absensi_labb/app/Models/MataKuliah.php), [`Plotting.php`](file:///c:/laragon/www/absensi_labb/app/Models/Plotting.php), [`Absensi.php`](file:///c:/laragon/www/absensi_labb/app/Models/Absensi.php).
   - **View (`app/Views/`):** Direktori `Auth/`, `SuperAdmin/`, `Asdos/` (Single-Page Workspace), dan `Templates/`.
   - **Controller (`app/Controllers/`):** [`AuthController.php`](file:///c:/laragon/www/absensi_labb/app/Controllers/AuthController.php), [`SuperAdminController.php`](file:///c:/laragon/www/absensi_labb/app/Controllers/SuperAdminController.php), [`AsdosController.php`](file:///c:/laragon/www/absensi_labb/app/Controllers/AsdosController.php).
 
 ### 3. Single-Page Course-Centric Workspace (Asdos)
-* **Implementasi:** [`app/Views/Asdos/dashboard.php`](file:///c:/laragon/www/absensi_labb/app/Views/Asdos/dashboard.php) dan [`app/Controllers/AsdosController.php`](file:///c:/laragon/www/absensi_labb/app/Controllers/AsdosController.php).
-* **Penjelasan:** Pengalaman asisten dosen dipusatkan pada kartu-kartu mata kuliah praktikum di halaman dashboard utama. Tindakan pengisian absensi (kamera native live capture) dan peninjauan riwayat dieksekusi secara asinkron/modal langsung dari mata kuliah terkait tanpa perpindahan halaman yang membebani memori.
+
+- **Implementasi:** [`app/Views/Asdos/dashboard.php`](file:///c:/laragon/www/absensi_labb/app/Views/Asdos/dashboard.php) dan [`app/Controllers/AsdosController.php`](file:///c:/laragon/www/absensi_labb/app/Controllers/AsdosController.php).
+- **Penjelasan:** Pengalaman asisten dosen dipusatkan pada kartu-kartu mata kuliah praktikum di halaman dashboard utama. Tindakan pengisian absensi (kamera native live capture) dan peninjauan riwayat dieksekusi secara asinkron/modal langsung dari mata kuliah terkait tanpa perpindahan halaman yang membebani memori.
 
 ### 4. Consolidated Modal Workflow (Super Admin)
-* **Implementasi:** [`app/Views/SuperAdmin/matkul.php`](file:///c:/laragon/www/absensi_labb/app/Views/SuperAdmin/matkul.php) dan [`app/Controllers/SuperAdminController.php`](file:///c:/laragon/www/absensi_labb/app/Controllers/SuperAdminController.php).
-* **Penjelasan:** Pengelolaan master mata kuliah dan plotting asisten dosen digabungkan dalam satu menu. Pembuatan plotting baru atau penonaktifan plotting dilakukan langsung secara kontekstual dari kartu mata kuliah terkait.
+
+- **Implementasi:** [`app/Views/SuperAdmin/matkul.php`](file:///c:/laragon/www/absensi_labb/app/Views/SuperAdmin/matkul.php) dan [`app/Controllers/SuperAdminController.php`](file:///c:/laragon/www/absensi_labb/app/Controllers/SuperAdminController.php).
+- **Penjelasan:** Pengelolaan master mata kuliah dan plotting asisten dosen digabungkan dalam satu menu. Pembuatan plotting baru atau penonaktifan plotting dilakukan langsung secara kontekstual dari kartu mata kuliah terkait.
 
 ### 5. Singleton Pattern (Database Connection)
-* **Implementasi:** [`Core\Database::getConnection()`](file:///c:/laragon/www/absensi_labb/Core/Database.php#L32).
-* **Penjelasan:** Memastikan hanya ada **satu instance koneksi PDO** yang dibuat dan digunakan secara bersamaan (*shared connection*) selama satu *lifecycle* request.
+
+- **Implementasi:** [`Core\Database::getConnection()`](file:///c:/laragon/www/absensi_labb/Core/Database.php#L32).
+- **Penjelasan:** Memastikan hanya ada **satu instance koneksi PDO** yang dibuat dan digunakan secara bersamaan (_shared connection_) selama satu _lifecycle_ request.
 
 ### 6. Middleware Pipeline Pattern
-* **Implementasi:** [`Core\Router::runMiddlewares()`](file:///c:/laragon/www/absensi_labb/Core/Router.php#L104).
-* **Daftar Middleware:**
+
+- **Implementasi:** [`Core\Router::runMiddlewares()`](file:///c:/laragon/www/absensi_labb/Core/Router.php#L104).
+- **Daftar Middleware:**
   - `guest`: Memastikan user belum login.
   - `auth`: Memastikan user sudah memiliki sesi login aktif.
   - `active`: Memastikan akun user berstatus aktif (`is_active = 1`).
@@ -133,8 +139,9 @@ Codebase ini menerapkan sejumlah pola desain terstandar untuk memastikan modular
   - `csrf`: Verifikasi kecocokan token anti-pemalsuan request.
 
 ### 7. Security Guard & Flash Messenger
-* **Implementasi:** [`Core\Guard`](file:///c:/laragon/www/absensi_labb/Core/Guard.php).
-* **Fitur Utama:**
+
+- **Implementasi:** [`Core\Guard`](file:///c:/laragon/www/absensi_labb/Core/Guard.php).
+- **Fitur Utama:**
   - Idempotent `Guard::url()` (mencegah duplikasi base URL prefix pada subfolder server).
   - CSRF Token generation & verification.
   - Role checking & Active account enforcement.
@@ -169,13 +176,13 @@ sequenceDiagram
 
     Router->>Router: Cocokkan URL & Request Method (Regex)
     Router->>Guard: Eksekusi Middleware Pipeline ['auth', 'asdos', 'csrf']
-    
+
     alt Middleware Gagal (cth: Akun Nonaktif / CSRF Kadaluarsa)
         Guard-->>User: 403 Forbidden / Set Flash Error & Redirect
     else Middleware Berhasil
         Router->>Ctrl: Instansiasi Controller & Panggil Action Method
         Ctrl->>Val: Validasi Data Form ($_POST)
-        
+
         alt Validasi Input Gagal
             Val-->>Ctrl: Return errors
             Ctrl->>Guard: Guard::setFlash('error', ...)
@@ -207,4 +214,4 @@ sequenceDiagram
    - Validasi MIME Type asli melalui PHP `finfo` (`image/jpeg`, `image/png`, `image/webp`).
    - Koreksi orientasi EXIF & penambahan watermark timestamp server permanen melalui pustaka GD bawaan PHP.
    - Pengacakan nama file simpanan menggunakan `bin2hex(random_bytes(16))`.
-6. **Active Account Guard (BR2):** Penegakan aturan bahwa akun nonaktif berada dalam mode *read-only* (seluruh aksi mutasi diblokir di middleware, controller, dan antarmuka JavaScript).
+6. **Active Account Guard (BR2):** Penegakan aturan bahwa akun nonaktif berada dalam mode _read-only_ (seluruh aksi mutasi diblokir di middleware, controller, dan antarmuka JavaScript).

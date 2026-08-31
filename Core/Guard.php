@@ -233,7 +233,7 @@ class Guard
     }
 
     /**
-     * Mendapatkan Base URL proyek tanpa akhiran /public dan tanpa trailing slash
+     * Mendapatkan Base URL proyek tanpa akhiran /public
      */
     public static function getBaseUrl(): string
     {
@@ -254,7 +254,6 @@ class Guard
     public static function url(string $path = ''): string
     {
         $baseUrl = self::getBaseUrl();
-
         if ($path === '' || $path === '/') {
             return $baseUrl === '' ? '/' : $baseUrl;
         }

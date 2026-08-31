@@ -1,9 +1,9 @@
-# PRD — Sistem Absensi & Plotting Asisten Dosen (Absensi Lab)
+# PRD — Sistem Absensi & Plotting Asisten Dosen (Absensi Asdos)
 
 **Versi:** 1.2  
 **Tanggal:** 30 Agustus 2026  
 **Status:** Implemented & Verified  
-**Teknologi:** PHP Native (MVC), MySQL/MariaDB, Tailwind CSS  
+**Teknologi:** PHP Native (MVC), MySQL/MariaDB, Tailwind CSS
 
 ---
 
@@ -16,39 +16,42 @@ Sistem internal Laboratorium Jurusan Sistem Informasi untuk mengelola **plotting
 ## 2. Latar Belakang & Masalah
 
 - Penugasan (plotting) asdos ke mata kuliah praktikum perlu terintegrasi langsung dengan data mata kuliah.
-- Pencatatan pelaksanaan praktikum/pengajaran asdos membutuhkan bukti otentik kamera langsung (*live camera trigger*) dengan *server watermark* waktu nyata WIB guna mencegah pemalsuan foto galeri.
+- Pencatatan pelaksanaan praktikum/pengajaran asdos membutuhkan bukti otentik kamera langsung (_live camera trigger_) dengan _server watermark_ waktu nyata WIB guna mencegah pemalsuan foto galeri.
 - Verifikasi kehadiran dan evaluasi asdos dilakukan langsung oleh dosen pengampu, disertai hak pengawasan administratif oleh Super Admin.
-- Kontrol status akun: Asdos yang telah selesai masa pengabdian dapat dinonaktifkan dengan aman tanpa kehilangan rekam jejak audit (*read-only history mode*).
+- Kontrol status akun: Asdos yang telah selesai masa pengabdian dapat dinonaktifkan dengan aman tanpa kehilangan rekam jejak audit (_read-only history mode_).
 
 ---
 
 ## 3. Tujuan & Metrik Keberhasilan
 
-| Tujuan | Metrik |
-|---|---|
+| Tujuan                  | Metrik                                                                                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | Plotting matkul terpadu | 100% asdos aktif memiliki penugasan kontekstual per mata kuliah dari super admin sebelum periode praktikum dimulai |
-| Absensi terverifikasi | Presensi diverifikasi dosen pengampu atau dimonitor Super Admin secara real-time |
-| Jejak audit | Setiap absensi memiliki timestamp `created_at`/`updated_at` dan foto ber-watermark permanen dari server |
-| Kontrol akses | Akun nonaktif 100% diblokir dari operasi CRUD, tetapi tetap bisa login melihat history (*read-only*) |
+| Absensi terverifikasi   | Presensi diverifikasi dosen pengampu atau dimonitor Super Admin secara real-time                                   |
+| Jejak audit             | Setiap absensi memiliki timestamp `created_at`/`updated_at` dan foto ber-watermark permanen dari server            |
+| Kontrol akses           | Akun nonaktif 100% diblokir dari operasi CRUD, tetapi tetap bisa login melihat history (_read-only_)               |
 
 ---
 
 ## 4. Aktor & Peran (Roles)
 
 ### 4.1 Super Admin
+
 - Mengelola data pengguna (dosen, asdos, super admin): create, edit, **aktifkan/nonaktifkan akun (on/off)**.
 - Mengelola **Mata Kuliah & Plotting Asdos Terpadu**: Buat matkul, tentukan dosen pengampu, buat/kelola plotting asdos langsung via modal interaktif per mata kuliah.
-- **Monitoring Absensi**: Memantau seluruh aktivitas kehadiran, mengubah status verifikasi (*override*), dan menghapus catatan absensi yang keliru/batal (*delete action*).
+- **Monitoring Absensi**: Memantau seluruh aktivitas kehadiran, mengubah status verifikasi (_override_), dan menghapus catatan absensi yang keliru/batal (_delete action_).
 
 ### 4.2 Dosen
+
 - Melihat daftar asdos yang diplot pada matkul yang dipimpin.
 - Memverifikasi absensi asdos: **setujui / tolak dengan catatan (pesan dosen)**.
 - Melihat riwayat absensi per asdos per matkul.
 
 ### 4.3 Asisten Dosen (Asdos)
+
 - **Single-Page Workspace**: Seluruh aktivitas dipusatkan di halaman Dashboard utama.
 - Melihat kartu-kartu mata kuliah praktikum yang diampu beserta dosen pembimbing dan ringkasan pertemuan.
-- **Isi Presensi Praktikum**: Mengisi form tanggal, jam, dan deskripsi tugas + ambil **Foto Kegiatan (kamera belakang)** dan **Foto Selfie (kamera depan)** langsung via *native camera capture*. Foto distempel watermark tanggal & jam otomatis oleh server (PHP GD).
+- **Isi Presensi Praktikum**: Mengisi form tanggal, jam, dan deskripsi tugas + ambil **Foto Kegiatan (kamera belakang)** dan **Foto Selfie (kamera depan)** langsung via _native camera capture_. Foto distempel watermark tanggal & jam otomatis oleh server (PHP GD).
 - **Riwayat Absensi**: Meninjau riwayat kehadiran per mata kuliah, status verifikasi, catatan dosen, dan lightbox foto bukti.
 - Jika akun dinonaktifkan: Otomatis masuk **Mode Lihat Saja** (bisa login dan lihat riwayat, namun seluruh tombol dan endpoint mutasi data diblokir).
 
@@ -57,23 +60,27 @@ Sistem internal Laboratorium Jurusan Sistem Informasi untuk mengelola **plotting
 ## 5. Ruang Lingkup Fitur
 
 ### F1 — Autentikasi & Manajemen Akun
+
 - Login multi-identitas (`email` atau `identity_number` + password `bcrypt`).
 - **Status akun**: `users.is_active` (`1` = aktif, `0` = nonaktif).
-  - Nonaktif $\rightarrow$ login berhasil, session mode `readonly`, badge *"Akun Nonaktif — mode lihat saja"*.
+  - Nonaktif $\rightarrow$ login berhasil, session mode `readonly`, badge _"Akun Nonaktif — mode lihat saja"_.
   - Seluruh endpoint POST/CRUD menolak request dari akun nonaktif via `Guard::requireActiveAccount()`.
 
 ### F2 — Manajemen Mata Kuliah & Plotting Terpadu (Super Admin)
+
 - CRUD master mata kuliah dan penetapan dosen pengampu.
 - **Integrated Plotting Modal**: Tombol kelola plotting dan buat plotting baru tersemat langsung pada kartu mata kuliah terkait di `/superadmin/matkul`.
 - Sinkronisasi otomatis status expired jika melewati `periode_selesai`.
 
 ### F3 — Single-Page Workspace & Presensi Kamera Live (Asdos)
+
 - Antarmuka satu halaman berbasis kartu mata kuliah di `/asdos/dashboard`.
-- Formulir modal presensi dengan matkul terkunci otomatis & nomor pertemuan otomatis terisi (*auto-increment*).
+- Formulir modal presensi dengan matkul terkunci otomatis & nomor pertemuan otomatis terisi (_auto-increment_).
 - Pemicu kamera native ganda (`capture="environment"` untuk suasana lab dan `capture="user"` untuk selfie asdos).
 - Watermark waktu server otomatis menggunakan pustaka PHP GD.
 
 ### F4 — Verifikasi & Monitoring Laporan
+
 - Peninjauan kehadiran oleh Dosen Pengampu (`disetujui` / `ditolak` + `pesan_dosen`).
 - Pengawasan terpusat oleh Super Admin di `/superadmin/monitoring` dengan filter multi-kriteria, fitur ubah status verifikasi cepat, dan fitur hapus absensi.
 
@@ -82,7 +89,7 @@ Sistem internal Laboratorium Jurusan Sistem Informasi untuk mengelola **plotting
 ## 6. User Flow Utama
 
 ```
-SUPER ADMIN : Login → Kelola user (on/off akun) 
+SUPER ADMIN : Login → Kelola user (on/off akun)
             → Menu Matkul & Plotting Terpadu (Buat matkul & plot asdos langsung dari kartu matkul)
             → Monitoring Absensi (Tinjau, ubah status, atau hapus catatan absensi)
 

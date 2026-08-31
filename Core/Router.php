@@ -124,7 +124,7 @@ class Router
     }
 
     /**
-     * Membersihkan URI dari subfolder Laragon/XAMPP, multiple slashes, dan Query String
+     * Membersihkan URI dari subfolder Laragon/XAMPP dan Query String
      */
     private function getCleanUri(): string
     {
@@ -141,7 +141,7 @@ class Router
             $uri = substr($uri, 7);
         }
 
-        // Normalisasi multiple consecutive slashes menjadi single slash
+        // Normalisasi multiple slashes menjadi single slash
         $uri = preg_replace('#/{2,}#', '/', (string)$uri);
 
         $clean = '/' . trim($uri, '/');

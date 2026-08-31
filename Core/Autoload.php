@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PSR-4 Autoloader Sederhana untuk Absensi Lab
+ * PSR-4 Autoloader Sederhana untuk Absensi Asdos
  * Otomatis me-load class dari namespace 'App\' dan 'Core\'
  */
 spl_autoload_register(function (string $class): void {

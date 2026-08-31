@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Global Desktop Sidebar Template untuk Super Admin
  * Khusus untuk tampilan layar Desktop (md ke atas).
@@ -46,7 +47,7 @@ $desktopNavItems = [
         </div>
         <div>
             <div class="flex items-center gap-1.5">
-                <span class="text-xs font-bold text-slate-900 leading-tight">Absensi Lab</span>
+                <span class="text-xs font-bold text-slate-900 leading-tight">Absensi Asdos</span>
                 <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider bg-blue-50 text-[#1867c0] border border-blue-200 rounded">
                     ADMIN
                 </span>
@@ -66,12 +67,12 @@ $desktopNavItems = [
             </span>
         </div>
 
-        <a href="<?= \Core\Guard::url('/logout') ?>" 
-           title="Keluar dari sistem"
-           aria-label="Keluar dari sistem"
-           class="p-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 transition duration-150 flex items-center justify-center cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs">
+        <a href="<?= \Core\Guard::url('/logout') ?>"
+            title="Keluar dari sistem"
+            aria-label="Keluar dari sistem"
+            class="p-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 transition duration-150 flex items-center justify-center cursor-pointer active:scale-95 shadow-2xs hover:shadow-xs">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
         </a>
     </div>
@@ -82,7 +83,7 @@ $desktopNavItems = [
 <!-- ========================================================================= -->
 <aside class="hidden md:flex fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex-col justify-between shadow-xs select-none">
     <div class="flex flex-col flex-1 overflow-y-auto">
-        
+
         <!-- Brand Header -->
         <a href="<?= \Core\Guard::url('/superadmin/dashboard') ?>" class="p-5 border-b border-slate-100 flex items-center gap-3 group transition">
             <div class="w-10 h-10 rounded-xl bg-[#1867c0] group-hover:bg-[#14529d] flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0 transition-transform duration-200 group-hover:scale-105">
@@ -90,7 +91,7 @@ $desktopNavItems = [
             </div>
             <div class="min-w-0">
                 <div class="flex items-center gap-1.5">
-                    <span class="text-sm font-bold text-slate-900 leading-tight group-hover:text-[#1867c0] transition truncate">Absensi Lab</span>
+                    <span class="text-sm font-bold text-slate-900 leading-tight group-hover:text-[#1867c0] transition truncate">Absensi Asdos</span>
                     <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-blue-50 text-[#1867c0] border border-blue-200 rounded-md shrink-0">
                         ADMIN
                     </span>
@@ -102,17 +103,17 @@ $desktopNavItems = [
         <!-- Navigation Section -->
         <div class="p-3.5 space-y-1">
             <p class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Menu Utama</p>
-            
+
             <nav class="space-y-1" aria-label="Menu Super Admin">
                 <?php foreach ($desktopNavItems as $nav): ?>
                     <?php if ($nav['active']): ?>
-                        <a href="<?= $nav['url'] ?>" 
-                           class="block px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#1867c0] text-white shadow-xs shadow-blue-500/20 transition duration-150">
+                        <a href="<?= $nav['url'] ?>"
+                            class="block px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#1867c0] text-white shadow-xs shadow-blue-500/20 transition duration-150">
                             <span class="truncate"><?= $nav['label'] ?></span>
                         </a>
                     <?php else: ?>
-                        <a href="<?= $nav['url'] ?>" 
-                           class="block px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition duration-150">
+                        <a href="<?= $nav['url'] ?>"
+                            class="block px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition duration-150">
                             <span class="truncate"><?= $nav['label'] ?></span>
                         </a>
                     <?php endif; ?>
@@ -134,11 +135,11 @@ $desktopNavItems = [
             </div>
         </div>
 
-        <a href="<?= \Core\Guard::url('/logout') ?>" 
-           title="Keluar dari sistem"
-           class="w-full px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 text-xs font-bold transition duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
+        <a href="<?= \Core\Guard::url('/logout') ?>"
+            title="Keluar dari sistem"
+            class="w-full px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 text-xs font-bold transition duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
             <span>Keluar Sistem</span>
         </a>

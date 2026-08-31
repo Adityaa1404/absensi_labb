@@ -102,7 +102,7 @@ class AuthController
     //     <head>
     //         <meta charset='UTF-8'>
     //         <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    //         <title>Dashboard {$roleLabel} — Absensi Lab</title>
+    //         <title>Dashboard {$roleLabel} — Absensi Asdos</title>
     //         <script src='https://cdn.tailwindcss.com'></script>
     //         <link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' rel='stylesheet'>
     //         <style>body { font-family: 'Inter', sans-serif; }</style>
@@ -112,7 +112,7 @@ class AuthController
     //             <div class='w-16 h-16 rounded-2xl bg-blue-50 border border-blue-200 text-[#1867c0] mx-auto flex items-center justify-center font-bold text-2xl shadow-xs'>
     //                 LAB
     //             </div>
-                
+
     //             <div class='space-y-1.5'>
     //                 <span class='px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-[#1867c0] inline-block mb-1'>
     //                     Role: {$roleLabel}
@@ -154,7 +154,7 @@ class AuthController
     {
         unset($_SESSION['user']);
         session_destroy();
-        
+
         session_start();
         Guard::setFlash('info', 'Anda telah berhasil logout.');
         Guard::redirect('/login');

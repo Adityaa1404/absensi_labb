@@ -24,7 +24,7 @@ $statusBadge = static function (string $status): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard & Presensi Asdos — Absensi Lab</title>
+    <title>Dashboard & Presensi Asdos — Absensi Asdos</title>
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -35,7 +35,9 @@ $statusBadge = static function (string $status): string {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
 
@@ -126,7 +128,7 @@ $statusBadge = static function (string $status): string {
 
             <!-- Main Course Hub Section -->
             <div class="space-y-4">
-                
+
                 <!-- Section Title & Search -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
                     <div>
@@ -136,7 +138,7 @@ $statusBadge = static function (string $status): string {
 
                     <div class="flex items-center gap-2.5">
                         <div class="relative w-full sm:w-64">
-                            <input type="text" id="courseSearchInput" placeholder="Cari mata kuliah..." 
+                            <input type="text" id="courseSearchInput" placeholder="Cari mata kuliah..."
                                 class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
                             <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -164,14 +166,14 @@ $statusBadge = static function (string $status): string {
                 <?php else: ?>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="courseGridContainer">
                         <?php foreach ($plottingList as $p): ?>
-                            <?php 
-                                $isPlotActive = (int)$p['is_active'] === 1;
-                                $totalAbsensi = (int)($p['total_absensi'] ?? 0);
+                            <?php
+                            $isPlotActive = (int)$p['is_active'] === 1;
+                            $totalAbsensi = (int)($p['total_absensi'] ?? 0);
                             ?>
                             <div class="course-card bg-white border border-slate-200 rounded-2xl p-5 shadow-xs transition-all duration-200 hover:shadow-md hover:border-slate-300 flex flex-col justify-between"
                                 data-nama="<?= htmlspecialchars(strtolower($p['nama_matkul']), ENT_QUOTES, 'UTF-8') ?>"
                                 data-dosen="<?= htmlspecialchars(strtolower($p['nama_dosen'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-                                
+
                                 <div>
                                     <!-- Top Row: Icon & Status -->
                                     <div class="flex items-start justify-between gap-3 mb-3">
@@ -227,7 +229,9 @@ $statusBadge = static function (string $status): string {
                                 <div class="mt-4 pt-3.5 border-t border-slate-100 flex flex-col gap-2.5">
                                     <div class="flex items-center justify-between">
                                         <span class="px-2 py-0.5 text-[11px] font-bold bg-slate-100 text-slate-700 rounded-md border border-slate-200 inline-flex items-center gap-1">
-                                            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                            </svg>
                                             <span><?= $totalAbsensi ?> Pertemuan Dicatat</span>
                                         </span>
                                     </div>
@@ -235,7 +239,7 @@ $statusBadge = static function (string $status): string {
                                     <div class="grid grid-cols-2 gap-2">
                                         <!-- Tombol Absen Sekarang -->
                                         <?php if ($isPlotActive && $isActive): ?>
-                                            <button type="button" 
+                                            <button type="button"
                                                 onclick="openAbsenModal(<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>)"
                                                 class="px-3 py-2 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs font-bold rounded-xl transition shadow-xs hover:shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -251,7 +255,7 @@ $statusBadge = static function (string $status): string {
                                         <?php endif; ?>
 
                                         <!-- Tombol Lihat Riwayat -->
-                                        <button type="button" 
+                                        <button type="button"
                                             onclick="openRiwayatModal(<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>)"
                                             class="px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-[0.98] text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer">
                                             <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -293,7 +297,9 @@ $statusBadge = static function (string $status): string {
                     </div>
                 </div>
                 <button type="button" onclick="closeAbsenModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition cursor-pointer">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
             </div>
 
@@ -361,7 +367,7 @@ $statusBadge = static function (string $status): string {
 
                 <!-- Section Bukti Kamera (Native Camera Trigger) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
-                    
+
                     <!-- 1. Foto Kegiatan (Kamera Belakang) -->
                     <div class="space-y-1.5">
                         <div class="flex items-center justify-between">
@@ -376,7 +382,7 @@ $statusBadge = static function (string $status): string {
                         <input type="file" name="foto_kegiatan" id="foto_kegiatan" accept="image/*" capture="environment" required class="hidden" onchange="previewNativePhoto(this, 'kegiatan')">
 
                         <div id="camera_card_kegiatan" class="relative w-full h-44 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 hover:border-[#1867c0] hover:bg-white overflow-hidden flex items-center justify-center transition-all duration-200 cursor-pointer group" onclick="triggerNativeCamera('kegiatan')">
-                            
+
                             <!-- Idle State -->
                             <div id="idle_kegiatan" class="text-center p-3 space-y-1.5">
                                 <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 text-[#1867c0] border border-blue-100 flex items-center justify-center group-hover:scale-105 transition shadow-2xs">
@@ -394,7 +400,9 @@ $statusBadge = static function (string $status): string {
                                 <img id="img_kegiatan" src="" alt="Preview Kegiatan" class="w-full h-full object-cover">
                                 <div class="absolute top-2 left-2">
                                     <span class="px-2 py-0.5 bg-emerald-600/90 text-white text-[10px] font-bold rounded-md shadow backdrop-blur-xs flex items-center gap-1">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
                                         Foto Terpilih
                                     </span>
                                 </div>
@@ -421,7 +429,7 @@ $statusBadge = static function (string $status): string {
                         <input type="file" name="foto_selfie" id="foto_selfie" accept="image/*" capture="user" required class="hidden" onchange="previewNativePhoto(this, 'selfie')">
 
                         <div id="camera_card_selfie" class="relative w-full h-44 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 hover:border-indigo-500 hover:bg-white overflow-hidden flex items-center justify-center transition-all duration-200 cursor-pointer group" onclick="triggerNativeCamera('selfie')">
-                            
+
                             <!-- Idle State -->
                             <div id="idle_selfie" class="text-center p-3 space-y-1.5">
                                 <div class="w-10 h-10 mx-auto rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center group-hover:scale-105 transition shadow-2xs">
@@ -438,7 +446,9 @@ $statusBadge = static function (string $status): string {
                                 <img id="img_selfie" src="" alt="Preview Selfie" class="w-full h-full object-cover">
                                 <div class="absolute top-2 left-2">
                                     <span class="px-2 py-0.5 bg-emerald-600/90 text-white text-[10px] font-bold rounded-md shadow backdrop-blur-xs flex items-center gap-1">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
                                         Selfie Terpilih
                                     </span>
                                 </div>
@@ -463,7 +473,9 @@ $statusBadge = static function (string $status): string {
                         Batal
                     </button>
                     <button type="submit" id="btn_submit_absensi" class="px-5 py-2.5 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition flex items-center gap-2 cursor-pointer">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
                         <span>Kirim Absensi</span>
                     </button>
                 </div>
@@ -491,13 +503,15 @@ $statusBadge = static function (string $status): string {
                     </div>
                 </div>
                 <button type="button" onclick="closeRiwayatModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition cursor-pointer">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
             </div>
 
             <!-- Content Area -->
             <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
-                
+
                 <!-- Matkul Context Header Banner -->
                 <div class="p-4 bg-indigo-50/40 border border-indigo-200/70 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
                     <div>
@@ -544,7 +558,9 @@ $statusBadge = static function (string $status): string {
             <div class="flex items-center justify-between p-2 text-white border-b border-slate-800">
                 <span id="modal_preview_caption" class="text-xs font-bold text-slate-200">Pratinjau Foto Bukti</span>
                 <button type="button" onclick="closeFotoPreview()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition cursor-pointer">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
             </div>
             <div class="p-2 flex items-center justify-center bg-black/40 rounded-xl overflow-hidden min-h-[300px] max-h-[70vh]">
@@ -564,9 +580,9 @@ $statusBadge = static function (string $status): string {
         // =========================================================================
         // Client-side Search Course Cards
         // =========================================================================
-        const searchInput       = document.getElementById('courseSearchInput');
-        const courseCards       = document.querySelectorAll('.course-card');
-        const courseCountBadge  = document.getElementById('courseCountBadge');
+        const searchInput = document.getElementById('courseSearchInput');
+        const courseCards = document.querySelectorAll('.course-card');
+        const courseCountBadge = document.getElementById('courseCountBadge');
 
         if (searchInput) {
             searchInput.addEventListener('input', function() {
@@ -574,7 +590,7 @@ $statusBadge = static function (string $status): string {
                 let count = 0;
 
                 courseCards.forEach(card => {
-                    const nama  = card.dataset.nama || '';
+                    const nama = card.dataset.nama || '';
                     const dosen = card.dataset.dosen || '';
 
                     if (query === '' || nama.includes(query) || dosen.includes(query)) {
@@ -646,7 +662,7 @@ $statusBadge = static function (string $status): string {
             document.getElementById('modal_riwayat_dosen_title').textContent = `Dosen Pembimbing: ${plotData.nama_dosen || 'Belum ditentukan'}`;
 
             const isPlotActive = parseInt(plotData.is_active) === 1;
-            const canAbsen     = isPlotActive && IS_USER_ACTIVE;
+            const canAbsen = isPlotActive && IS_USER_ACTIVE;
 
             const btnAbsenBaru = document.getElementById('modal_riwayat_btn_absen_baru');
             if (btnAbsenBaru) {
@@ -698,7 +714,7 @@ $statusBadge = static function (string $status): string {
                     card.className = 'p-4 bg-white border border-slate-200 rounded-xl shadow-2xs space-y-2.5 hover:border-slate-300 transition';
 
                     const fotoKegiatanUrl = item.foto_kegiatan ? `${BASE_URL}/uploads/absensi/${item.foto_kegiatan}` : '';
-                    const fotoSelfieUrl   = item.foto_selfie ? `${BASE_URL}/uploads/absensi/${item.foto_selfie}` : '';
+                    const fotoSelfieUrl = item.foto_selfie ? `${BASE_URL}/uploads/absensi/${item.foto_selfie}` : '';
 
                     card.innerHTML = `
                         <div class="flex items-start justify-between gap-3">
@@ -789,10 +805,10 @@ $statusBadge = static function (string $status): string {
             const file = input.files && input.files[0];
             if (!file) return;
 
-            const imgEl      = document.getElementById(`img_${type}`);
-            const idleEl     = document.getElementById(`idle_${type}`);
-            const previewEl  = document.getElementById(`preview_${type}`);
-            const cardEl     = document.getElementById(`camera_card_${type}`);
+            const imgEl = document.getElementById(`img_${type}`);
+            const idleEl = document.getElementById(`idle_${type}`);
+            const previewEl = document.getElementById(`preview_${type}`);
+            const cardEl = document.getElementById(`camera_card_${type}`);
 
             imgEl.src = URL.createObjectURL(file);
             idleEl.classList.add('hidden');
@@ -802,11 +818,11 @@ $statusBadge = static function (string $status): string {
         }
 
         function resetCameraPreview(type) {
-            const input      = document.getElementById(`foto_${type}`);
-            const imgEl      = document.getElementById(`img_${type}`);
-            const idleEl     = document.getElementById(`idle_${type}`);
-            const previewEl  = document.getElementById(`preview_${type}`);
-            const cardEl     = document.getElementById(`camera_card_${type}`);
+            const input = document.getElementById(`foto_${type}`);
+            const imgEl = document.getElementById(`img_${type}`);
+            const idleEl = document.getElementById(`idle_${type}`);
+            const previewEl = document.getElementById(`preview_${type}`);
+            const cardEl = document.getElementById(`camera_card_${type}`);
 
             if (input) input.value = '';
             if (imgEl) imgEl.src = '';
@@ -821,7 +837,7 @@ $statusBadge = static function (string $status): string {
         // Form Submit Validation: Pastikan kedua foto kamera sudah diambil
         document.getElementById('formIsiAbsensi')?.addEventListener('submit', function(e) {
             const kegiatanFile = document.getElementById('foto_kegiatan')?.files[0];
-            const selfieFile   = document.getElementById('foto_selfie')?.files[0];
+            const selfieFile = document.getElementById('foto_selfie')?.files[0];
 
             if (!kegiatanFile || !selfieFile) {
                 e.preventDefault();

@@ -113,7 +113,7 @@ File database [`absensi_lab.sql`](file:///c:/laragon/www/absensi_labb/absensi_la
 | :--- | :--- | :--- | :--- |
 | **Super Admin** | `admin@labsi.ac.id` / `admin` | *(Sesuai hash database)* | Kelola Pengguna, Mata Kuliah & Plotting Terpadu, Monitoring & Hapus Absensi |
 | **Dosen** | `cozuu101@edumail.edu.rs` / `1` | *(Sesuai hash database)* | Verifikasi absensi asdos pada matkul pengampu |
-| **Asdos (Aktif)** | `asdos@labsi.ac.id` / `25082010001` | *(Sesuai hash database)* | Single-Page Workspace: Absen Kamera Live, Riwayat Per Matkul |
+| **Asdos (Aktif)** | `ola@gmail.com` / `25082010001` | *(Sesuai hash database)* | Single-Page Workspace: Absen Kamera Live, Riwayat Per Matkul |
 
 ---
 

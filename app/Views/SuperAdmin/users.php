@@ -209,6 +209,14 @@ $filters     = $filters ?? [
                                                         </span>
                                                     <?php endif; ?>
                                                 </div>
+                                                <!-- <div class="flex items-center gap-2 mt-1 text-[11px] text-slate-500">
+                                                    <?php if (!empty($u['identity_number'])): ?>
+                                                        <span class="font-mono font-semibold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+                                                            <?= $identityLabel ?>: <?= htmlspecialchars($u['identity_number'], ENT_QUOTES, 'UTF-8') ?>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                    <span>#<?= $u['id_user'] ?></span>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </td>
@@ -364,26 +372,26 @@ $filters     = $filters ?? [
                             </label>
                         </div>
                         <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
-                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 has-[:checked]:border-[#1867c0] has-[:checked]:bg-blue-50/80 transition-all duration-150 shadow-2xs">
-                                <input type="radio" id="create_role_asdos" name="role" value="asdos" checked onchange="updateIdentityLabel('create', this.value)" class="sr-only">
-                                <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center mb-1.5 group-has-[:checked]:bg-[#1867c0] group-has-[:checked]:text-white transition">
+                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 has-checked:border-[#1867c0] has-checked:bg-blue-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" name="role" value="asdos" checked onchange="updateIdentityLabel('create', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center mb-1.5 group-has-checked:bg-[#1867c0] group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                 </div>
-                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-[:checked]:text-[#1867c0]">Asdos</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-[#1867c0]">Asdos</span>
                             </label>
-                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 has-[:checked]:border-indigo-600 has-[:checked]:bg-indigo-50/80 transition-all duration-150 shadow-2xs">
-                                <input type="radio" id="create_role_dosen" name="role" value="dosen" onchange="updateIdentityLabel('create', this.value)" class="sr-only">
-                                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-1.5 group-has-[:checked]:bg-indigo-700 group-has-[:checked]:text-white transition">
+                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 has-checked:border-indigo-600 has-checked:bg-indigo-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" name="role" value="dosen" onchange="updateIdentityLabel('create', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-1.5 group-has-checked:bg-indigo-700 group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-[:checked]:text-indigo-900">Dosen</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-indigo-900">Dosen</span>
                             </label>
-                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 has-[:checked]:border-amber-600 has-[:checked]:bg-amber-50/80 transition-all duration-150 shadow-2xs">
-                                <input type="radio" id="create_role_admin" name="role" value="super_admin" onchange="updateIdentityLabel('create', this.value)" class="sr-only">
-                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-1.5 group-has-[:checked]:bg-amber-700 group-has-[:checked]:text-white transition">
+                            <label class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 has-checked:border-amber-600 has-checked:bg-amber-50/80 transition-all duration-150 shadow-2xs">
+                                <input type="radio" name="role" value="super_admin" onchange="updateIdentityLabel('create', this.value)" class="sr-only">
+                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-1.5 group-has-checked:bg-amber-700 group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 </div>
-                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-[:checked]:text-amber-950">Admin</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-amber-950">Admin</span>
                             </label>
                         </div>
                     </div>
@@ -559,27 +567,28 @@ $filters     = $filters ?? [
                             </label>
                         </div>
                         <div class="grid grid-cols-3 gap-2.5 sm:gap-3">
-                            <label id="edit_role_asdos_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 has-[:checked]:border-[#1867c0] has-[:checked]:bg-blue-50/80 transition-all duration-150 shadow-2xs">
+                            <label id="edit_role_asdos_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-blue-400 hover:bg-blue-50/40 has-checked:border-[#1867c0] has-checked:bg-blue-50/80 transition-all duration-150 shadow-2xs">
                                 <input type="radio" id="edit_role_asdos" name="role" value="asdos" onchange="updateIdentityLabel('edit', this.value)" class="sr-only">
-                                <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center mb-1.5 group-has-[:checked]:bg-[#1867c0] group-has-[:checked]:text-white transition">
+                                <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center mb-1.5 group-has-checked:bg-[#1867c0] group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                 </div>
-                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-[:checked]:text-[#1867c0]">Asdos</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-[#1867c0]">Asdos</span>
                             </label>
-                            <label id="edit_role_dosen_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 has-[:checked]:border-indigo-600 has-[:checked]:bg-indigo-50/80 transition-all duration-150 shadow-2xs">
+                            <label id="edit_role_dosen_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/40 has-checked:border-indigo-600 has-checked:bg-indigo-50/80 transition-all duration-150 shadow-2xs">
                                 <input type="radio" id="edit_role_dosen" name="role" value="dosen" onchange="updateIdentityLabel('edit', this.value)" class="sr-only">
-                                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-1.5 group-has-[:checked]:bg-indigo-700 group-has-[:checked]:text-white transition">
+                                <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center mb-1.5 group-has-checked:bg-indigo-700 group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                                 </div>
-                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-[:checked]:text-indigo-900">Dosen</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-indigo-900">Dosen</span>
                             </label>
-                            <label id="edit_role_admin_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 has-[:checked]:border-amber-600 has-[:checked]:bg-amber-50/80 transition-all duration-150 shadow-2xs">
+                            <label id="edit_role_admin_label" class="group relative flex flex-col items-center justify-center p-3 sm:p-3.5 border-2 border-slate-200 rounded-xl cursor-pointer hover:border-amber-400 hover:bg-amber-50/40 has-checked:border-amber-600 has-checked:bg-amber-50/80 transition-all duration-150 shadow-2xs">
                                 <input type="radio" id="edit_role_admin" name="role" value="super_admin" onchange="updateIdentityLabel('edit', this.value)" class="sr-only">
-                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-1.5 group-has-[:checked]:bg-amber-700 group-has-[:checked]:text-white transition">
+                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center mb-1.5 group-has-checked:bg-amber-700 group-has-checked:text-white transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 </div>
-                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-[:checked]:text-amber-950">Admin</span>
+                                <span class="text-xs sm:text-sm font-bold text-slate-800 group-has-checked:text-amber-950">Admin</span>
                             </label>
+
                         </div>
                     </div>
 
@@ -922,57 +931,57 @@ x
         function openEditModal(row) {
             if (!row) return;
 
-            const alertEl = document.getElementById('edit_error_alert');
-            if (alertEl) alertEl.classList.add('hidden');
+        const id       = row.dataset.id;
+        const nama     = row.dataset.nama;
+        const identity = row.dataset.identity;
+        const email    = row.dataset.email;
+        const nohp     = row.dataset.nohp;
+        const role     = row.dataset.role;
+        const active   = row.dataset.active === '1';
+        const isSelf   = row.dataset.isSelf === '1';
 
-            const id       = row.dataset.id;
-            const nama     = row.dataset.nama;
-            const identity = row.dataset.identity;
-            const email    = row.dataset.email;
-            const nohp     = row.dataset.nohp;
-            const role     = row.dataset.role;
-            const active   = row.dataset.active === '1';
-            const isSelf   = row.dataset.isSelf === '1';
+        // Set Action URL
+        document.getElementById('editForm').action = `${BASE_URL}/superadmin/users/${id}/update`;
 
-            // Set Action URL
-            document.getElementById('editForm').action = `${BASE_URL}/superadmin/users/${id}/update`;
+        // Fill Form Values
+        document.getElementById('edit_nama').value            = nama;
+        document.getElementById('edit_identity_number').value = identity;
+        document.getElementById('edit_email').value           = email;
+        document.getElementById('edit_nohp').value            = nohp;
+        document.getElementById('edit_password').value        = '';
+        document.getElementById('edit_is_active').checked     = active;
 
-            // Fill Form Values
-            document.getElementById('edit_nama').value            = nama;
-            document.getElementById('edit_identity_number').value = identity;
-            document.getElementById('edit_email').value           = email;
-            document.getElementById('edit_nohp').value            = nohp;
-            document.getElementById('edit_password').value        = '';
-            document.getElementById('edit_is_active').checked     = active;
+        // Set Radio Role & Trigger Change Event
+        const radioId = `edit_role_${role === 'super_admin' ? 'admin' : role}`;
+        const roleRadio = document.getElementById(radioId);
+        
+        if (roleRadio) {
+            roleRadio.checked = true;
+            // Pemicu event 'change' agar Tailwind peer-checked langsung merespon & menyalakan border
+            roleRadio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
 
-            // Set Radio Role
-            const roleRadio = document.getElementById(`edit_role_${role === 'super_admin' ? 'admin' : role}`);
-            if (roleRadio) roleRadio.checked = true;
+        updateIdentityLabel('edit', role);
+        updateModalStatusLabel('edit', active);
 
-            updateIdentityLabel('edit', role);
-            updateModalStatusLabel('edit', active);
-
-            // Subtitle info
-            const subTitleEl = document.getElementById('edit_modal_subtitle');
-            if (subTitleEl) subTitleEl.textContent = `Mengedit ID #${id} — ${nama}`;
+        // Subtitle info
+        const subTitleEl = document.getElementById('edit_modal_subtitle');
+        if (subTitleEl) subTitleEl.textContent = `Mengedit ID #${id} — ${nama}`;
 
             // If editing self, disable status turning off and role changing
             const statusCheckbox = document.getElementById('edit_is_active');
             const statusDesc     = document.getElementById('edit_status_desc');
-            const editRoleRadios = document.querySelectorAll('#editModal input[name="role"]');
 
             if (isSelf) {
                 statusCheckbox.disabled = true;
                 statusDesc.textContent  = 'Anda tidak dapat menonaktifkan akun Anda sendiri saat sedang login.';
-                editRoleRadios.forEach(r => r.disabled = true);
             } else {
                 statusCheckbox.disabled = false;
-                editRoleRadios.forEach(r => r.disabled = false);
             }
 
-            document.getElementById('editModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+        document.getElementById('editModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
 
         function closeEditModal() {
             const alertEl = document.getElementById('edit_error_alert');

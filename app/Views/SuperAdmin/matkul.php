@@ -175,9 +175,6 @@ if (empty($dosenList)) {
 
                     <!-- Dosen Filter & Counter -->
                     <div class="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end">
-                        <div class="text-xs text-slate-500 font-medium">
-                            Menampilkan: <span id="displayedCount" class="font-bold text-slate-800"><?= count($matkulList) ?></span> mata kuliah
-                        </div>
 
                         <div class="relative">
                             <select id="dosenFilter" onchange="applyFilters()" class="bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-700 font-medium focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition cursor-pointer shadow-2xs">

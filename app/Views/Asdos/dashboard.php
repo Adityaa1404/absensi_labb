@@ -124,152 +124,168 @@ $statusBadge = static function (string $status): string {
                     </div>
                 </div>
 
-            </div>
-
+            </div>            
+            
             <!-- Main Course Hub Section -->
-            <div class="space-y-4">
+            <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
 
-                <!-- Section Title & Search -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+                <!-- Section Header Toolbar -->
+                <div class="p-4 sm:p-5 border-b border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
                     <div>
                         <h2 class="text-base sm:text-lg font-bold text-slate-900">Mata Kuliah yang Diampu</h2>
                         <p class="text-xs text-slate-500 mt-0.5">Daftar penugasan praktikum aktif dan arsip riwayat penugasan Anda.</p>
                     </div>
 
-                    <div class="flex items-center gap-2.5">
+                    <div class="flex items-center gap-2.5 w-full sm:w-auto">
                         <div class="relative w-full sm:w-64">
-                            <input type="text" id="courseSearchInput" placeholder="Cari mata kuliah..."
-                                class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
-                            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <input type="text" id="courseSearchInput" placeholder="Cari mata kuliah atau dosen..."
+                                class="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
                         </div>
-                        <span id="courseCountBadge" class="px-2.5 py-2 text-xs font-bold bg-white text-slate-700 border border-slate-300 rounded-xl shadow-2xs shrink-0">
+                        <span id="courseCountBadge" class="px-3 py-2 text-xs font-bold bg-white text-slate-700 border border-slate-300 rounded-xl shadow-2xs shrink-0 whitespace-nowrap inline-flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-[#1867c0]"></span>
                             <?= count($plottingList) ?> Matkul
                         </span>
                     </div>
                 </div>
 
-                <!-- Course Grid Cards -->
-                <?php if (empty($plottingList)): ?>
-                    <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-xs">
-                        <div class="w-16 h-16 rounded-2xl bg-blue-50 text-[#1867c0] flex items-center justify-center mx-auto mb-4 border border-blue-200 shadow-2xs">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                        </div>
-                        <h3 class="text-base font-bold text-slate-800">Belum Ada Penugasan Mata Kuliah</h3>
-                        <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto leading-relaxed">
-                            Anda belum diplotkan ke mata kuliah manapun oleh Super Admin. Silakan hubungi koordinator laboratorium untuk plotting asdos.
-                        </p>
-                    </div>
-                <?php else: ?>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="courseGridContainer">
-                        <?php foreach ($plottingList as $p): ?>
-                            <?php
-                            $isPlotActive = (int)$p['is_active'] === 1;
-                            $totalAbsensi = (int)($p['total_absensi'] ?? 0);
-                            ?>
-                            <div class="course-card bg-white border border-slate-200 rounded-2xl p-5 shadow-xs transition-all duration-200 hover:shadow-md hover:border-slate-300 flex flex-col justify-between"
-                                data-nama="<?= htmlspecialchars(strtolower($p['nama_matkul']), ENT_QUOTES, 'UTF-8') ?>"
-                                data-dosen="<?= htmlspecialchars(strtolower($p['nama_dosen'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
-
-                                <div>
-                                    <!-- Top Row: Icon & Status -->
-                                    <div class="flex items-start justify-between gap-3 mb-3">
-                                        <div class="w-11 h-11 rounded-xl bg-blue-50 border border-blue-200 text-[#1867c0] font-bold text-sm flex items-center justify-center shadow-2xs">
-                                            MK
-                                        </div>
-                                        <?php if ($isPlotActive): ?>
-                                            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 inline-flex items-center gap-1 shadow-2xs">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                                Aktif
-                                            </span>
-                                        <?php else: ?>
-                                            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-slate-100 text-slate-600 border border-slate-300">
-                                                Selesai / Nonaktif
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <!-- Course Info -->
-                                    <h3 class="font-bold text-slate-900 text-base leading-snug">
-                                        <?= htmlspecialchars($p['nama_matkul'], ENT_QUOTES, 'UTF-8') ?>
-                                    </h3>
-
-                                    <?php if (!empty($p['deskripsi_matkul'])): ?>
-                                        <p class="text-xs text-slate-500 line-clamp-2 mt-1 leading-relaxed">
-                                            <?= htmlspecialchars($p['deskripsi_matkul'], ENT_QUOTES, 'UTF-8') ?>
-                                        </p>
-                                    <?php endif; ?>
-
-                                    <!-- Dosen Pengampu -->
-                                    <div class="mt-3.5 pt-3 border-t border-slate-100 space-y-1.5">
-                                        <div class="flex items-center gap-2">
-                                            <div class="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-[10px] flex items-center justify-center shrink-0">
-                                                D
-                                            </div>
-                                            <div class="min-w-0">
-                                                <p class="text-xs font-bold text-slate-800 truncate">
-                                                    <?= htmlspecialchars($p['nama_dosen'] ?? 'Dosen Belum Ditentukan', ENT_QUOTES, 'UTF-8') ?>
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <p class="text-[11px] text-slate-500 flex items-center gap-1.5">
-                                            <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                            <span><?= date('d M Y', strtotime($p['periode_mulai'])) ?> – <?= date('d M Y', strtotime($p['periode_selesai'])) ?></span>
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Bottom Action & Stats -->
-                                <div class="mt-4 pt-3.5 border-t border-slate-100 flex flex-col gap-2.5">
-                                    <div class="flex items-center justify-between">
-                                        <span class="px-2 py-0.5 text-[11px] font-bold bg-slate-100 text-slate-700 rounded-md border border-slate-200 inline-flex items-center gap-1">
-                                            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                            </svg>
-                                            <span><?= $totalAbsensi ?> Pertemuan Dicatat</span>
-                                        </span>
-                                    </div>
-
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <!-- Tombol Absen Sekarang -->
-                                        <?php if ($isPlotActive && $isActive): ?>
-                                            <button type="button"
-                                                onclick="openAbsenModal(<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>)"
-                                                class="px-3 py-2 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs font-bold rounded-xl transition shadow-xs hover:shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                                <span>Absen</span>
-                                            </button>
-                                        <?php else: ?>
-                                            <button type="button" disabled class="px-3 py-2 bg-slate-100 text-slate-400 text-xs font-bold rounded-xl cursor-not-allowed flex items-center justify-center gap-1">
-                                                <span>Nonaktif</span>
-                                            </button>
-                                        <?php endif; ?>
-
-                                        <!-- Tombol Lihat Riwayat -->
-                                        <button type="button"
-                                            onclick="openRiwayatModal(<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>)"
-                                            class="px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-[0.98] text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer">
-                                            <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                                            </svg>
-                                            <span>Riwayat</span>
-                                        </button>
-                                    </div>
-                                </div>
-
+                <!-- Section Body Content -->
+                <div class="p-4 sm:p-6 bg-slate-50/40">
+                    <?php if (empty($plottingList)): ?>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-10 sm:p-12 text-center shadow-xs">
+                            <div class="w-16 h-16 rounded-2xl bg-blue-50 text-[#1867c0] flex items-center justify-center mx-auto mb-4 border border-blue-200 shadow-2xs">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
                             </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
+                            <h3 class="text-base font-bold text-slate-800">Belum Ada Penugasan Mata Kuliah</h3>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto leading-relaxed">
+                                Anda belum diplotkan ke mata kuliah manapun oleh Super Admin. Silakan hubungi koordinator laboratorium untuk plotting asdos.
+                            </p>
+                        </div>
+                    <?php else: ?>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" id="courseGridContainer">
+                            <?php foreach ($plottingList as $p): ?>
+                                <?php
+                                $isPlotActive = (int)$p['is_active'] === 1;
+                                $totalAbsensi = (int)($p['total_absensi'] ?? 0);
+                                ?>
+                                <div class="course-card bg-white border border-slate-200 rounded-2xl p-5 shadow-xs transition-all duration-200 hover:shadow-md hover:border-slate-300 flex flex-col justify-between"
+                                    data-nama="<?= htmlspecialchars(strtolower($p['nama_matkul']), ENT_QUOTES, 'UTF-8') ?>"
+                                    data-dosen="<?= htmlspecialchars(strtolower($p['nama_dosen'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+
+                                    <div>
+                                        <!-- Top Row: Icon & Status -->
+                                        <div class="flex items-start justify-between gap-3 mb-3">
+                                            <div class="w-11 h-11 rounded-xl bg-blue-50 border border-blue-200 text-[#1867c0] font-bold text-sm flex items-center justify-center shadow-2xs">
+                                                MK
+                                            </div>
+                                            <?php if ($isPlotActive): ?>
+                                                <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 inline-flex items-center gap-1 shadow-2xs">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                                    Aktif
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-slate-100 text-slate-600 border border-slate-300">
+                                                    Selesai / Nonaktif
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <!-- Course Info -->
+                                        <h3 class="font-bold text-slate-900 text-base leading-snug">
+                                            <?= htmlspecialchars($p['nama_matkul'], ENT_QUOTES, 'UTF-8') ?>
+                                        </h3>
+
+                                        <?php if (!empty($p['deskripsi_matkul'])): ?>
+                                            <p class="text-xs text-slate-500 line-clamp-2 mt-1 leading-relaxed">
+                                                <?= htmlspecialchars($p['deskripsi_matkul'], ENT_QUOTES, 'UTF-8') ?>
+                                            </p>
+                                        <?php endif; ?>
+
+                                        <!-- Dosen Pengampu -->
+                                        <div class="mt-3.5 pt-3 border-t border-slate-100 space-y-1.5">
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-6 h-6 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold text-[10px] flex items-center justify-center shrink-0">
+                                                    D
+                                                </div>
+                                                <div class="min-w-0">
+                                                    <p class="text-xs font-bold text-slate-800 truncate">
+                                                        <?= htmlspecialchars($p['nama_dosen'] ?? 'Dosen Belum Ditentukan', ENT_QUOTES, 'UTF-8') ?>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <p class="text-[11px] text-slate-500 flex items-center gap-1.5">
+                                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                <span><?= date('d M Y', strtotime($p['periode_mulai'])) ?> – <?= date('d M Y', strtotime($p['periode_selesai'])) ?></span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Bottom Action & Stats -->
+                                    <div class="mt-4 pt-3.5 border-t border-slate-100 flex flex-col gap-2.5">
+                                        <div class="flex items-center justify-between">
+                                            <span class="px-2 py-0.5 text-[11px] font-bold bg-slate-100 text-slate-700 rounded-md border border-slate-200 inline-flex items-center gap-1">
+                                                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                                </svg>
+                                                <span><?= $totalAbsensi ?> Pertemuan Dicatat</span>
+                                            </span>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <!-- Tombol Absen Sekarang -->
+                                            <?php if ($isPlotActive && $isActive): ?>
+                                                <button type="button"
+                                                    onclick="openAbsenModal(<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>)"
+                                                    class="px-3 py-2 bg-[#1867c0] hover:bg-[#14529d] active:scale-[0.98] text-white text-xs font-bold rounded-xl transition shadow-xs hover:shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    <span>Absen</span>
+                                                </button>
+                                            <?php else: ?>
+                                                <button type="button" disabled class="px-3 py-2 bg-slate-100 text-slate-400 text-xs font-bold rounded-xl cursor-not-allowed flex items-center justify-center gap-1">
+                                                    <span>Nonaktif</span>
+                                                </button>
+                                            <?php endif; ?>
+
+                                            <!-- Tombol Lihat Riwayat -->
+                                            <button type="button"
+                                                onclick="openRiwayatModal(<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>)"
+                                                class="px-3 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 active:scale-[0.98] text-xs font-bold rounded-xl transition flex items-center justify-center gap-1.5 cursor-pointer">
+                                                <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                                </svg>
+                                                <span>Riwayat</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <!-- Empty State Search Not Found -->
+                        <div id="courseNoResults" class="hidden p-10 sm:p-12 text-center bg-white border border-slate-200 rounded-2xl shadow-xs">
+                            <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <h4 class="text-sm font-bold text-slate-800">Mata Kuliah Tidak Ditemukan</h4>
+                            <p class="text-xs text-slate-500 mt-1">Coba gunakan kata kunci pencarian yang lain.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
 
             </div>
 
@@ -293,7 +309,6 @@ $statusBadge = static function (string $status): string {
                     </div>
                     <div>
                         <h3 class="text-base font-bold text-slate-900">Isi Presensi Praktikum</h3>
-                        <p class="text-xs text-slate-500">Kamera live capture &amp; watermark otomatis</p>
                     </div>
                 </div>
                 <button type="button" onclick="closeAbsenModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-200 transition cursor-pointer">
@@ -339,7 +354,7 @@ $statusBadge = static function (string $status): string {
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                         <label for="absen_jam_mulai" class="block text-xs font-bold text-slate-800 mb-1">
-                            Jam Mulai
+                            Jam Mulai<span class="text-red-500">*</span>
                         </label>
                         <input type="time" id="absen_jam_mulai" name="jam_mulai" value="<?= date('H:i') ?>"
                             class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
@@ -347,9 +362,9 @@ $statusBadge = static function (string $status): string {
 
                     <div>
                         <label for="absen_jam_selesai" class="block text-xs font-bold text-slate-800 mb-1">
-                            Jam Selesai
+                            Jam Selesai <span class="text-red-500">*</span>
                         </label>
-                        <input type="time" id="absen_jam_selesai" name="jam_selesai"
+                        <input type="time" id="absen_jam_selesai" name="jam_selesai" required
                             class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
                     </div>
                 </div>
@@ -461,10 +476,6 @@ $statusBadge = static function (string $status): string {
                         </div>
                     </div>
 
-                </div>
-
-                <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-[11px] text-slate-500">
-                    Kedua foto akan distempel *Watermark Waktu &amp; Tanggal* secara otomatis di server setelah absensi dikirimkan.
                 </div>
 
                 <!-- Footer Buttons -->
@@ -600,6 +611,15 @@ $statusBadge = static function (string $status): string {
                         card.classList.add('hidden');
                     }
                 });
+
+                const noResults = document.getElementById('courseNoResults');
+                if (noResults) {
+                    if (count === 0 && query !== '') {
+                        noResults.classList.remove('hidden');
+                    } else {
+                        noResults.classList.add('hidden');
+                    }
+                }
 
                 if (courseCountBadge) {
                     courseCountBadge.textContent = `${count} Matkul`;

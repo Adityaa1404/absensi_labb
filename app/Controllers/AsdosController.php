@@ -107,6 +107,9 @@ class AsdosController
         }
 
         // BR7: Foto bukti wajib diambil langsung dari kamera saat submit
+        $fotoKegiatan = null;
+        $fotoSelfie   = null;
+
         try {
             $fotoKegiatan = $this->handleImageUpload($_FILES['foto_kegiatan'] ?? null, 'foto kegiatan');
             $fotoSelfie   = $this->handleImageUpload($_FILES['foto_selfie'] ?? null, 'foto selfie');

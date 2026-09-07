@@ -146,10 +146,6 @@ $statusBadge = static function (string $status): string {
                             <input type="text" id="courseSearchInput" placeholder="Cari mata kuliah atau dosen..."
                                 class="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
                         </div>
-                        <span id="courseCountBadge" class="px-3 py-2 text-xs font-bold bg-white text-slate-700 border border-slate-300 rounded-xl shadow-2xs shrink-0 whitespace-nowrap inline-flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-[#1867c0]"></span>
-                            <?= count($plottingList) ?> Matkul
-                        </span>
                     </div>
                 </div>
 
@@ -200,6 +196,17 @@ $statusBadge = static function (string $status): string {
                                         <h3 class="font-bold text-slate-900 text-base leading-snug">
                                             <?= htmlspecialchars($p['nama_matkul'], ENT_QUOTES, 'UTF-8') ?>
                                         </h3>
+
+                                        <?php if (!empty($p['jam_mulai']) && !empty($p['jam_selesai'])): ?>
+                                            <div class="mt-1.5">
+                                                <span class="inline-flex items-center gap-1 font-mono text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-md">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <?= substr($p['jam_mulai'], 0, 5) ?> - <?= substr($p['jam_selesai'], 0, 5) ?> WIB
+                                                </span>
+                                            </div>
+                                        <?php endif; ?>
 
                                         <?php if (!empty($p['deskripsi_matkul'])): ?>
                                             <p class="text-xs text-slate-500 line-clamp-2 mt-1 leading-relaxed">
@@ -350,23 +357,22 @@ $statusBadge = static function (string $status): string {
                     </div>
                 </div>
 
-                <!-- Baris: Jam Mulai & Jam Selesai -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label for="absen_jam_mulai" class="block text-xs font-bold text-slate-800 mb-1">
-                            Jam Mulai<span class="text-red-500">*</span>
-                        </label>
-                        <input type="time" id="absen_jam_mulai" name="jam_mulai" value="<?= date('H:i') ?>"
-                            class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                <!-- Info Jadwal Praktikum Mata Kuliah -->
+                <div class="p-3 bg-blue-50/60 border border-blue-200 rounded-xl flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Jadwal Praktikum</span>
+                            <span id="absen_jadwal_text" class="text-xs font-bold text-slate-900">-</span>
+                        </div>
                     </div>
-
-                    <div>
-                        <label for="absen_jam_selesai" class="block text-xs font-bold text-slate-800 mb-1">
-                            Jam Selesai <span class="text-red-500">*</span>
-                        </label>
-                        <input type="time" id="absen_jam_selesai" name="jam_selesai" required
-                            class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
-                    </div>
+                    <span class="text-[10px] font-semibold text-blue-700 bg-white border border-blue-200 px-2 py-0.5 rounded-md shadow-2xs">
+                        Terjadwal di Kurikulum
+                    </span>
                 </div>
 
                 <!-- Deskripsi Kegiatan -->
@@ -383,18 +389,15 @@ $statusBadge = static function (string $status): string {
                 <!-- Section Bukti Kamera (Native Camera Trigger) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
 
-                    <!-- 1. Foto Kegiatan (Kamera Belakang) -->
+                    <!-- 1. Foto Kegiatan (Upload File) -->
                     <div class="space-y-1.5">
                         <div class="flex items-center justify-between">
                             <label class="block text-xs font-bold text-slate-800">
                                 Foto Kegiatan <span class="text-red-500">*</span>
                             </label>
-                            <span class="text-[10px] font-semibold text-[#1867c0] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                                Kamera Belakang
-                            </span>
                         </div>
 
-                        <input type="file" name="foto_kegiatan" id="foto_kegiatan" accept="image/*" capture="environment" required class="hidden" onchange="previewNativePhoto(this, 'kegiatan')">
+                        <input type="file" name="foto_kegiatan" id="foto_kegiatan" accept="image/*" required class="hidden" onchange="previewNativePhoto(this, 'kegiatan')">
 
                         <div id="camera_card_kegiatan" class="relative w-full h-44 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 hover:border-[#1867c0] hover:bg-white overflow-hidden flex items-center justify-center transition-all duration-200 cursor-pointer group" onclick="triggerNativeCamera('kegiatan')">
 
@@ -402,12 +405,11 @@ $statusBadge = static function (string $status): string {
                             <div id="idle_kegiatan" class="text-center p-3 space-y-1.5">
                                 <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 text-[#1867c0] border border-blue-100 flex items-center justify-center group-hover:scale-105 transition shadow-2xs">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <p class="text-xs font-bold text-slate-800">Ambil Foto Kegiatan</p>
-                                <span class="px-2.5 py-1 bg-[#1867c0] text-white text-[11px] font-bold rounded-lg shadow-xs inline-block">Buka Kamera</span>
+                                <p class="text-xs font-bold text-slate-800">Upload Foto Kegiatan</p>
+                                <span class="px-2.5 py-1 bg-[#1867c0] text-white text-[11px] font-bold rounded-lg shadow-xs inline-block">Pilih File</span>
                             </div>
 
                             <!-- Preview State -->
@@ -423,25 +425,22 @@ $statusBadge = static function (string $status): string {
                                 </div>
                                 <div class="absolute bottom-2 right-2">
                                     <button type="button" onclick="event.stopPropagation(); triggerNativeCamera('kegiatan')" class="px-2.5 py-1 bg-slate-900/80 hover:bg-slate-900 text-white text-[11px] font-bold rounded-lg transition shadow backdrop-blur-xs inline-flex items-center gap-1 cursor-pointer">
-                                        <span>Ambil Ulang</span>
+                                        <span>Ganti File</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 2. Foto Selfie (Kamera Depan) -->
+                    <!-- 2. Foto Selfie (Upload File) -->
                     <div class="space-y-1.5">
                         <div class="flex items-center justify-between">
                             <label class="block text-xs font-bold text-slate-800">
                                 Foto Selfie <span class="text-red-500">*</span>
                             </label>
-                            <span class="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
-                                Kamera Depan
-                            </span>
                         </div>
 
-                        <input type="file" name="foto_selfie" id="foto_selfie" accept="image/*" capture="user" required class="hidden" onchange="previewNativePhoto(this, 'selfie')">
+                        <input type="file" name="foto_selfie" id="foto_selfie" accept="image/*" required class="hidden" onchange="previewNativePhoto(this, 'selfie')">
 
                         <div id="camera_card_selfie" class="relative w-full h-44 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50/50 hover:border-indigo-500 hover:bg-white overflow-hidden flex items-center justify-center transition-all duration-200 cursor-pointer group" onclick="triggerNativeCamera('selfie')">
 
@@ -449,11 +448,11 @@ $statusBadge = static function (string $status): string {
                             <div id="idle_selfie" class="text-center p-3 space-y-1.5">
                                 <div class="w-10 h-10 mx-auto rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center group-hover:scale-105 transition shadow-2xs">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                 </div>
-                                <p class="text-xs font-bold text-slate-800">Ambil Foto Selfie</p>
-                                <span class="px-2.5 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-lg shadow-xs inline-block">Buka Kamera</span>
+                                <p class="text-xs font-bold text-slate-800">Upload Foto Selfie</p>
+                                <span class="px-2.5 py-1 bg-indigo-600 text-white text-[11px] font-bold rounded-lg shadow-xs inline-block">Pilih File</span>
                             </div>
 
                             <!-- Preview State -->
@@ -469,7 +468,7 @@ $statusBadge = static function (string $status): string {
                                 </div>
                                 <div class="absolute bottom-2 right-2">
                                     <button type="button" onclick="event.stopPropagation(); triggerNativeCamera('selfie')" class="px-2.5 py-1 bg-slate-900/80 hover:bg-slate-900 text-white text-[11px] font-bold rounded-lg transition shadow backdrop-blur-xs inline-flex items-center gap-1 cursor-pointer">
-                                        <span>Ambil Ulang</span>
+                                        <span>Ganti File</span>
                                     </button>
                                 </div>
                             </div>
@@ -645,9 +644,15 @@ $statusBadge = static function (string $status): string {
             document.getElementById('modal_absen_matkul_title').textContent = plotData.nama_matkul || '-';
             document.getElementById('modal_absen_dosen_title').textContent = `Dosen Pembimbing: ${plotData.nama_dosen || 'Belum ditentukan'}`;
 
-            // Hitung nomor pertemuan otomatis berikutnya
-            const pastCount = (plotData.absensi_list && Array.isArray(plotData.absensi_list)) ? plotData.absensi_list.length : 0;
-            document.getElementById('absen_pertemuan_ke').value = pastCount + 1;
+            // Tampilkan jadwal praktikum mata kuliah
+            if (plotData.jam_mulai && plotData.jam_selesai) {
+                document.getElementById('absen_jadwal_text').textContent = `${plotData.jam_mulai.substring(0, 5)} - ${plotData.jam_selesai.substring(0, 5)} WIB`;
+            } else {
+                document.getElementById('absen_jadwal_text').textContent = 'Jam praktikum belum diatur oleh Admin';
+            }
+
+            // Reset nomor pertemuan agar user input manual
+            document.getElementById('absen_pertemuan_ke').value = '';
 
             // Reset form kamera & text
             resetCameraPreview('kegiatan');
@@ -736,12 +741,14 @@ $statusBadge = static function (string $status): string {
                     const fotoKegiatanUrl = item.foto_kegiatan ? `${BASE_URL}/uploads/absensi/${item.foto_kegiatan}` : '';
                     const fotoSelfieUrl = item.foto_selfie ? `${BASE_URL}/uploads/absensi/${item.foto_selfie}` : '';
 
+                    const jamInfo = (item.jam_mulai && item.jam_selesai) ? ` &bull; Jam: ${escapeHtml(item.jam_mulai.substring(0, 5))} - ${escapeHtml(item.jam_selesai.substring(0, 5))} WIB` : '';
+
                     card.innerHTML = `
                         <div class="flex items-start justify-between gap-3">
                             <div>
                                 <span class="text-xs font-bold text-slate-900 block">Pertemuan Ke-${escapeHtml(item.pertemuan_ke || '-')}</span>
                                 <p class="text-[11px] text-slate-500 mt-0.5">
-                                    ${escapeHtml(item.tanggal || '-')} &bull; Jam: ${escapeHtml(item.jam_mulai || '-')} s/d ${escapeHtml(item.jam_selesai || '-')}
+                                    ${escapeHtml(item.tanggal || '-')}${jamInfo}
                                 </p>
                             </div>
                             <div>
@@ -854,14 +861,14 @@ $statusBadge = static function (string $status): string {
             }
         }
 
-        // Form Submit Validation: Pastikan kedua foto kamera sudah diambil
+        // Form Submit Validation: Pastikan kedua foto sudah diunggah
         document.getElementById('formIsiAbsensi')?.addEventListener('submit', function(e) {
             const kegiatanFile = document.getElementById('foto_kegiatan')?.files[0];
             const selfieFile = document.getElementById('foto_selfie')?.files[0];
 
             if (!kegiatanFile || !selfieFile) {
                 e.preventDefault();
-                alert("Harap ambil Foto Kegiatan (kamera belakang) dan Foto Selfie (kamera depan) sebelum mengirimkan absensi.");
+                alert("Harap upload Foto Kegiatan dan Foto Selfie sebelum mengirimkan absensi.");
             }
         });
 

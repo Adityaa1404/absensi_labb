@@ -33,7 +33,7 @@ class Absensi
     public static function getAllMonitoring(array $filters = []): array
     {
         $sql = "
-            SELECT a.id_absensi, a.plotting_id, a.tanggal, a.pertemuan_ke, a.jam_mulai, a.jam_selesai,
+            SELECT a.id_absensi, a.plotting_id, a.tanggal, a.pertemuan_ke, m.jam_mulai, m.jam_selesai,
                    a.deskripsi_tugas, a.foto_kegiatan, a.foto_selfie, a.status_verifikasi, a.pesan_dosen,
                    a.created_at, a.updated_at,
                    u_asdos.id_user as asdos_id, u_asdos.nama as nama_asdos, u_asdos.identity_number as npm_asdos, u_asdos.email as email_asdos,
@@ -125,7 +125,7 @@ class Absensi
         $sql = "
             SELECT a.*,
                    u_asdos.id_user as asdos_id, u_asdos.nama as nama_asdos, u_asdos.identity_number as npm_asdos, u_asdos.email as email_asdos, u_asdos.no_hp as no_hp_asdos,
-                   m.id_matkul, m.nama_matkul, m.deskripsi as deskripsi_matkul,
+                   m.id_matkul, m.nama_matkul, m.deskripsi as deskripsi_matkul, m.jam_mulai, m.jam_selesai,
                    u_dosen.id_user as dosen_id, u_dosen.nama as nama_dosen, u_dosen.identity_number as nidn_dosen, u_dosen.email as email_dosen
             FROM absensi a
             JOIN plotting p ON a.plotting_id = p.id_plotting
@@ -149,7 +149,7 @@ class Absensi
     public static function getByAsdos(int $asdosId, array $filters = []): array
     {
         $sql = "
-            SELECT a.*, m.id_matkul, m.nama_matkul, u_dosen.nama as nama_dosen
+            SELECT a.*, m.id_matkul, m.nama_matkul, m.jam_mulai, m.jam_selesai, u_dosen.nama as nama_dosen
             FROM absensi a
             JOIN plotting p ON a.plotting_id = p.id_plotting
             JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
@@ -189,7 +189,7 @@ class Absensi
     public static function findByIdForAsdos(int $id, int $asdosId): ?array
     {
         $sql = "
-            SELECT a.*, p.asdos_id, p.matkul_id, p.is_active as plotting_is_active, m.nama_matkul
+            SELECT a.*, p.asdos_id, p.matkul_id, p.is_active as plotting_is_active, m.nama_matkul, m.jam_mulai, m.jam_selesai
             FROM absensi a
             JOIN plotting p ON a.plotting_id = p.id_plotting
             JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
@@ -230,7 +230,7 @@ class Absensi
     public static function getRecentByAsdos(int $asdosId, int $limit = 5): array
     {
         $sql = "
-            SELECT a.*, m.nama_matkul
+            SELECT a.*, m.nama_matkul, m.jam_mulai, m.jam_selesai
             FROM absensi a
             JOIN plotting p ON a.plotting_id = p.id_plotting
             JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
@@ -247,16 +247,14 @@ class Absensi
     public static function create(array $data): int
     {
         $sql = "INSERT INTO absensi
-                (plotting_id, tanggal, pertemuan_ke, jam_mulai, jam_selesai, deskripsi_tugas, foto_kegiatan, foto_selfie, status_verifikasi)
+                (plotting_id, tanggal, pertemuan_ke, deskripsi_tugas, foto_kegiatan, foto_selfie, status_verifikasi)
                 VALUES
-                (:plotting_id, :tanggal, :pertemuan_ke, :jam_mulai, :jam_selesai, :deskripsi_tugas, :foto_kegiatan, :foto_selfie, 'pending')";
+                (:plotting_id, :tanggal, :pertemuan_ke, :deskripsi_tugas, :foto_kegiatan, :foto_selfie, 'pending')";
 
         Database::query($sql, [
             'plotting_id'     => (int)$data['plotting_id'],
             'tanggal'         => $data['tanggal'],
             'pertemuan_ke'    => !empty($data['pertemuan_ke']) ? (int)$data['pertemuan_ke'] : null,
-            'jam_mulai'       => !empty($data['jam_mulai']) ? $data['jam_mulai'] : null,
-            'jam_selesai'     => !empty($data['jam_selesai']) ? $data['jam_selesai'] : null,
             'deskripsi_tugas' => trim($data['deskripsi_tugas']),
             'foto_kegiatan'   => $data['foto_kegiatan'],
             'foto_selfie'     => $data['foto_selfie'],
@@ -274,8 +272,6 @@ class Absensi
         $fields = [
             'tanggal = :tanggal',
             'pertemuan_ke = :pertemuan_ke',
-            'jam_mulai = :jam_mulai',
-            'jam_selesai = :jam_selesai',
             'deskripsi_tugas = :deskripsi_tugas',
         ];
 
@@ -283,8 +279,6 @@ class Absensi
             'id'              => $id,
             'tanggal'         => $data['tanggal'],
             'pertemuan_ke'    => !empty($data['pertemuan_ke']) ? (int)$data['pertemuan_ke'] : null,
-            'jam_mulai'       => !empty($data['jam_mulai']) ? $data['jam_mulai'] : null,
-            'jam_selesai'     => !empty($data['jam_selesai']) ? $data['jam_selesai'] : null,
             'deskripsi_tugas' => trim($data['deskripsi_tugas']),
         ];
 

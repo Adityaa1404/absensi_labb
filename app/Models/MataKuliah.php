@@ -74,13 +74,15 @@ class MataKuliah
      */
     public static function create(array $data): int
     {
-        $sql = "INSERT INTO mata_kuliah (nama_matkul, deskripsi, dosen_id)
-                VALUES (:nama_matkul, :deskripsi, :dosen_id)";
+        $sql = "INSERT INTO mata_kuliah (nama_matkul, deskripsi, dosen_id, jam_mulai, jam_selesai)
+                VALUES (:nama_matkul, :deskripsi, :dosen_id, :jam_mulai, :jam_selesai)";
 
         Database::query($sql, [
             'nama_matkul' => trim($data['nama_matkul']),
             'deskripsi'   => !empty($data['deskripsi']) ? trim($data['deskripsi']) : null,
             'dosen_id'    => (int)$data['dosen_id'],
+            'jam_mulai'   => !empty($data['jam_mulai']) ? trim($data['jam_mulai']) : null,
+            'jam_selesai' => !empty($data['jam_selesai']) ? trim($data['jam_selesai']) : null,
         ]);
 
         return (int)Database::lastInsertId();
@@ -92,7 +94,8 @@ class MataKuliah
     public static function update(int $id, array $data): bool
     {
         $sql = "UPDATE mata_kuliah 
-                SET nama_matkul = :nama_matkul, deskripsi = :deskripsi, dosen_id = :dosen_id
+                SET nama_matkul = :nama_matkul, deskripsi = :deskripsi, dosen_id = :dosen_id,
+                    jam_mulai = :jam_mulai, jam_selesai = :jam_selesai
                 WHERE id_matkul = :id";
 
         Database::query($sql, [
@@ -100,6 +103,8 @@ class MataKuliah
             'nama_matkul' => trim($data['nama_matkul']),
             'deskripsi'   => !empty($data['deskripsi']) ? trim($data['deskripsi']) : null,
             'dosen_id'    => (int)$data['dosen_id'],
+            'jam_mulai'   => !empty($data['jam_mulai']) ? trim($data['jam_mulai']) : null,
+            'jam_selesai' => !empty($data['jam_selesai']) ? trim($data['jam_selesai']) : null,
         ]);
 
         return true;

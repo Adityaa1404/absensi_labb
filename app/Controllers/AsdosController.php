@@ -72,8 +72,6 @@ class AsdosController
         $plottingId  = (int)($_POST['plotting_id'] ?? 0);
         $tanggal     = trim($_POST['tanggal'] ?? '');
         $pertemuanKe = trim($_POST['pertemuan_ke'] ?? '');
-        $jamMulai    = trim($_POST['jam_mulai'] ?? '');
-        $jamSelesai  = trim($_POST['jam_selesai'] ?? '');
         $deskripsi   = trim($_POST['deskripsi_tugas'] ?? '');
         $redirectTo  = $_POST['redirect_to'] ?? '/asdos/dashboard';
 
@@ -81,10 +79,13 @@ class AsdosController
         $validator->rules([
             'plotting_id'     => 'required|numeric',
             'tanggal'         => 'required',
+            'pertemuan_ke'    => 'required|numeric',
             'deskripsi_tugas' => 'required|min:5',
         ], [
             'plotting_id.required'     => 'Mata kuliah wajib dipilih.',
             'tanggal.required'         => 'Tanggal pelaksanaan wajib diisi.',
+            'pertemuan_ke.required'    => 'Pertemuan ke- wajib diisi.',
+            'pertemuan_ke.numeric'     => 'Pertemuan ke- harus berupa angka.',
             'deskripsi_tugas.required' => 'Deskripsi tugas/kegiatan wajib diisi.',
             'deskripsi_tugas.min'      => 'Deskripsi tugas minimal 5 karakter.',
         ]);
@@ -101,12 +102,7 @@ class AsdosController
             Guard::redirect($redirectTo);
         }
 
-        if ($jamMulai !== '' && $jamSelesai !== '' && $jamSelesai <= $jamMulai) {
-            Guard::setFlash('error', 'Jam selesai harus lebih besar dari jam mulai.');
-            Guard::redirect($redirectTo);
-        }
-
-        // BR7: Foto bukti wajib diambil langsung dari kamera saat submit
+        // BR7: Foto bukti wajib diambil langsung saat submit
         $fotoKegiatan = null;
         $fotoSelfie   = null;
 
@@ -119,7 +115,7 @@ class AsdosController
         }
 
         if (empty($fotoKegiatan) || empty($fotoSelfie)) {
-            Guard::setFlash('error', 'Foto kegiatan dan foto selfie wajib diambil langsung melalui kamera sebagai bukti pelaksanaan (BR7).');
+            Guard::setFlash('error', 'Foto kegiatan dan foto selfie wajib diunggah sebagai bukti pelaksanaan absensi.');
             Guard::redirect($redirectTo);
         }
 
@@ -127,8 +123,6 @@ class AsdosController
             'plotting_id'     => $plottingId,
             'tanggal'         => $tanggal,
             'pertemuan_ke'    => $pertemuanKe,
-            'jam_mulai'       => $jamMulai,
-            'jam_selesai'     => $jamSelesai,
             'deskripsi_tugas' => $deskripsi,
             'foto_kegiatan'   => $fotoKegiatan,
             'foto_selfie'     => $fotoSelfie,

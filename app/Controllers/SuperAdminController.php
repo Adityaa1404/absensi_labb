@@ -43,7 +43,7 @@ class SuperAdminController
 
         // Ambil data penugasan (plotting) & absensi untuk kalender tracking
         $calendarAbsensi = Database::fetchAll("
-            SELECT a.id_absensi, a.tanggal, a.pertemuan_ke, a.jam_mulai, a.jam_selesai, a.status_verifikasi, a.deskripsi_tugas,
+            SELECT a.id_absensi, a.tanggal, a.pertemuan_ke, m.jam_mulai, m.jam_selesai, a.status_verifikasi, a.deskripsi_tugas,
                    u.nama as nama_asdos, m.nama_matkul, d.nama as nama_dosen
             FROM absensi a
             LEFT JOIN plotting p ON a.plotting_id = p.id_plotting
@@ -519,9 +519,11 @@ class SuperAdminController
         Guard::requireRole('super_admin');
         Guard::verifyCsrf();
 
-        $nama      = trim($_POST['nama_matkul'] ?? '');
-        $deskripsi = trim($_POST['deskripsi'] ?? '');
-        $dosenId   = (int)($_POST['dosen_id'] ?? 0);
+        $nama       = trim($_POST['nama_matkul'] ?? '');
+        $deskripsi  = trim($_POST['deskripsi'] ?? '');
+        $dosenId    = (int)($_POST['dosen_id'] ?? 0);
+        $jamMulai   = trim($_POST['jam_mulai'] ?? '');
+        $jamSelesai = trim($_POST['jam_selesai'] ?? '');
 
         $validator = new Validator($_POST);
         $validator->rules([
@@ -537,10 +539,17 @@ class SuperAdminController
             Guard::redirect('/superadmin/matkul');
         }
 
+        if ($jamMulai !== '' && $jamSelesai !== '' && $jamSelesai <= $jamMulai) {
+            Guard::setFlash('error', 'Jam selesai harus lebih besar dari jam mulai.');
+            Guard::redirect('/superadmin/matkul');
+        }
+
         MataKuliah::create([
             'nama_matkul' => $nama,
             'deskripsi'   => $deskripsi,
             'dosen_id'    => $dosenId,
+            'jam_mulai'   => $jamMulai !== '' ? $jamMulai : null,
+            'jam_selesai' => $jamSelesai !== '' ? $jamSelesai : null,
         ]);
 
         Guard::setFlash('success', "Mata kuliah [{$nama}] berhasil ditambahkan.");
@@ -555,10 +564,12 @@ class SuperAdminController
         Guard::requireRole('super_admin');
         Guard::verifyCsrf();
 
-        $matkulId  = (int)$id;
-        $nama      = trim($_POST['nama_matkul'] ?? '');
-        $deskripsi = trim($_POST['deskripsi'] ?? '');
-        $dosenId   = (int)($_POST['dosen_id'] ?? 0);
+        $matkulId   = (int)$id;
+        $nama       = trim($_POST['nama_matkul'] ?? '');
+        $deskripsi  = trim($_POST['deskripsi'] ?? '');
+        $dosenId    = (int)($_POST['dosen_id'] ?? 0);
+        $jamMulai   = trim($_POST['jam_mulai'] ?? '');
+        $jamSelesai = trim($_POST['jam_selesai'] ?? '');
 
         $validator = new Validator($_POST);
         $validator->rules([
@@ -571,10 +582,17 @@ class SuperAdminController
             Guard::redirect('/superadmin/matkul');
         }
 
+        if ($jamMulai !== '' && $jamSelesai !== '' && $jamSelesai <= $jamMulai) {
+            Guard::setFlash('error', 'Jam selesai harus lebih besar dari jam mulai.');
+            Guard::redirect('/superadmin/matkul');
+        }
+
         MataKuliah::update($matkulId, [
             'nama_matkul' => $nama,
             'deskripsi'   => $deskripsi,
             'dosen_id'    => $dosenId,
+            'jam_mulai'   => $jamMulai !== '' ? $jamMulai : null,
+            'jam_selesai' => $jamSelesai !== '' ? $jamSelesai : null,
         ]);
 
         Guard::setFlash('success', "Mata kuliah [{$nama}] berhasil diperbarui.");

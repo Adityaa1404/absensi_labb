@@ -35,8 +35,6 @@ CREATE TABLE `absensi` (
   `plotting_id` int NOT NULL,
   `tanggal` date NOT NULL,
   `pertemuan_ke` int DEFAULT NULL,
-  `jam_mulai` time DEFAULT NULL,
-  `jam_selesai` time DEFAULT NULL,
   `deskripsi_tugas` text NOT NULL,
   `foto_kegiatan` varchar(255) NOT NULL,
   `foto_selfie` varchar(255) NOT NULL,
@@ -56,7 +54,7 @@ CREATE TABLE `absensi` (
 
 LOCK TABLES `absensi` WRITE;
 /*!40000 ALTER TABLE `absensi` DISABLE KEYS */;
-INSERT INTO `absensi` VALUES (7,5,'2026-08-30',1,'18:32:00','19:32:00','gacor','843e5e0576bc0bd77b9064b6108b75df.jpg','526189f5ddcd5093ecbd3c7f877c3664.jpg','disetujui',NULL,'2026-08-30 11:34:28','2026-08-30 11:36:25'),(8,7,'2026-08-30',1,'19:16:00','20:16:00','tes doang si','07e4c484aa80a6c6ff327608cd9bd41a.jpg','cc57e0129212611d5878437c804765d9.jpg','pending',NULL,'2026-08-30 12:17:14',NULL);
+INSERT INTO `absensi` VALUES (7,5,'2026-08-30',1,'gacor','843e5e0576bc0bd77b9064b6108b75df.jpg','526189f5ddcd5093ecbd3c7f877c3664.jpg','disetujui',NULL,'2026-08-30 11:34:28','2026-08-30 11:36:25'),(8,7,'2026-08-30',1,'tes doang si','07e4c484aa80a6c6ff327608cd9bd41a.jpg','cc57e0129212611d5878437c804765d9.jpg','pending',NULL,'2026-08-30 12:17:14',NULL);
 /*!40000 ALTER TABLE `absensi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,6 +68,8 @@ DROP TABLE IF EXISTS `mata_kuliah`;
 CREATE TABLE `mata_kuliah` (
   `id_matkul` int NOT NULL AUTO_INCREMENT,
   `nama_matkul` varchar(100) NOT NULL,
+  `jam_mulai` time DEFAULT NULL,
+  `jam_selesai` time DEFAULT NULL,
   `deskripsi` text,
   `dosen_id` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -85,7 +85,7 @@ CREATE TABLE `mata_kuliah` (
 
 LOCK TABLES `mata_kuliah` WRITE;
 /*!40000 ALTER TABLE `mata_kuliah` DISABLE KEYS */;
-INSERT INTO `mata_kuliah` VALUES (3,'BP2 - Paralel B',NULL,13,'2026-08-27 13:19:28'),(4,'ADSI - Paralel D','aaaaa',14,'2026-08-30 10:41:55');
+INSERT INTO `mata_kuliah` VALUES (3,'BP2 - Paralel B','18:32:00','19:32:00',NULL,13,'2026-08-27 13:19:28'),(4,'ADSI - Paralel A','19:16:00','20:16:00','aaaaa',14,'2026-08-30 10:41:55');
 /*!40000 ALTER TABLE `mata_kuliah` ENABLE KEYS */;
 UNLOCK TABLES;
 

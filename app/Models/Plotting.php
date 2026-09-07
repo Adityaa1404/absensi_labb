@@ -22,7 +22,7 @@ class Plotting
         self::syncExpiredStatus();
 
         $sql = "
-            SELECT p.*, m.nama_matkul, 
+            SELECT p.*, m.nama_matkul, m.jam_mulai, m.jam_selesai,
                    u.nama as nama_asdos, u.email as email_asdos, u.identity_number as npm_asdos, u.no_hp as nohp_asdos,
                    d.nama as nama_dosen, d.email as email_dosen, d.identity_number as nidn_dosen
             FROM plotting p
@@ -97,7 +97,7 @@ class Plotting
         self::syncExpiredStatus();
 
         $sql = "
-            SELECT p.*, m.nama_matkul, 
+            SELECT p.*, m.nama_matkul, m.jam_mulai, m.jam_selesai,
                    u.nama as nama_asdos, u.email as email_asdos, u.identity_number as npm_asdos,
                    d.nama as nama_dosen, d.email as email_dosen
             FROM plotting p
@@ -248,7 +248,7 @@ class Plotting
         self::syncExpiredStatus();
 
         $sql = "
-            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul,
+            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul, m.jam_mulai, m.jam_selesai,
                    d.nama as nama_dosen, d.email as email_dosen
             FROM plotting p
             JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
@@ -268,7 +268,7 @@ class Plotting
         self::syncExpiredStatus();
 
         $sql = "
-            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul,
+            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul, m.jam_mulai, m.jam_selesai,
                    d.nama as nama_dosen, d.email as email_dosen
             FROM plotting p
             JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
@@ -288,7 +288,7 @@ class Plotting
         self::syncExpiredStatus();
 
         $sql = "
-            SELECT p.*, m.nama_matkul
+            SELECT p.*, m.nama_matkul, m.jam_mulai, m.jam_selesai
             FROM plotting p
             JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
             WHERE p.id_plotting = :id AND p.asdos_id = :asdos_id AND p.is_active = 1

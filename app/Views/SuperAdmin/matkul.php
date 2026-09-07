@@ -207,6 +207,8 @@ if (empty($dosenList)) {
                                     <tr class="hover:bg-blue-50/40 transition-colors duration-150 matkul-row"
                                         data-id="<?= $m['id_matkul'] ?>"
                                         data-nama="<?= htmlspecialchars($m['nama_matkul'], ENT_QUOTES, 'UTF-8') ?>"
+                                        data-jam-mulai="<?= htmlspecialchars($m['jam_mulai'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                        data-jam-selesai="<?= htmlspecialchars($m['jam_selesai'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                         data-deskripsi="<?= htmlspecialchars($m['deskripsi'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                         data-dosen-id="<?= $m['dosen_id'] ?>"
                                         data-dosen-nama="<?= htmlspecialchars($m['nama_dosen'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
@@ -224,6 +226,16 @@ if (empty($dosenList)) {
                                                         class="text-left font-bold text-slate-900 hover:text-[#1867c0] text-xs sm:text-sm leading-tight transition cursor-pointer">
                                                         <?= htmlspecialchars($m['nama_matkul'], ENT_QUOTES, 'UTF-8') ?>
                                                     </button>
+                                                    <?php if (!empty($m['jam_mulai']) && !empty($m['jam_selesai'])): ?>
+                                                        <div class="mt-1">
+                                                            <span class="inline-flex items-center gap-1 font-mono text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded-md">
+                                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                                </svg>
+                                                                <?= substr($m['jam_mulai'], 0, 5) ?> - <?= substr($m['jam_selesai'], 0, 5) ?> WIB
+                                                            </span>
+                                                        </div>
+                                                    <?php endif; ?>
                                                     <?php if (!empty($m['deskripsi'])): ?>
                                                         <p class="text-[11px] text-slate-600 line-clamp-1 mt-1 max-w-md leading-relaxed">
                                                             <?= htmlspecialchars($m['deskripsi'], ENT_QUOTES, 'UTF-8') ?>
@@ -392,6 +404,25 @@ if (empty($dosenList)) {
                     </select>
                 </div>
 
+                <!-- Baris: Jam Mulai & Jam Selesai -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="create_jam_mulai" class="block text-xs font-bold text-slate-800 mb-1">
+                            Jam Mulai Praktikum
+                        </label>
+                        <input type="time" id="create_jam_mulai" name="jam_mulai"
+                            class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                    </div>
+
+                    <div>
+                        <label for="create_jam_selesai" class="block text-xs font-bold text-slate-800 mb-1">
+                            Jam Selesai Praktikum
+                        </label>
+                        <input type="time" id="create_jam_selesai" name="jam_selesai"
+                            class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                    </div>
+                </div>
+
                 <div>
                     <label for="create_deskripsi" class="block text-xs font-bold text-slate-800 mb-1">
                         Deskripsi Silabus / Catatan Praktikum
@@ -464,6 +495,25 @@ if (empty($dosenList)) {
                             </option>
                         <?php endforeach; ?>
                     </select>
+                </div>
+
+                <!-- Baris: Jam Mulai & Jam Selesai -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label for="edit_jam_mulai" class="block text-xs font-bold text-slate-800 mb-1">
+                            Jam Mulai Praktikum
+                        </label>
+                        <input type="time" id="edit_jam_mulai" name="jam_mulai"
+                            class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                    </div>
+
+                    <div>
+                        <label for="edit_jam_selesai" class="block text-xs font-bold text-slate-800 mb-1">
+                            Jam Selesai Praktikum
+                        </label>
+                        <input type="time" id="edit_jam_selesai" name="jam_selesai"
+                            class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                    </div>
                 </div>
 
                 <div>
@@ -761,6 +811,11 @@ if (empty($dosenList)) {
         // Modal Create & Edit Mata Kuliah
         // =========================================================================
         function openCreateMatkulModal() {
+            document.getElementById('create_nama_matkul').value = '';
+            document.getElementById('create_jam_mulai').value = '';
+            document.getElementById('create_jam_selesai').value = '';
+            document.getElementById('create_deskripsi').value = '';
+            document.getElementById('create_dosen_id').value = '';
             document.getElementById('createMatkulModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -776,9 +831,13 @@ if (empty($dosenList)) {
             const nama = row.dataset.nama;
             const deskripsi = row.dataset.deskripsi;
             const dosenId = row.dataset.dosenId;
+            const jamMulai = row.dataset.jamMulai ? row.dataset.jamMulai.substring(0, 5) : '';
+            const jamSelesai = row.dataset.jamSelesai ? row.dataset.jamSelesai.substring(0, 5) : '';
 
             document.getElementById('editMatkulForm').action = `${BASE_URL}/superadmin/matkul/${id}/update`;
             document.getElementById('edit_nama_matkul').value = nama;
+            document.getElementById('edit_jam_mulai').value = jamMulai;
+            document.getElementById('edit_jam_selesai').value = jamSelesai;
             document.getElementById('edit_deskripsi').value = deskripsi;
             document.getElementById('edit_dosen_id').value = dosenId;
             document.getElementById('edit_matkul_subtitle').textContent = `Mengedit ${nama}`;

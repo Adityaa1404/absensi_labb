@@ -275,3 +275,80 @@ Stack trace:
 #2 C:\xampp\htdocs\absensi_labb\public\index.php(68): Core\Router->dispatch()
 #3 {main}
 --------------------------------------------------------------------------------
+[2026-09-07 14:19:50] [GET /absensi_labb/asdos/dashboard] RuntimeException: Database Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'm.jam_mulai' in 'field list' [SQL: 
+            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul, m.jam_mulai, m.jam_selesai,
+                   d.nama as nama_dosen, d.email as email_dosen
+            FROM plotting p
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users d ON m.dosen_id = d.id_user
+            WHERE p.asdos_id = :asdos_id
+            ORDER BY p.is_active DESC, m.nama_matkul ASC
+        ] in C:\xampp\htdocs\absensi_labb\Core\Database.php:65
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\Core\Database.php(84): Core\Database::query('\r\n            S...', Array)
+#1 C:\xampp\htdocs\absensi_labb\app\Models\Plotting.php(279): Core\Database::fetchAll('\r\n            S...', Array)
+#2 C:\xampp\htdocs\absensi_labb\app\Controllers\AsdosController.php(30): App\Models\Plotting::getAllForAsdos(3)
+#3 [internal function]: App\Controllers\AsdosController->dashboard()
+#4 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\absensi_labb\public\index.php(63): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------
+[2026-09-07 14:29:45] [GET /absensi_labb/asdos/dashboard] RuntimeException: Database Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'm.jam_mulai' in 'field list' [SQL: 
+            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul, m.jam_mulai, m.jam_selesai,
+                   d.nama as nama_dosen, d.email as email_dosen
+            FROM plotting p
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users d ON m.dosen_id = d.id_user
+            WHERE p.asdos_id = :asdos_id
+            ORDER BY p.is_active DESC, m.nama_matkul ASC
+        ] in C:\xampp\htdocs\absensi_labb\Core\Database.php:65
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\Core\Database.php(84): Core\Database::query('\r\n            S...', Array)
+#1 C:\xampp\htdocs\absensi_labb\app\Models\Plotting.php(279): Core\Database::fetchAll('\r\n            S...', Array)
+#2 C:\xampp\htdocs\absensi_labb\app\Controllers\AsdosController.php(30): App\Models\Plotting::getAllForAsdos(3)
+#3 [internal function]: App\Controllers\AsdosController->dashboard()
+#4 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\absensi_labb\public\index.php(63): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------
+[2026-09-07 14:29:46] [GET /absensi_labb/asdos/dashboard] RuntimeException: Database Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'm.jam_mulai' in 'field list' [SQL: 
+            SELECT p.*, m.nama_matkul, m.deskripsi as deskripsi_matkul, m.jam_mulai, m.jam_selesai,
+                   d.nama as nama_dosen, d.email as email_dosen
+            FROM plotting p
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users d ON m.dosen_id = d.id_user
+            WHERE p.asdos_id = :asdos_id
+            ORDER BY p.is_active DESC, m.nama_matkul ASC
+        ] in C:\xampp\htdocs\absensi_labb\Core\Database.php:65
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\Core\Database.php(84): Core\Database::query('\r\n            S...', Array)
+#1 C:\xampp\htdocs\absensi_labb\app\Models\Plotting.php(279): Core\Database::fetchAll('\r\n            S...', Array)
+#2 C:\xampp\htdocs\absensi_labb\app\Controllers\AsdosController.php(30): App\Models\Plotting::getAllForAsdos(3)
+#3 [internal function]: App\Controllers\AsdosController->dashboard()
+#4 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\absensi_labb\public\index.php(63): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------
+[2026-09-07 14:53:35] [GET /absensi_labb/superadmin/monitoring] RuntimeException: Database Query Error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'a.tugas' in 'field list' [SQL: 
+            SELECT a.id_absensi, a.plotting_id, a.tanggal, a.pertemuan_ke, m.jam_mulai, m.jam_selesai,
+                   a.deskripsi_tugas, a.tugas, a.foto_kegiatan, a.foto_selfie, a.status_verifikasi, a.pesan_dosen,
+                   a.created_at, a.updated_at,
+                   u_asdos.id_user as asdos_id, u_asdos.nama as nama_asdos, u_asdos.identity_number as npm_asdos, u_asdos.email as email_asdos,
+                   m.id_matkul, m.nama_matkul,
+                   u_dosen.id_user as dosen_id, u_dosen.nama as nama_dosen, u_dosen.identity_number as nidn_dosen
+            FROM absensi a
+            JOIN plotting p ON a.plotting_id = p.id_plotting
+            JOIN users u_asdos ON p.asdos_id = u_asdos.id_user
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users u_dosen ON m.dosen_id = u_dosen.id_user
+            WHERE 1=1
+         ORDER BY a.tanggal DESC, a.created_at DESC] in C:\xampp\htdocs\absensi_labb\Core\Database.php:65
+Stack trace:
+#0 C:\xampp\htdocs\absensi_labb\Core\Database.php(84): Core\Database::query('\r\n            S...', Array)
+#1 C:\xampp\htdocs\absensi_labb\app\Models\Absensi.php(94): Core\Database::fetchAll('\r\n            S...', Array)
+#2 C:\xampp\htdocs\absensi_labb\app\Controllers\SuperAdminController.php(814): App\Models\Absensi::getAllMonitoring()
+#3 [internal function]: App\Controllers\SuperAdminController->monitoring()
+#4 C:\xampp\htdocs\absensi_labb\Core\Router.php(90): call_user_func_array(Array, Array)
+#5 C:\xampp\htdocs\absensi_labb\public\index.php(63): Core\Router->dispatch()
+#6 {main}
+--------------------------------------------------------------------------------

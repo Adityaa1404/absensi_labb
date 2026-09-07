@@ -213,7 +213,8 @@ $filters     = $filters ?? [
                                         data-dosen-nama="<?= htmlspecialchars($a['nama_dosen'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
                                         data-status="<?= $status ?>"
                                         data-tanggal="<?= $a['tanggal'] ?? '' ?>"
-                                        data-deskripsi="<?= htmlspecialchars($a['deskripsi_tugas'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+                                        data-deskripsi="<?= htmlspecialchars($a['deskripsi_tugas'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+                                        data-tugas="<?= htmlspecialchars($a['tugas'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
 
                                         <!-- 1. Tanggal & Pertemuan -->
                                         <td class="px-4 py-3">
@@ -448,8 +449,17 @@ $filters     = $filters ?? [
                 </div>
 
                 <!-- Deskripsi Tugas Praktikum -->
-                <div>
-                    <label class="block text-xs font-bold text-slate-800 mb-1">Deskripsi Materi & Pelaksanaan Tugas:</label>
+                <!-- Checklist Tugas (jika ada) -->
+                <div id="detail_tugas_wrapper">
+                    <label class="block text-xs font-bold text-slate-800 mb-1">Checklist Tugas Asdos:</label>
+                    <div class="p-3.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 leading-relaxed" id="detail_tugas_text">
+                        -
+                    </div>
+                </div>
+
+                <!-- Deskripsi Tugas Praktikum -->
+                <div class="mt-3">
+                    <label class="block text-xs font-bold text-slate-800 mb-1">Laporan Kendala:</label>
                     <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-line" id="detail_deskripsi_text">
                         -
                     </div>
@@ -797,6 +807,32 @@ $filters     = $filters ?? [
             document.getElementById('detail_jam_text').textContent = `${jamMulai} s/d ${jamSelesai} WIB`;
 
             document.getElementById('detail_timestamp_text').textContent = data.created_at ? data.created_at : '-';
+            // Tampilkan checklist tugas (jika tersimpan sebagai JSON atau teks)
+            const tugasRaw = data.tugas || '';
+            const tugasEl = document.getElementById('detail_tugas_text');
+            if (tugasRaw) {
+                try {
+                    const parsed = JSON.parse(tugasRaw);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        tugasEl.innerHTML = '';
+                        const ul = document.createElement('ul');
+                        ul.className = 'list-disc pl-5 space-y-1 text-slate-800';
+                        parsed.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            ul.appendChild(li);
+                        });
+                        tugasEl.appendChild(ul);
+                    } else {
+                        tugasEl.textContent = tugasRaw;
+                    }
+                } catch (e) {
+                    tugasEl.textContent = tugasRaw;
+                }
+            } else {
+                tugasEl.textContent = '-';
+            }
+
             document.getElementById('detail_deskripsi_text').textContent = data.deskripsi_tugas || '-';
 
             // Pesan Dosen

@@ -34,7 +34,7 @@ class Absensi
     {
         $sql = "
             SELECT a.id_absensi, a.plotting_id, a.tanggal, a.pertemuan_ke, m.jam_mulai, m.jam_selesai,
-                   a.deskripsi_tugas, a.foto_kegiatan, a.foto_selfie, a.status_verifikasi, a.pesan_dosen,
+                   a.deskripsi_tugas, a.tugas, a.foto_kegiatan, a.foto_selfie, a.status_verifikasi, a.pesan_dosen,
                    a.created_at, a.updated_at,
                    u_asdos.id_user as asdos_id, u_asdos.nama as nama_asdos, u_asdos.identity_number as npm_asdos, u_asdos.email as email_asdos,
                    m.id_matkul, m.nama_matkul,
@@ -247,15 +247,16 @@ class Absensi
     public static function create(array $data): int
     {
         $sql = "INSERT INTO absensi
-                (plotting_id, tanggal, pertemuan_ke, deskripsi_tugas, foto_kegiatan, foto_selfie, status_verifikasi)
-                VALUES
-                (:plotting_id, :tanggal, :pertemuan_ke, :deskripsi_tugas, :foto_kegiatan, :foto_selfie, 'pending')";
+            (plotting_id, tanggal, pertemuan_ke, deskripsi_tugas, tugas, foto_kegiatan, foto_selfie, status_verifikasi)
+            VALUES
+            (:plotting_id, :tanggal, :pertemuan_ke, :deskripsi_tugas, :tugas, :foto_kegiatan, :foto_selfie, 'pending')";
 
         Database::query($sql, [
             'plotting_id'     => (int)$data['plotting_id'],
             'tanggal'         => $data['tanggal'],
             'pertemuan_ke'    => !empty($data['pertemuan_ke']) ? (int)$data['pertemuan_ke'] : null,
             'deskripsi_tugas' => trim($data['deskripsi_tugas']),
+            'tugas'           => !empty($data['tugas']) ? trim($data['tugas']) : null,
             'foto_kegiatan'   => $data['foto_kegiatan'],
             'foto_selfie'     => $data['foto_selfie'],
         ]);
@@ -273,6 +274,7 @@ class Absensi
             'tanggal = :tanggal',
             'pertemuan_ke = :pertemuan_ke',
             'deskripsi_tugas = :deskripsi_tugas',
+            'tugas = :tugas',
         ];
 
         $params = [
@@ -280,6 +282,7 @@ class Absensi
             'tanggal'         => $data['tanggal'],
             'pertemuan_ke'    => !empty($data['pertemuan_ke']) ? (int)$data['pertemuan_ke'] : null,
             'deskripsi_tugas' => trim($data['deskripsi_tugas']),
+            'tugas'           => !empty($data['tugas']) ? trim($data['tugas']) : null,
         ];
 
         // Foto bersifat opsional saat update - hanya diganti jika ada file baru diunggah

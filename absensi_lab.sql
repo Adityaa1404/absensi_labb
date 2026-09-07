@@ -19,7 +19,7 @@
 -- Current Database: `absensi_lab`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `absensi_lab` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `absensi_lab` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `absensi_lab`;
 
@@ -36,6 +36,7 @@ CREATE TABLE `absensi` (
   `tanggal` date NOT NULL,
   `pertemuan_ke` int DEFAULT NULL,
   `deskripsi_tugas` text NOT NULL,
+  `tugas` text DEFAULT NULL,
   `foto_kegiatan` varchar(255) NOT NULL,
   `foto_selfie` varchar(255) NOT NULL,
   `status_verifikasi` enum('pending','disetujui','ditolak') DEFAULT 'pending',
@@ -45,7 +46,7 @@ CREATE TABLE `absensi` (
   PRIMARY KEY (`id_absensi`),
   KEY `fk_absensi_plotting` (`plotting_id`),
   CONSTRAINT `fk_absensi_plotting` FOREIGN KEY (`plotting_id`) REFERENCES `plotting` (`id_plotting`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,7 +55,7 @@ CREATE TABLE `absensi` (
 
 LOCK TABLES `absensi` WRITE;
 /*!40000 ALTER TABLE `absensi` DISABLE KEYS */;
-INSERT INTO `absensi` VALUES (7,5,'2026-08-30',1,'gacor','843e5e0576bc0bd77b9064b6108b75df.jpg','526189f5ddcd5093ecbd3c7f877c3664.jpg','disetujui',NULL,'2026-08-30 11:34:28','2026-08-30 11:36:25'),(8,7,'2026-08-30',1,'tes doang si','07e4c484aa80a6c6ff327608cd9bd41a.jpg','cc57e0129212611d5878437c804765d9.jpg','pending',NULL,'2026-08-30 12:17:14',NULL);
+INSERT INTO `absensi` VALUES (7,5,'2026-08-30',1,'gacor',NULL,'843e5e0576bc0bd77b9064b6108b75df.jpg','526189f5ddcd5093ecbd3c7f877c3664.jpg','disetujui',NULL,'2026-08-30 11:34:28','2026-08-30 11:36:25'),(8,7,'2026-08-30',1,'tes doang si',NULL,'07e4c484aa80a6c6ff327608cd9bd41a.jpg','cc57e0129212611d5878437c804765d9.jpg','pending',NULL,'2026-08-30 12:17:14',NULL);
 /*!40000 ALTER TABLE `absensi` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,7 +77,7 @@ CREATE TABLE `mata_kuliah` (
   PRIMARY KEY (`id_matkul`),
   KEY `dosen_id` (`dosen_id`),
   CONSTRAINT `mata_kuliah_ibfk_1` FOREIGN KEY (`dosen_id`) REFERENCES `users` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,7 +111,7 @@ CREATE TABLE `plotting` (
   KEY `idx_matkul` (`matkul_id`),
   CONSTRAINT `plotting_ibfk_1` FOREIGN KEY (`matkul_id`) REFERENCES `mata_kuliah` (`id_matkul`),
   CONSTRAINT `plotting_ibfk_2` FOREIGN KEY (`asdos_id`) REFERENCES `users` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,7 +144,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `FK` (`identity_number`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

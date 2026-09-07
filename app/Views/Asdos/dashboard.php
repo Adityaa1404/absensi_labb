@@ -375,15 +375,41 @@ $statusBadge = static function (string $status): string {
                     </span>
                 </div>
 
-                <!-- Deskripsi Kegiatan -->
+                <!-- Deskripsi Tugas -->
                 <div>
-                    <label for="absen_deskripsi_tugas" class="block text-xs font-bold text-slate-800 mb-1">
-                        Deskripsi Tugas / Materi Praktikum <span class="text-red-500">*</span>
-                    </label>
-                    <textarea id="absen_deskripsi_tugas" name="deskripsi_tugas" rows="3" minlength="5" required
-                        placeholder="Jelaskan ringkasan materi praktikum, modul yang dipelajari, dan aktivitas pendampingan..."
-                        class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition resize-none shadow-2xs"></textarea>
-                    <p class="text-[11px] text-slate-400 mt-1">Minimal 5 karakter.</p>
+                    <label class="block text-xs font-bold text-slate-800 mb-2">Deskripsi Tugas</label>
+
+                    <div id="taskChecklistContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <label class="inline-flex items-center gap-2 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2">
+                            <input type="checkbox" name="tugas[]" value="Mengajar" class="w-4 h-4 text-blue-600">
+                            <span class="text-slate-800">Mengajar</span>
+                        </label>
+
+                        <label class="inline-flex items-center gap-2 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2">
+                            <input type="checkbox" name="tugas[]" value="Koreksi" class="w-4 h-4 text-blue-600">
+                            <span class="text-slate-800">Koreksi</span>
+                        </label>
+
+                        <label class="inline-flex items-center gap-2 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2">
+                            <input type="checkbox" name="tugas[]" value="Membuat Modul" class="w-4 h-4 text-blue-600">
+                            <span class="text-slate-800">Membuat Modul</span>
+                        </label>
+
+                        <label class="inline-flex items-center gap-2 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2">
+                            <input type="checkbox" name="tugas[]" value="Menjaga UTS/UAS" class="w-4 h-4 text-blue-600">
+                            <span class="text-slate-800">Menjaga UTS/UAS</span>
+                        </label>
+
+                        <label class="inline-flex items-center gap-2 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2">
+                            <input type="checkbox" name="tugas[]" value="Membuat Materi" class="w-4 h-4 text-blue-600">
+                            <span class="text-slate-800">Membuat Materi</span>
+                        </label>
+                    </div>
+
+                    <div class="mt-3 flex gap-2 items-center">
+                        <input type="text" id="taskOtherInput" placeholder="Lainnya (ketik lalu tekan Tambah)" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-900 focus:outline-none">
+                        <button type="button" id="btnAddOtherTask" onclick="addOtherTask()" class="px-3 py-2 bg-[#1867c0] text-white text-xs font-bold rounded-xl">Tambah</button>
+                    </div>
                 </div>
 
                 <!-- Section Bukti Kamera (Native Camera Trigger) -->
@@ -475,6 +501,16 @@ $statusBadge = static function (string $status): string {
                         </div>
                     </div>
 
+                </div>
+
+                <!-- Notes kendala -->
+                <div>
+                    <label for="absen_deskripsi_tugas" class="block text-xs font-bold text-slate-800 mb-1">
+                        Notes <span class="text-red-500">*</span>
+                    </label>
+                    <textarea id="absen_deskripsi_tugas" name="deskripsi_tugas" rows="3" minlength="5"
+                        placeholder="Opsinal: Catatan kendala atau tambahan lainnya"
+                        class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition resize-none shadow-2xs"></textarea>
                 </div>
 
                 <!-- Footer Buttons -->
@@ -674,6 +710,51 @@ $statusBadge = static function (string $status): string {
         function openAbsenFromRiwayat() {
             if (!currentActivePlotData) return;
             openAbsenModal(currentActivePlotData);
+        }
+
+        // =========================================================================
+        // Task Checklist Helpers
+        // =========================================================================
+        function addOtherTask() {
+            const input = document.getElementById('taskOtherInput');
+            if (!input) return;
+            const raw = input.value.trim();
+            if (raw === '') return;
+
+            const container = document.getElementById('taskChecklistContainer');
+            if (!container) return;
+
+            const wrapper = document.createElement('label');
+            wrapper.className = 'inline-flex items-center gap-2 text-xs bg-white border border-slate-200 rounded-lg px-3 py-2';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = 'tugas[]';
+            checkbox.value = raw;
+            checkbox.checked = true;
+            checkbox.className = 'w-4 h-4 text-blue-600';
+
+            const span = document.createElement('span');
+            span.className = 'text-slate-800';
+            span.textContent = raw;
+
+            const btnRemove = document.createElement('button');
+            btnRemove.type = 'button';
+            btnRemove.className = 'ml-2 text-xs text-red-500 hover:text-red-700';
+            btnRemove.textContent = 'Hapus';
+            btnRemove.onclick = function(e) {
+                e.preventDefault();
+                wrapper.remove();
+            };
+
+            wrapper.appendChild(checkbox);
+            wrapper.appendChild(span);
+            wrapper.appendChild(btnRemove);
+
+            container.appendChild(wrapper);
+
+            input.value = '';
+            input.focus();
         }
 
         // =========================================================================

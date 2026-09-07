@@ -73,6 +73,13 @@ class AsdosController
         $tanggal     = trim($_POST['tanggal'] ?? '');
         $pertemuanKe = trim($_POST['pertemuan_ke'] ?? '');
         $deskripsi   = trim($_POST['deskripsi_tugas'] ?? '');
+        // tugas[] may be posted as array of selected checklist items
+        $tugasArray  = $_POST['tugas'] ?? null;
+        $tugasJson   = null;
+        if (!empty($tugasArray) && is_array($tugasArray)) {
+            // store as JSON string so admin can parse/display structured checklist
+            $tugasJson = json_encode(array_values(array_filter(array_map('trim', $tugasArray))));
+        }
         $redirectTo  = $_POST['redirect_to'] ?? '/asdos/dashboard';
 
         $validator = new Validator($_POST);
@@ -124,6 +131,7 @@ class AsdosController
             'tanggal'         => $tanggal,
             'pertemuan_ke'    => $pertemuanKe,
             'deskripsi_tugas' => $deskripsi,
+            'tugas'           => $tugasJson,
             'foto_kegiatan'   => $fotoKegiatan,
             'foto_selfie'     => $fotoSelfie,
         ]);

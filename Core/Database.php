@@ -17,12 +17,15 @@ class Database
 
     private function __construct()
     {
-        $this->host     = defined('DB_HOST') ;
-        $this->db_name  = defined('DB_NAME') ;
-        $this->username = defined('DB_USER') ;
-        $this->password = defined('DB_PASS') ;
-        $this->port     = defined('DB_PORT') ;
-        $this->charset  = defined('DB_CHARSET');
+        $envPath = dirname(__DIR__) . '/.env';
+        $this->loadEnv($envPath);
+
+
+        $this->host     = $this->env('DB_HOST');
+        $this->db_name  = $this->env ('DB_NAME');
+        $this->username = $this->env('DB_USER');
+        $this->password = $this->env('DB_PASS');
+        $this->port     = $this->env('DB_PORT');
     }
 
     /**

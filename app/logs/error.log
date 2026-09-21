@@ -448,3 +448,25 @@ Stack trace:
 #4 C:\laragon\www\absensi_labb\public\index.php(67): Core\Router->dispatch()
 #5 {main}
 --------------------------------------------------------------------------------
+[2026-09-21 16:07:42] [GET /absensi_labb/dosen/dashboard] RuntimeException: Gagal menghubungkan ke Database MySQL: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: YES) in C:\laragon\www\absensi_labb\Core\Database.php:52
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('\r\n            S...', Array)
+#2 C:\laragon\www\absensi_labb\app\Models\Absensi.php(163): Core\Database::fetch('\r\n            S...', Array)
+#3 C:\laragon\www\absensi_labb\app\Controllers\DosenController.php(23): App\Models\Absensi::getMonitoringMetricsByDosen(14)
+#4 [internal function]: App\Controllers\DosenController->dashboard()
+#5 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#6 C:\laragon\www\absensi_labb\public\index.php(72): Core\Router->dispatch()
+#7 {main}
+--------------------------------------------------------------------------------
+[2026-09-21 16:11:09] [GET /absensi_labb/dosen/dashboard] RuntimeException: Gagal menghubungkan ke Database MySQL: SQLSTATE[HY000] [1045] Access denied for user ''@'localhost' (using password: YES) in C:\laragon\www\absensi_labb\Core\Database.php:52
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('\r\n            S...', Array)
+#2 C:\laragon\www\absensi_labb\app\Models\Absensi.php(163): Core\Database::fetch('\r\n            S...', Array)
+#3 C:\laragon\www\absensi_labb\app\Controllers\DosenController.php(23): App\Models\Absensi::getMonitoringMetricsByDosen(14)
+#4 [internal function]: App\Controllers\DosenController->dashboard()
+#5 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#6 C:\laragon\www\absensi_labb\public\index.php(72): Core\Router->dispatch()
+#7 {main}
+--------------------------------------------------------------------------------

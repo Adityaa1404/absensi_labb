@@ -23,9 +23,7 @@ $desktopNavItems = [
 <header class="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-2xs px-4 py-2.5 flex items-center justify-between select-none">
     <!-- Brand -->
     <a href="<?= \Core\Guard::url('/dosen/dashboard') ?>" class="flex items-center gap-2.5 group">
-        <div class="w-8 h-8 rounded-lg bg-[#1867c0] flex items-center justify-center text-white font-bold text-xs shadow-2xs shrink-0 group-hover:scale-105 transition-transform">
-            LAB
-        </div>
+        <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-8 w-auto max-w-[32px] object-contain shrink-0 group-hover:scale-105 transition-transform">
         <div>
             <div class="flex items-center gap-1.5">
                 <span class="text-xs font-bold text-slate-900 leading-tight">Absensi Asdos</span>
@@ -67,9 +65,7 @@ $desktopNavItems = [
 
         <!-- Brand Header -->
         <a href="<?= \Core\Guard::url('/dosen/dashboard') ?>" class="p-5 border-b border-slate-100 flex items-center gap-3 group transition">
-            <div class="w-10 h-10 rounded-xl bg-[#1867c0] group-hover:bg-[#14529d] flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0 transition-transform duration-200 group-hover:scale-105">
-                LAB
-            </div>
+            <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-10 w-auto max-w-[40px] object-contain shrink-0 transition-transform duration-200 group-hover:scale-105">
             <div class="min-w-0">
                 <div class="flex items-center gap-1.5">
                     <span class="text-sm font-bold text-slate-900 leading-tight group-hover:text-[#1867c0] transition truncate">Absensi Asdos</span>

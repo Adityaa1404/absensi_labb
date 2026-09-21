@@ -27,9 +27,7 @@
 
         <!-- Brand Header / Logo -->
         <div class="text-center">
-            <div class="w-12 h-12 rounded-xl bg-[#1867c0] flex items-center justify-center text-white font-bold text-lg shadow-xs mx-auto">
-                LAB
-            </div>
+            <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-16 w-auto mx-auto object-contain drop-shadow-2xs">
             <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 mt-4">
                 Sistem Absensi Asdos
             </h1>

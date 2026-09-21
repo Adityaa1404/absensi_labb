@@ -45,6 +45,9 @@ class Router
     public function dispatch(): void
     {
         $requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        if ($requestMethod === 'HEAD') {
+            $requestMethod = 'GET';
+        }
         $requestUri    = $this->getCleanUri();
 
         foreach ($this->routes as $route) {

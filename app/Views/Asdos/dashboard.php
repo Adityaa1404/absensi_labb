@@ -819,8 +819,11 @@ $statusBadge = static function (string $status): string {
                     const card = document.createElement('div');
                     card.className = 'p-4 bg-white border border-slate-200 rounded-xl shadow-2xs space-y-2.5 hover:border-slate-300 transition';
 
-                    const fotoKegiatanUrl = item.foto_kegiatan ? `${BASE_URL}/uploads/absensi/${item.foto_kegiatan}` : '';
-                    const fotoSelfieUrl = item.foto_selfie ? `${BASE_URL}/uploads/absensi/${item.foto_selfie}` : '';
+                    const cleanKegiatan = (item.foto_kegiatan || '').replace(/^(\/|uploads\/absensi\/)+/, '');
+                    const fotoKegiatanUrl = item.foto_kegiatan ? (item.foto_kegiatan.startsWith('http') ? item.foto_kegiatan : `${BASE_URL}/uploads/absensi/${cleanKegiatan}`) : '';
+
+                    const cleanSelfie = (item.foto_selfie || '').replace(/^(\/|uploads\/absensi\/)+/, '');
+                    const fotoSelfieUrl = item.foto_selfie ? (item.foto_selfie.startsWith('http') ? item.foto_selfie : `${BASE_URL}/uploads/absensi/${cleanSelfie}`) : '';
 
                     const jamInfo = (item.jam_mulai && item.jam_selesai) ? ` &bull; Jam: ${escapeHtml(item.jam_mulai.substring(0, 5))} - ${escapeHtml(item.jam_selesai.substring(0, 5))} WIB` : '';
 

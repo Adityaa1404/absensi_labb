@@ -61,6 +61,12 @@ class Absensi
             $params['matkul_id'] = (int)$filters['matkul_id'];
         }
 
+        // Filter Dosen Pengampu (Khusus Akses Dosen)
+        if (!empty($filters['dosen_id'])) {
+            $sql .= " AND m.dosen_id = :dosen_id";
+            $params['dosen_id'] = (int)$filters['dosen_id'];
+        }
+
         // Filter Rentang Tanggal
         if (!empty($filters['date_start'])) {
             $sql .= " AND a.tanggal >= :date_start";
@@ -136,6 +142,130 @@ class Absensi
             LIMIT 1
         ";
         return Database::fetch($sql, ['id' => $id]);
+    }
+
+    /**
+     * Ambil statistik metrik monitoring khusus untuk Dosen pengampu
+     */
+    public static function getMonitoringMetricsByDosen(int $dosenId): array
+    {
+        $sql = "
+            SELECT 
+                COUNT(*) as total,
+                SUM(CASE WHEN a.status_verifikasi = 'disetujui' THEN 1 ELSE 0 END) as disetujui,
+                SUM(CASE WHEN a.status_verifikasi = 'pending' THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN a.status_verifikasi = 'ditolak' THEN 1 ELSE 0 END) as ditolak
+            FROM absensi a
+            JOIN plotting p ON a.plotting_id = p.id_plotting
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            WHERE m.dosen_id = :dosen_id
+        ";
+        $row = Database::fetch($sql, ['dosen_id' => $dosenId]) ?? [];
+
+        return [
+            'total'     => (int)($row['total'] ?? 0),
+            'disetujui' => (int)($row['disetujui'] ?? 0),
+            'pending'   => (int)($row['pending'] ?? 0),
+            'ditolak'   => (int)($row['ditolak'] ?? 0),
+        ];
+    }
+
+    /**
+     * Ambil statistik metrik absensi per mata kuliah untuk Dosen pengampu
+     */
+    public static function getMetricsGroupedByMatkulForDosen(int $dosenId): array
+    {
+        $sql = "
+            SELECT 
+                m.id_matkul,
+                COUNT(a.id_absensi) as total,
+                SUM(CASE WHEN a.status_verifikasi = 'disetujui' THEN 1 ELSE 0 END) as disetujui,
+                SUM(CASE WHEN a.status_verifikasi = 'pending' THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN a.status_verifikasi = 'ditolak' THEN 1 ELSE 0 END) as ditolak
+            FROM mata_kuliah m
+            LEFT JOIN plotting p ON m.id_matkul = p.matkul_id
+            LEFT JOIN absensi a ON p.id_plotting = a.plotting_id
+            WHERE m.dosen_id = :dosen_id
+            GROUP BY m.id_matkul
+        ";
+        $rows = Database::fetchAll($sql, ['dosen_id' => $dosenId]);
+        $result = [];
+        foreach ($rows as $row) {
+            $result[(int)$row['id_matkul']] = [
+                'total'     => (int)($row['total'] ?? 0),
+                'disetujui' => (int)($row['disetujui'] ?? 0),
+                'pending'   => (int)($row['pending'] ?? 0),
+                'ditolak'   => (int)($row['ditolak'] ?? 0),
+            ];
+        }
+        return $result;
+    }
+
+    /**
+     * Ambil statistik metrik absensi khusus 1 mata kuliah
+     */
+    public static function getMetricsByMatkul(int $matkulId): array
+    {
+        $sql = "
+            SELECT 
+                COUNT(a.id_absensi) as total,
+                SUM(CASE WHEN a.status_verifikasi = 'disetujui' THEN 1 ELSE 0 END) as disetujui,
+                SUM(CASE WHEN a.status_verifikasi = 'pending' THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN a.status_verifikasi = 'ditolak' THEN 1 ELSE 0 END) as ditolak
+            FROM mata_kuliah m
+            JOIN plotting p ON m.id_matkul = p.matkul_id
+            JOIN absensi a ON p.id_plotting = a.plotting_id
+            WHERE m.id_matkul = :matkul_id
+        ";
+        $row = Database::fetch($sql, ['matkul_id' => $matkulId]) ?? [];
+
+        return [
+            'total'     => (int)($row['total'] ?? 0),
+            'disetujui' => (int)($row['disetujui'] ?? 0),
+            'pending'   => (int)($row['pending'] ?? 0),
+            'ditolak'   => (int)($row['ditolak'] ?? 0),
+        ];
+    }
+
+    /**
+     * Ambil absensi terbaru pada mata kuliah yang diampu dosen
+     */
+    public static function getRecentByDosen(int $dosenId, int $limit = 5): array
+    {
+        $sql = "
+            SELECT a.*, 
+                   u_asdos.nama as nama_asdos, u_asdos.identity_number as npm_asdos,
+                   m.id_matkul, m.nama_matkul, m.jam_mulai, m.jam_selesai
+            FROM absensi a
+            JOIN plotting p ON a.plotting_id = p.id_plotting
+            JOIN users u_asdos ON p.asdos_id = u_asdos.id_user
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            WHERE m.dosen_id = :dosen_id
+            ORDER BY a.created_at DESC
+            LIMIT :limit
+        ";
+        return Database::fetchAll($sql, ['dosen_id' => $dosenId, 'limit' => $limit]);
+    }
+
+    /**
+     * Cari 1 data absensi khusus mata kuliah milik dosen ybs (validasi otorisasi kepemilikan)
+     */
+    public static function findByIdForDosen(int $id, int $dosenId): ?array
+    {
+        $sql = "
+            SELECT a.*,
+                   u_asdos.id_user as asdos_id, u_asdos.nama as nama_asdos, u_asdos.identity_number as npm_asdos, u_asdos.email as email_asdos,
+                   m.id_matkul, m.nama_matkul, m.dosen_id,
+                   u_dosen.nama as nama_dosen
+            FROM absensi a
+            JOIN plotting p ON a.plotting_id = p.id_plotting
+            JOIN users u_asdos ON p.asdos_id = u_asdos.id_user
+            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
+            LEFT JOIN users u_dosen ON m.dosen_id = u_dosen.id_user
+            WHERE a.id_absensi = :id AND m.dosen_id = :dosen_id
+            LIMIT 1
+        ";
+        return Database::fetch($sql, ['id' => $id, 'dosen_id' => $dosenId]);
     }
 
     // =========================================================================

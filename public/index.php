@@ -28,7 +28,11 @@ $router->post('/asdos/absensi', 'AsdosController', 'createAbsensi', ['auth', 'as
 $router->post('/asdos/absensi/create', 'AsdosController', 'createAbsensi', ['auth', 'asdos', 'csrf']);
 $router->get('/asdos/history', 'AsdosController', 'history', ['auth', 'asdos']);
 
-$router->get('/dosen/dashboard', 'AuthController', 'dosenDashboard', ['auth', 'dosen']);
+// Rute Dosen Pengampu Mata Kuliah
+$router->get('/dosen/dashboard', 'DosenController', 'dashboard', ['auth', 'dosen']);
+$router->get('/dosen/matkul/{id}', 'DosenController', 'detailMatkul', ['auth', 'dosen']);
+$router->get('/dosen/monitoring', 'DosenController', 'monitoring', ['auth', 'dosen']);
+$router->post('/dosen/absensi/{id}/status', 'DosenController', 'updateStatus', ['auth', 'dosen', 'csrf']);
 
 // =========================================================================
 // 3. RUTE SUPER ADMIN

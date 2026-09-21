@@ -27,6 +27,7 @@ class Database
         $this->username = $this->env('DB_USERNAME');
         $this->password = $this->env('DB_PASSWORD');
         $this->port     = $this->env('DB_PORT');
+        $this->charset  = 'utf8mb4';
     }
 
     /**

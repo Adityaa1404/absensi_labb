@@ -4,6 +4,7 @@ namespace Core;
 
 use PDO;
 use PDOException;
+use RuntimeException;
 
 class Database
 {
@@ -22,7 +23,7 @@ class Database
 
 
         $this->host     = $this->env('DB_HOST');
-        $this->db_name  = $this->env ('DB_NAME');
+        $this->db_name  = $this->env('DB_NAME');
         $this->username = $this->env('DB_USER');
         $this->password = $this->env('DB_PASS');
         $this->port     = $this->env('DB_PORT');
@@ -93,5 +94,39 @@ class Database
     public static function lastInsertId(): string|false
     {
         return self::getConnection()->lastInsertId();
+    }
+
+    private function loadEnv(string $filePath): void
+    {
+        if (!file_exists($filePath)) {
+            throw new RuntimeException("File konfigurasi .env tidak ditemukan pada: {$filePath}");
+        }
+
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            $line = trim($line);
+            // Lewati komentar
+            if (empty($line) || str_starts_with($line, '#')) {
+                continue;
+            }
+
+            // Pisahkan key dan value berdasarkan karakter '=' pertama
+            list($key, $value) = explode('=', $line, 2);
+            $key   = trim($key);
+            $value = trim($value);
+
+            // Bersihkan tanda kutip jika ada
+            $value = trim($value, '"\'');
+
+            // Masukkan ke superglobal environment PHP
+            putenv("{$key}={$value}");
+            $_ENV[$key]    = $value;
+            $_SERVER[$key] = $value;
+        }
+    }
+    private function env(string $key, $default = null)
+    {
+        $value = getenv($key);
+        return $value !== false ? $value : ($_ENV[$key] ?? $default);
     }
 }

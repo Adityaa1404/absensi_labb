@@ -8,7 +8,6 @@ use PDOException;
 class Database
 {
     private static ?PDO $instance = null;
-
     private string $host;
     private string $db_name;
     private string $username;
@@ -18,12 +17,12 @@ class Database
 
     private function __construct()
     {
-        $this->host     = defined('DB_HOST') ? DB_HOST : 'localhost';
-        $this->db_name  = defined('DB_NAME') ? DB_NAME : 'absensi_lab';
-        $this->username = defined('DB_USER') ? DB_USER : 'root';
-        $this->password = defined('DB_PASS') ? DB_PASS : '';
-        $this->port     = defined('DB_PORT') ? DB_PORT : '3306';
-        $this->charset  = defined('DB_CHARSET') ? DB_CHARSET : 'utf8mb4';
+        $this->host     = defined('DB_HOST') ;
+        $this->db_name  = defined('DB_NAME') ;
+        $this->username = defined('DB_USER') ;
+        $this->password = defined('DB_PASS') ;
+        $this->port     = defined('DB_PORT') ;
+        $this->charset  = defined('DB_CHARSET');
     }
 
     /**

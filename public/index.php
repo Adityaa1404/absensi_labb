@@ -65,9 +65,10 @@ $router->post('/superadmin/absensi/{id}/status', 'SuperAdminController', 'update
 $router->post('/superadmin/absensi/{id}/delete', 'SuperAdminController', 'deleteAbsensi', ['auth', 'super_admin', 'csrf']);
 
 // =========================================================================
-// 4. RUTE FILE STATIS UPLOADS (Fallback jika Apache rewrite meneruskan ke front controller)
+// 4. RUTE FILE STATIS UPLOADS & ASSETS (Fallback jika Apache/Nginx rewrite meneruskan ke front controller)
 // =========================================================================
 $router->get('/uploads/absensi/{filename}', 'UploadController', 'serveAbsensi');
+$router->get('/assets/{folder}/{filename}', 'UploadController', 'serveAsset');
 
 $router->dispatch();
 

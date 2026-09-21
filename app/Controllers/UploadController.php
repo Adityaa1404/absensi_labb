@@ -57,4 +57,49 @@ class UploadController
 SVG;
         exit;
     }
+
+    /**
+     * Menyajikan file statis assets (misal: /assets/img/logo_SI.jpeg)
+     * Fallback ketika Apache/Nginx rewrite meneruskan request statis ke index.php
+     */
+    public function serveAsset(string $folder, string $filename): void
+    {
+        $cleanFolder   = basename($folder);
+        $cleanFilename = basename($filename);
+        $filePath      = dirname(__DIR__, 2) . '/public/assets/' . $cleanFolder . '/' . $cleanFilename;
+
+        if (file_exists($filePath) && is_file($filePath)) {
+            $this->outputAssetFile($filePath);
+            return;
+        }
+
+        http_response_code(404);
+        echo "Asset [{$cleanFilename}] tidak ditemukan.";
+        exit;
+    }
+
+    /**
+     * Output file statis dengan header MIME dan cache yang tepat
+     */
+    private function outputAssetFile(string $filePath): void
+    {
+        $ext  = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        $mime = match ($ext) {
+            'jpg', 'jpeg' => 'image/jpeg',
+            'png'         => 'image/png',
+            'webp'        => 'image/webp',
+            'gif'         => 'image/gif',
+            'svg'         => 'image/svg+xml',
+            'ico'         => 'image/x-icon',
+            'css'         => 'text/css; charset=utf-8',
+            'js'          => 'application/javascript; charset=utf-8',
+            default       => mime_content_type($filePath) ?: 'application/octet-stream',
+        };
+
+        header('Content-Type: ' . $mime);
+        header('Content-Length: ' . filesize($filePath));
+        header('Cache-Control: public, max-age=31536000, immutable');
+        readfile($filePath);
+        exit;
+    }
 }

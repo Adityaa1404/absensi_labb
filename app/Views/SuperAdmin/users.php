@@ -169,7 +169,7 @@ $filters     = $filters ?? [
                 <!-- Table Responsive Container (Auto-fitting without horizontal scroll on desktop) -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs text-slate-700 border-collapse" id="usersTable">
-                        <thead class="bg-slate-100/80 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200">
+                        <thead class="bg-slate-50/90 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200">
                             <tr>
                                 <th class="px-4 py-3.5">Pengguna & Nomor Identitas</th>
                                 <th class="px-3.5 py-3.5">Kontak (Email / WA)</th>
@@ -179,7 +179,7 @@ $filters     = $filters ?? [
                                 <th class="px-3.5 py-3.5 text-center">Pilihan Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200" id="usersTableBody">
+                        <tbody class="divide-y divide-slate-100" id="usersTableBody">
                             <?php if (!empty($users)): ?>
                                 <?php foreach ($users as $u): ?>
                                     <?php
@@ -300,7 +300,7 @@ $filters     = $filters ?? [
                                                 <!-- Tombol Edit -->
                                                 <button type="button"
                                                     onclick="openEditModal(this.closest('tr'))"
-                                                    class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-amber-50 hover:border-amber-300 hover:text-amber-800 text-slate-700 text-xs font-bold border border-slate-300 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
+                                                    class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
                                                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
@@ -311,7 +311,7 @@ $filters     = $filters ?? [
                                                 <?php if (!$isSelf): ?>
                                                     <button type="button"
                                                         onclick="openDeleteModal(<?= $u['id_user'] ?>, '<?= htmlspecialchars(addslashes($u['nama']), ENT_QUOTES, 'UTF-8') ?>')"
-                                                        class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-600 hover:text-white text-red-600 text-xs font-bold border border-red-200 hover:border-red-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
+                                                        class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-600 hover:text-white text-red-600 text-xs font-bold border border-red-200 hover:border-red-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
                                                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                         </svg>
@@ -525,9 +525,9 @@ $filters     = $filters ?? [
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                 </div>
-                                <input type="password" id="create_password" name="password" required minlength="6"
+                                <input type="password" id="create_password" name="password" required minlength="8"
                                     class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-10 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs"
-                                    placeholder="Masukkan kata sandi awal akun...">
+                                    placeholder="Masukkan kata sandi awal akun (minimal 8 karakter)...">
                                 <button type="button" onclick="togglePasswordVisibility('create_password')" title="Lihat/Sembunyikan Kata Sandi" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 cursor-pointer">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -747,9 +747,9 @@ $filters     = $filters ?? [
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                     </svg>
                                 </div>
-                                <input type="password" id="edit_password" name="password" minlength="6"
+                                <input type="password" id="edit_password" name="password" minlength="8"
                                     class="w-full bg-white border border-slate-300 rounded-xl pl-9 pr-10 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs"
-                                    placeholder="Kata sandi baru (minimal 6 karakter)...">
+                                    placeholder="Kata sandi baru (minimal 8 karakter)...">
                                 <button type="button" onclick="togglePasswordVisibility('edit_password')" title="Lihat/Sembunyikan Kata Sandi" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 cursor-pointer">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1119,61 +1119,6 @@ $filters     = $filters ?? [
             }
         }
 
-        function showToastNotification(type, title, message) {
-            let container = document.getElementById('toast-container');
-            if (!container) {
-                container = document.createElement('div');
-                container.id = 'toast-container';
-                container.className = 'fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2.5 w-full max-w-md px-4 pointer-events-none';
-                document.body.appendChild(container);
-            }
-
-            const toastId = 'toast-async-' + Date.now();
-            const isSuccess = type === 'success';
-            const borderClass = isSuccess ? 'border-emerald-200' : 'border-red-200';
-            const badgeBg = isSuccess ? 'bg-emerald-50' : 'bg-red-50';
-            const badgeText = isSuccess ? 'text-emerald-600' : 'text-red-600';
-            const titleColor = isSuccess ? 'text-emerald-950' : 'text-red-950';
-            const textColor = isSuccess ? 'text-emerald-800' : 'text-red-800';
-            const barColor = isSuccess ? 'bg-emerald-500' : 'bg-red-500';
-            const iconSvg = isSuccess ?
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>' :
-                '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>';
-
-            const toastEl = document.createElement('div');
-            toastEl.id = toastId;
-            toastEl.className = `toast-item pointer-events-auto relative w-full bg-white/95 backdrop-blur-md border ${borderClass} rounded-xl shadow-lg shadow-slate-200/50 overflow-hidden transform transition-all duration-300 ease-out translate-y-0 opacity-100 scale-100`;
-            toastEl.setAttribute('role', 'alert');
-            toastEl.innerHTML = `
-                <div class="p-3.5 flex items-start gap-3">
-                    <div class="shrink-0 w-8 h-8 rounded-lg ${badgeBg} flex items-center justify-center ${badgeText} mt-0.5">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">${iconSvg}</svg>
-                    </div>
-                    <div class="flex-1 min-w-0 pr-2">
-                        <h4 class="text-xs font-bold ${titleColor} tracking-tight">${title}</h4>
-                        <p class="text-xs ${textColor} mt-0.5 leading-relaxed break-words">${message}</p>
-                    </div>
-                    <button type="button" onclick="dismissToast('${toastId}')" class="shrink-0 text-slate-400 hover:text-slate-600 p-1 rounded-md hover:bg-slate-100 transition-colors cursor-pointer" title="Tutup">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    </button>
-                </div>
-                <div class="w-full bg-slate-100 h-1 overflow-hidden">
-                    <div class="toast-progress h-full ${barColor} w-full" style="transition: width 2000ms linear;"></div>
-                </div>
-            `;
-
-            container.appendChild(toastEl);
-
-            const progressBar = toastEl.querySelector('.toast-progress');
-            requestAnimationFrame(() => {
-                if (progressBar) progressBar.style.width = '0%';
-            });
-
-            setTimeout(() => {
-                dismissToast(toastId);
-            }, 2000);
-        }
-
         // ---------------------------------------------------------------------
         // 7. Form Submit Handlers with In-Modal Error Validation (No form close on error)
         // ---------------------------------------------------------------------
@@ -1181,6 +1126,37 @@ $filters     = $filters ?? [
         if (createForm) {
             createForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+
+                // 1. Validasi Syarat Input Form
+                const role = document.querySelector('#createModal input[name="role"]:checked');
+                const nama = document.getElementById('create_nama');
+                const identity = document.getElementById('create_identity_number');
+                const email = document.getElementById('create_email');
+                const password = document.getElementById('create_password');
+
+                if (!role) {
+                    window.highlightAndNotify(null, 'Silakan pilih peran akun (Role) terlebih dahulu.');
+                    return;
+                }
+                if (!nama.value.trim() || nama.value.trim().length < 2) {
+                    window.highlightAndNotify(nama, 'Nama lengkap wajib diisi minimal 2 karakter.');
+                    return;
+                }
+                if (!identity.value.trim() || identity.value.trim().length < 2) {
+                    window.highlightAndNotify(identity, 'Nomor identitas (NIDN/NPM/ID) wajib diisi.');
+                    return;
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.value.trim() || !emailRegex.test(email.value.trim())) {
+                    window.highlightAndNotify(email, 'Format alamat email tidak valid.');
+                    return;
+                }
+                if (!password.value || password.value.length < 8) {
+                    window.highlightAndNotify(password, 'Password minimal terdiri dari 8 karakter.');
+                    return;
+                }
+
+                // 2. Submit via Fetch (Modal tetap terbuka jika ada error dari server)
                 const submitBtn = document.getElementById('createSubmitBtn');
                 const alertEl = document.getElementById('create_error_alert');
                 const msgEl = document.getElementById('create_error_message');
@@ -1210,13 +1186,17 @@ $filters     = $filters ?? [
                     const result = await response.json();
 
                     if (response.ok && result.success) {
-                        window.location.reload();
+                        window.showToastNotification('success', 'Berhasil', result.message || 'Pengguna berhasil ditambahkan.');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 600);
                     } else {
                         throw new Error(result.message || 'Terjadi kesalahan saat menyimpan data pengguna.');
                     }
                 } catch (err) {
                     msgEl.textContent = err.message || 'Terjadi kesalahan pada sistem.';
                     alertEl.classList.remove('hidden');
+                    window.highlightAndNotify(null, err.message || 'Terjadi kesalahan sistem.');
                     const modalBody = alertEl.closest('.overflow-y-auto');
                     if (modalBody) modalBody.scrollTo({
                         top: 0,
@@ -1233,6 +1213,32 @@ $filters     = $filters ?? [
         if (editForm) {
             editForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+
+                // 1. Validasi Syarat Input Form Edit
+                const editNama = document.getElementById('edit_nama');
+                const editIdentity = document.getElementById('edit_identity_number');
+                const editEmail = document.getElementById('edit_email');
+                const editPassword = document.getElementById('edit_password');
+
+                if (!editNama.value.trim() || editNama.value.trim().length < 2) {
+                    window.highlightAndNotify(editNama, 'Nama lengkap wajib diisi minimal 2 karakter.');
+                    return;
+                }
+                if (!editIdentity.value.trim() || editIdentity.value.trim().length < 2) {
+                    window.highlightAndNotify(editIdentity, 'Nomor identitas (NIDN/NPM/ID) wajib diisi.');
+                    return;
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!editEmail.value.trim() || !emailRegex.test(editEmail.value.trim())) {
+                    window.highlightAndNotify(editEmail, 'Format alamat email tidak valid.');
+                    return;
+                }
+                if (editPassword.value && editPassword.value.length < 8) {
+                    window.highlightAndNotify(editPassword, 'Password baru minimal terdiri dari 8 karakter.');
+                    return;
+                }
+
+                // 2. Submit via Fetch (Modal tetap terbuka jika ada error dari server)
                 const submitBtn = document.getElementById('editSubmitBtn');
                 const alertEl = document.getElementById('edit_error_alert');
                 const msgEl = document.getElementById('edit_error_message');
@@ -1262,13 +1268,17 @@ $filters     = $filters ?? [
                     const result = await response.json();
 
                     if (response.ok && result.success) {
-                        window.location.reload();
+                        window.showToastNotification('success', 'Berhasil', result.message || 'Data pengguna berhasil diperbarui.');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 600);
                     } else {
                         throw new Error(result.message || 'Terjadi kesalahan saat memperbarui data pengguna.');
                     }
                 } catch (err) {
                     msgEl.textContent = err.message || 'Terjadi kesalahan pada sistem.';
                     alertEl.classList.remove('hidden');
+                    window.highlightAndNotify(null, err.message || 'Terjadi kesalahan sistem.');
                     const modalBody = alertEl.closest('.overflow-y-auto');
                     if (modalBody) modalBody.scrollTo({
                         top: 0,

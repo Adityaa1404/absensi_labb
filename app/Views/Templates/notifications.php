@@ -111,7 +111,7 @@ foreach ($flashTypes as $type => $config) {
 
 <script>
 /**
- * Auto-dismiss script untuk Toast Notification (2 Detik)
+ * Auto-dismiss script untuk Toast Notification
  */
 function dismissToast(id) {
     const el = document.getElementById(id);
@@ -123,6 +123,138 @@ function dismissToast(id) {
         el.remove();
     }, 300);
 }
+
+/**
+ * Global dynamic Toast Notification helper (Dapat dipanggil dari script mana saja)
+ */
+window.showToastNotification = function(type, title, message) {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'fixed top-5 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2.5 w-full max-w-md px-4 pointer-events-none';
+        container.style.perspective = '1000px';
+        document.body.appendChild(container);
+    }
+
+    const toastId = 'toast-dyn-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    const configs = {
+        success: {
+            title: title || 'Berhasil',
+            border: 'border-emerald-200',
+            badgeBg: 'bg-emerald-50',
+            badgeText: 'text-emerald-600',
+            titleColor: 'text-emerald-950',
+            textColor: 'text-emerald-800',
+            barColor: 'bg-emerald-500',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>'
+        },
+        error: {
+            title: title || 'Validasi Gagal',
+            border: 'border-red-200',
+            badgeBg: 'bg-red-50',
+            badgeText: 'text-red-600',
+            titleColor: 'text-red-950',
+            textColor: 'text-red-800',
+            barColor: 'bg-red-500',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'
+        },
+        warning: {
+            title: title || 'Peringatan',
+            border: 'border-amber-200',
+            badgeBg: 'bg-amber-50',
+            badgeText: 'text-amber-600',
+            titleColor: 'text-amber-950',
+            textColor: 'text-amber-800',
+            barColor: 'bg-amber-500',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>'
+        },
+        info: {
+            title: title || 'Informasi',
+            border: 'border-blue-200',
+            badgeBg: 'bg-blue-50',
+            badgeText: 'text-[#1867c0]',
+            titleColor: 'text-slate-900',
+            textColor: 'text-slate-700',
+            barColor: 'bg-[#1867c0]',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>'
+        }
+    };
+
+    const cfg = configs[type] || configs.error;
+    const toastEl = document.createElement('div');
+    toastEl.id = toastId;
+    toastEl.className = `toast-item pointer-events-auto relative w-full bg-white/95 backdrop-blur-md border ${cfg.border} rounded-xl shadow-lg shadow-slate-200/50 overflow-hidden transform transition-all duration-300 ease-out translate-y-0 opacity-100 scale-100`;
+    toastEl.setAttribute('role', 'alert');
+    toastEl.innerHTML = `
+        <div class="p-3.5 flex items-start gap-3">
+            <div class="shrink-0 w-8 h-8 rounded-lg ${cfg.badgeBg} flex items-center justify-center ${cfg.badgeText} mt-0.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">${cfg.icon}</svg>
+            </div>
+            <div class="flex-1 min-w-0 pr-2">
+                <h4 class="text-xs font-bold ${cfg.titleColor} tracking-tight">${cfg.title}</h4>
+                <p class="text-xs ${cfg.textColor} mt-0.5 leading-relaxed break-words">${message}</p>
+            </div>
+            <button type="button" onclick="dismissToast('${toastId}')" class="shrink-0 text-slate-400 hover:text-slate-600 p-1 rounded-md hover:bg-slate-100 transition-colors cursor-pointer" title="Tutup">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div class="w-full bg-slate-100 h-1 overflow-hidden">
+            <div class="toast-progress h-full ${cfg.barColor} w-full" style="transition: width 3500ms linear;"></div>
+        </div>
+    `;
+
+    container.appendChild(toastEl);
+
+    const progressBar = toastEl.querySelector('.toast-progress');
+    requestAnimationFrame(() => {
+        if (progressBar) progressBar.style.width = '0%';
+    });
+
+    let timer = setTimeout(() => {
+        dismissToast(toastId);
+    }, 3500);
+
+    toastEl.addEventListener('mouseenter', () => {
+        clearTimeout(timer);
+        if (progressBar) {
+            const computedWidth = window.getComputedStyle(progressBar).width;
+            progressBar.style.transition = 'none';
+            progressBar.style.width = computedWidth;
+        }
+    });
+
+    toastEl.addEventListener('mouseleave', () => {
+        timer = setTimeout(() => {
+            dismissToast(toastId);
+        }, 1000);
+        if (progressBar) {
+            progressBar.style.transition = 'width 1000ms linear';
+            progressBar.style.width = '0%';
+        }
+    });
+};
+
+/**
+ * Form field validator and highlighter helper:
+ * Memberi feedback popup toast, menyorot input merah, dan scroll/fokus ke input yang salah tanpa menutup form/modal.
+ */
+window.highlightAndNotify = function(inputEl, message) {
+    window.showToastNotification('error', 'Validasi Gagal', message);
+    if (inputEl) {
+        inputEl.classList.add('!border-red-500', '!ring-2', '!ring-red-200');
+        inputEl.focus();
+        inputEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        const removeHighlight = () => {
+            inputEl.classList.remove('!border-red-500', '!ring-2', '!ring-red-200');
+            inputEl.removeEventListener('input', removeHighlight);
+            inputEl.removeEventListener('change', removeHighlight);
+        };
+        inputEl.addEventListener('input', removeHighlight);
+        inputEl.addEventListener('change', removeHighlight);
+    }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     const toasts = document.querySelectorAll('.toast-item');
@@ -138,10 +270,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Auto dismiss setelah 2 detik (2000ms)
+        // Auto dismiss setelah 2.5 detik (2500ms)
         let timer = setTimeout(() => {
             dismissToast(id);
-        }, 2000);
+        }, 2500);
 
         // Pause countdown saat hover mouse
         toast.addEventListener('mouseenter', () => {
@@ -157,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.addEventListener('mouseleave', () => {
             timer = setTimeout(() => {
                 dismissToast(id);
-            }, 800); // beri sisa 0.8 detik setelah mouse pergi
+            }, 800);
             if (progressBar) {
                 progressBar.style.transition = 'width 800ms linear';
                 progressBar.style.width = '0%';

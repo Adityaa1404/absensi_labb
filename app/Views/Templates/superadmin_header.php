@@ -1,38 +1,71 @@
 <?php
 
 /**
- * Global Desktop Sidebar Template untuk Super Admin
+ * Global Desktop Sidebar Template untuk Super Admin (Optime / Modern SaaS Inspired)
  * Khusus untuk tampilan layar Desktop (md ke atas).
  * Navigasi mobile ditangani secara terpisah oleh superadmin_bottom_nav.php.
  */
 $currentUser = $currentUser ?? \Core\Guard::user();
 $reqUri      = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
 
-$desktopNavItems = [
+$navGroups = [
     [
-        'id'     => 'dashboard',
-        'label'  => 'Dashboard',
-        'url'    => \Core\Guard::url('/superadmin/dashboard'),
-        'active' => str_contains($reqUri, '/superadmin/dashboard') || $reqUri === \Core\Guard::url('/') || $reqUri === \Core\Guard::url(''),
+        'group' => 'General',
+        'items' => [
+            [
+                'id'     => 'dashboard',
+                'label'  => 'Dashboard',
+                'url'    => \Core\Guard::url('/superadmin/dashboard'),
+                'active' => str_contains($reqUri, '/superadmin/dashboard') || $reqUri === \Core\Guard::url('/') || $reqUri === \Core\Guard::url(''),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>'
+            ],
+        ]
     ],
     [
-        'id'     => 'users',
-        'label'  => 'Kelola Pengguna',
-        'url'    => \Core\Guard::url('/superadmin/users'),
-        'active' => str_contains($reqUri, '/superadmin/users'),
+        'group' => 'Manajemen & Aktivitas',
+        'items' => [
+            [
+                'id'     => 'users',
+                'label'  => 'Kelola Pengguna',
+                'url'    => \Core\Guard::url('/superadmin/users'),
+                'active' => str_contains($reqUri, '/superadmin/users'),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>'
+            ],
+            [
+                'id'     => 'matkul',
+                'label'  => 'Mata Kuliah & Plotting',
+                'url'    => \Core\Guard::url('/superadmin/matkul'),
+                'active' => str_contains($reqUri, '/superadmin/matkul') || str_contains($reqUri, '/superadmin/plotting'),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>'
+            ],
+            [
+                'id'     => 'monitoring',
+                'label'  => 'Monitoring Absensi',
+                'url'    => \Core\Guard::url('/superadmin/monitoring'),
+                'active' => str_contains($reqUri, '/superadmin/monitoring'),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>'
+            ],
+            [
+                'id'     => 'dispensasi',
+                'label'  => 'Surat Dispensasi',
+                'url'    => \Core\Guard::url('/superadmin/dispensasi'),
+                'active' => str_contains($reqUri, '/superadmin/dispensasi'),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>'
+            ],
+        ]
     ],
     [
-        'id'     => 'matkul',
-        'label'  => 'Mata Kuliah & Plotting',
-        'url'    => \Core\Guard::url('/superadmin/matkul'),
-        'active' => str_contains($reqUri, '/superadmin/matkul') || str_contains($reqUri, '/superadmin/plotting'),
-    ],
-    [
-        'id'     => 'monitoring',
-        'label'  => 'Monitoring Absensi',
-        'url'    => \Core\Guard::url('/superadmin/monitoring'),
-        'active' => str_contains($reqUri, '/superadmin/monitoring'),
-    ],
+        'group' => 'Sistem & Preferensi',
+        'items' => [
+            [
+                'id'     => 'settings',
+                'label'  => 'Pengaturan Institusi',
+                'url'    => \Core\Guard::url('/superadmin/settings'),
+                'active' => str_contains($reqUri, '/superadmin/settings'),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>'
+            ],
+        ]
+    ]
 ];
 ?>
 
@@ -77,67 +110,80 @@ $desktopNavItems = [
 </header>
 
 <!-- ========================================================================= -->
-<!-- DESKTOP SIDEBAR NAVIGATION (FIXED LEFT BAR KHUSUS DESKTOP)                -->
+<!-- DESKTOP SIDEBAR NAVIGATION (MODERN SAAS CATEGORIZED SIDEBAR)              -->
 <!-- ========================================================================= -->
 <aside class="hidden md:flex fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex-col justify-between shadow-xs select-none">
     <div class="flex flex-col flex-1 overflow-y-auto">
 
-        <!-- Brand Header -->
+        <!-- Brand Header (Optime-Style) -->
         <a href="<?= \Core\Guard::url('/superadmin/dashboard') ?>" class="p-5 border-b border-slate-100 flex items-center gap-3 group transition">
-            <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-10 w-auto max-w-[40px] object-contain shrink-0 transition-transform duration-200 group-hover:scale-105">
+            <div class="w-10 h-10 rounded-xl bg-blue-50/80 border border-blue-100 flex items-center justify-center p-1 shrink-0 group-hover:scale-105 transition-transform duration-200 shadow-2xs">
+                <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-8 w-auto max-w-[32px] object-contain">
+            </div>
             <div class="min-w-0">
                 <div class="flex items-center gap-1.5">
                     <span class="text-sm font-bold text-slate-900 leading-tight group-hover:text-[#1867c0] transition truncate">Absensi Asdos</span>
-                    <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-blue-50 text-[#1867c0] border border-blue-200 rounded-md shrink-0">
+                    <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider bg-blue-50 text-[#1867c0] border border-blue-200 rounded shrink-0">
                         ADMIN
                     </span>
                 </div>
-                <p class="text-[11px] text-slate-400 truncate mt-0.5">Lab Sistem Informasi</p>
+                <p class="text-[11px] text-slate-400 truncate mt-0.5 font-medium">Lab Sistem Informasi</p>
             </div>
         </a>
 
-        <!-- Navigation Section -->
-        <div class="p-3.5 space-y-1">
-            <p class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Menu Utama</p>
-
-            <nav class="space-y-1" aria-label="Menu Super Admin">
-                <?php foreach ($desktopNavItems as $nav): ?>
-                    <?php if ($nav['active']): ?>
-                        <a href="<?= $nav['url'] ?>"
-                            class="block px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#1867c0] text-white shadow-xs shadow-blue-500/20 transition duration-150">
-                            <span class="truncate"><?= $nav['label'] ?></span>
-                        </a>
-                    <?php else: ?>
-                        <a href="<?= $nav['url'] ?>"
-                            class="block px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition duration-150">
-                            <span class="truncate"><?= $nav['label'] ?></span>
-                        </a>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </nav>
+        <!-- Categorized Nav Menu -->
+        <div class="p-3.5 space-y-4">
+            <?php foreach ($navGroups as $group): ?>
+                <div>
+                    <p class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        <?= $group['group'] ?>
+                    </p>
+                    <nav class="space-y-1 mt-1" aria-label="<?= $group['group'] ?>">
+                        <?php foreach ($group['items'] as $nav): ?>
+                            <?php if ($nav['active']): ?>
+                                <a href="<?= $nav['url'] ?>"
+                                    class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#1867c0] text-white shadow-xs shadow-blue-500/25 transition duration-150">
+                                    <svg class="w-4 h-4 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <?= $nav['icon'] ?>
+                                    </svg>
+                                    <span class="truncate"><?= $nav['label'] ?></span>
+                                </a>
+                            <?php else: ?>
+                                <a href="<?= $nav['url'] ?>"
+                                    class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition duration-150 group">
+                                    <svg class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <?= $nav['icon'] ?>
+                                    </svg>
+                                    <span class="truncate"><?= $nav['label'] ?></span>
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </nav>
+                </div>
+            <?php endforeach; ?>
         </div>
 
     </div>
 
-    <!-- Bottom User Profile & Logout -->
-    <div class="p-3.5 border-t border-slate-100 bg-slate-50/60 space-y-2.5">
-        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
-            <div class="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 text-[#1867c0] flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                <?= strtoupper(substr($currentUser['nama'] ?? 'A', 0, 1)) ?>
+    <!-- Bottom User Profile Card (Optime-Style with Status Dot) -->
+    <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 space-y-2">
+        <div class="flex items-center gap-2.5 p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+            <div class="relative shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 text-[#1867c0] flex items-center justify-center font-bold text-xs shadow-2xs">
+                    <?= strtoupper(substr($currentUser['nama'] ?? 'A', 0, 1)) ?>
+                </div>
+                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" title="Online"></span>
             </div>
             <div class="min-w-0 flex-1">
                 <p class="text-xs font-bold text-slate-800 truncate leading-tight"><?= htmlspecialchars($currentUser['nama'] ?? 'Admin', ENT_QUOTES, 'UTF-8') ?></p>
-                <p class="text-[10px] text-slate-400 truncate mt-0.5"><?= htmlspecialchars($currentUser['email'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                <p class="text-[10px] text-slate-400 truncate mt-0.5"><?= htmlspecialchars($currentUser['email'] ?? 'Super Administrator', ENT_QUOTES, 'UTF-8') ?></p>
             </div>
+            <a href="<?= \Core\Guard::url('/logout') ?>" title="Keluar dari sistem" 
+               class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition active:scale-95">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+            </a>
         </div>
-
-        <a href="<?= \Core\Guard::url('/logout') ?>"
-            title="Keluar dari sistem"
-            class="w-full px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 text-xs font-bold transition duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            <span>Keluar Sistem</span>
-        </a>
     </div>
 </aside>

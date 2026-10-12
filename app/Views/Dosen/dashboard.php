@@ -42,155 +42,231 @@ $totalAsdosAktif   = $totalAsdosAktif ?? 0;
         <!-- Main Content Container -->
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
 
-            <!-- Page Header / Greeting Banner -->
-            <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-[#1867c0] rounded-2xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
-                <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                    <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md text-blue-200 text-xs font-semibold mb-3 border border-white/10">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            Dosen Pengampu Mata Kuliah
-                        </div>
-                        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">Selamat Datang, <?= htmlspecialchars($currentUser['nama'] ?? 'Bapak/Ibu Dosen', ENT_QUOTES, 'UTF-8') ?>!</h1>
+            <!-- Page Header / Top App Bar (Optime-Style) -->
+            <div class="bg-white border border-slate-200/90 p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200/70">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Dosen Pengampu • Lab Sistem Informasi
+                        </span>
                     </div>
-
-                    <div class="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 text-xs text-blue-100">
-                        <svg class="w-4 h-4 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        <span><strong><?= count($myMatkul) ?></strong> Mata Kuliah Diampu</span>
-                    </div>
+                    <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                        Selamat Datang Kembali, <?= htmlspecialchars(explode(' ', trim($currentUser['nama'] ?? 'Dosen'))[0], ENT_QUOTES, 'UTF-8') ?>! 👋
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Verifikasi laporan asistensi praktikum laboratorium dan permohonan surat izin dispensasi mengajar.</p>
                 </div>
 
-                <!-- Decorative Background Pattern -->
-                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+                <!-- Right Action Cluster (Optime-Style) -->
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-600">
+                        <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        <span><strong><?= count($myMatkul) ?></strong> Matkul Diampu</span>
+                    </span>
+
+                    <a href="<?= \Core\Guard::url('/dosen/dispensasi') ?>" 
+                        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition active:scale-95 shadow-2xs">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <span>Surat Dispensasi</span>
+                    </a>
+
+                    <?php if ($metrics['pending'] > 0): ?>
+                        <a href="#laporan-pending" 
+                            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition active:scale-95 shadow-sm hover:shadow">
+                            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                            <span><?= $metrics['pending'] ?> Perlu Ditinjau</span>
+                        </a>
+                    <?php endif; ?>
+                </div>
             </div>
 
-            <!-- Metric / Stat Cards Grid (4 Columns) -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
+            <!-- Optime 4-Stat Cards Row (Clean Pastel Icon Squircles + Micro-Trend Pills) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
 
                 <!-- 1. Total Absensi -->
-                <div class="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-blue-300">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Absensi</p>
-                        <p class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1"><?= $metrics['total'] ?></p>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Seluruh praktikum</p>
+                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:border-blue-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-50 text-[#1867c0] border border-blue-100 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-500 truncate">Total Presensi</p>
+                        </div>
                     </div>
-                    <div class="w-11 h-11 rounded-xl bg-blue-50 text-[#1867c0] flex items-center justify-center border border-blue-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                        </svg>
+                    <div class="flex items-baseline justify-between mt-3">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"><?= number_format($metrics['total']) ?></p>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
+                            <span>Seluruh Matkul</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- 2. Menunggu Verifikasi (Pending) -->
-                <a href="#laporan-pending" class="bg-white p-4 sm:p-5 rounded-xl border <?= $metrics['pending'] > 0 ? 'border-amber-300 bg-amber-50/20' : 'border-slate-200' ?> shadow-xs flex items-center justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-amber-400 block group">
-                    <div>
-                        <div class="flex items-center gap-1.5">
-                            <p class="text-xs font-bold uppercase tracking-wider <?= $metrics['pending'] > 0 ? 'text-amber-700' : 'text-slate-500' ?>">Perlu Review</p>
-                            <?php if ($metrics['pending'] > 0): ?>
-                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
-                            <?php endif; ?>
+                <!-- 2. Perlu Review (Pending) -->
+                <a href="#laporan-pending" 
+                    class="group bg-white p-4 sm:p-5 rounded-2xl border <?= $metrics['pending'] > 0 ? 'border-amber-300 ring-2 ring-amber-100/60' : 'border-slate-200/90' ?> shadow-xs hover:border-amber-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 block cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-150">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                         </div>
-                        <p class="text-2xl sm:text-3xl font-bold <?= $metrics['pending'] > 0 ? 'text-amber-800' : 'text-slate-700' ?> mt-1"><?= $metrics['pending'] ?></p>
-                        <p class="text-[11px] text-amber-600 mt-0.5 group-hover:underline">Lihat laporan di bawah &darr;</p>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-amber-800 truncate">Perlu Review</p>
+                        </div>
                     </div>
-                    <div class="w-11 h-11 rounded-xl <?= $metrics['pending'] > 0 ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500' ?> flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <div class="flex items-baseline justify-between mt-3">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-amber-900 tracking-tight"><?= number_format($metrics['pending']) ?></p>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                            <?php if ($metrics['pending'] > 0): ?>
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+                                <span>Menunggu</span>
+                            <?php else: ?>
+                                <span>Tuntas</span>
+                            <?php endif; ?>
+                        </span>
                     </div>
                 </a>
 
                 <!-- 3. Disetujui -->
-                <div class="bg-white p-4 sm:p-5 rounded-xl border border-emerald-200/80 bg-emerald-50/20 shadow-xs flex items-center justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-emerald-400">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Disetujui</p>
-                        <p class="text-2xl sm:text-3xl font-bold text-emerald-800 mt-1"><?= $metrics['disetujui'] ?></p>
-                        <p class="text-[11px] text-emerald-600 mt-0.5">Tervalidasi dosen</p>
+                <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:border-emerald-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-emerald-800 truncate">Disetujui</p>
+                        </div>
                     </div>
-                    <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+                    <div class="flex items-baseline justify-between mt-3">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"><?= number_format($metrics['disetujui']) ?></p>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                            <span>Tervalidasi</span>
+                        </span>
                     </div>
                 </div>
 
                 <!-- 4. Mata Kuliah & Asdos Aktif -->
-                <a href="#daftar-matkul" class="bg-white p-4 sm:p-5 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-purple-300 block group">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500 group-hover:text-purple-700 transition">Matkul Diampu</p>
-                        <p class="text-2xl sm:text-3xl font-bold text-purple-900 mt-1"><?= count($myMatkul) ?></p>
-                        <p class="text-[11px] text-purple-600 mt-0.5 group-hover:underline">Pilih matkul di bawah &darr;</p>
+                <a href="#daftar-matkul" 
+                    class="group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:border-purple-400 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150 block cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-150">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-500 truncate">Matkul Diampu</p>
+                        </div>
                     </div>
-                    <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center border border-purple-200">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
+                    <div class="flex items-baseline justify-between mt-3">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"><?= count($myMatkul) ?></p>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200">
+                            <span><?= (int)$totalAsdosAktif ?> Asdos</span>
+                        </span>
                     </div>
                 </a>
 
             </div>
 
-            <!-- SECTION 1: Laporan Absensi yang Perlu Verifikasi Segera -->
-            <div id="laporan-pending" class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden scroll-mt-6">
-                <div class="p-4 sm:p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-slate-50/60">
-                    <div class="flex items-center gap-2">
-                        <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
-                        <h2 class="text-base font-bold text-slate-900">Laporan Absensi Perlu Verifikasi Segera</h2>
-                        <?php if (count($pendingAbsensi) > 0): ?>
-                            <span class="px-2 py-0.5 text-xs font-bold bg-amber-100 text-amber-800 rounded-full">
-                                <?= count($pendingAbsensi) ?> Menunggu
-                            </span>
-                        <?php endif; ?>
+            <!-- SECTION 1: Laporan Absensi yang Perlu Verifikasi Segera (Layerz Style) -->
+            <div id="laporan-pending" class="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden scroll-mt-6">
+                <div class="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-amber-50/50 via-white to-slate-50/50">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h2 class="text-sm sm:text-base font-bold text-slate-900">Laporan Absensi Perlu Verifikasi Segera</h2>
+                                <?php if (count($pendingAbsensi) > 0): ?>
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-bold bg-amber-100 text-amber-800 rounded-full border border-amber-200 shadow-2xs">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                        <?= count($pendingAbsensi) ?> Menunggu
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Tinjau kesesuaian waktu praktikum, foto kehadiran, dan catatan modul asdos.</p>
+                        </div>
                     </div>
                     <?php if (count($pendingAbsensi) > 5): ?>
-                        <span class="text-xs text-slate-500 font-medium">Menampilkan 5 dari <?= count($pendingAbsensi) ?> laporan</span>
+                        <span class="text-xs text-slate-500 font-semibold px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 self-start sm:self-auto">
+                            Menampilkan 5 dari <?= count($pendingAbsensi) ?> laporan
+                        </span>
                     <?php endif; ?>
                 </div>
 
                 <?php if (!empty($pendingAbsensi)): ?>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs text-slate-700 border-collapse">
-                            <thead class="bg-slate-100/80 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200">
+                            <thead class="bg-slate-50/90 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200">
                                 <tr>
-                                    <th class="px-4 py-3">Tanggal & Pertemuan</th>
-                                    <th class="px-3.5 py-3">Asisten Dosen</th>
-                                    <th class="px-3.5 py-3">Mata Kuliah</th>
-                                    <th class="px-3 py-3 text-center">Bukti Foto</th>
-                                    <th class="px-3.5 py-3 text-center">Aksi Verifikasi</th>
+                                    <th class="px-5 py-3.5">Tanggal & Pertemuan</th>
+                                    <th class="px-4 py-3.5">Asisten Dosen</th>
+                                    <th class="px-4 py-3.5">Mata Kuliah & Jadwal</th>
+                                    <th class="px-4 py-3.5 text-center">Bukti Foto</th>
+                                    <th class="px-5 py-3.5 text-center">Aksi Verifikasi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200">
+                            <tbody class="divide-y divide-slate-100">
                                 <?php foreach (array_slice($pendingAbsensi, 0, 5) as $pa): ?>
-                                    <tr class="hover:bg-amber-50/30 transition duration-150">
-                                        <td class="px-4 py-3">
+                                    <?php 
+                                    $asdosName = trim($pa['nama_asdos'] ?? 'Asdos');
+                                    $asdosInitial = strtoupper(substr($asdosName, 0, 1));
+                                    ?>
+                                    <tr class="hover:bg-amber-50/20 transition-colors duration-150">
+                                        <td class="px-5 py-3.5 whitespace-nowrap">
                                             <p class="font-bold text-slate-900"><?= date('d M Y', strtotime($pa['tanggal'])) ?></p>
-                                            <span class="text-[11px] font-semibold text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                                            <span class="inline-flex items-center gap-1 mt-1 text-[11px] font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200">
                                                 Pertemuan ke-<?= $pa['pertemuan_ke'] ?? '1' ?>
                                             </span>
                                         </td>
-                                        <td class="px-3.5 py-3">
-                                            <p class="font-bold text-slate-900"><?= htmlspecialchars($pa['nama_asdos'], ENT_QUOTES, 'UTF-8') ?></p>
-                                            <p class="text-[11px] text-slate-500 font-mono">NPM: <?= htmlspecialchars($pa['npm_asdos'], ENT_QUOTES, 'UTF-8') ?></p>
+                                        <td class="px-4 py-3.5">
+                                            <div class="flex items-center gap-2.5">
+                                                <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#1867c0] border border-blue-200 font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                                                    <?= $asdosInitial ?>
+                                                </div>
+                                                <div class="min-w-0">
+                                                    <p class="font-bold text-slate-900 truncate"><?= htmlspecialchars($asdosName, ENT_QUOTES, 'UTF-8') ?></p>
+                                                    <p class="text-[11px] text-slate-500 font-mono">NPM: <?= htmlspecialchars($pa['npm_asdos'], ENT_QUOTES, 'UTF-8') ?></p>
+                                                </div>
+                                            </div>
                                         </td>
-                                        <td class="px-3.5 py-3">
+                                        <td class="px-4 py-3.5">
                                             <p class="font-bold text-slate-800"><?= htmlspecialchars($pa['nama_matkul'], ENT_QUOTES, 'UTF-8') ?></p>
                                             <?php if (!empty($pa['jam_mulai']) && !empty($pa['jam_selesai'])): ?>
-                                                <p class="text-[11px] text-slate-500"><?= substr($pa['jam_mulai'], 0, 5) ?> - <?= substr($pa['jam_selesai'], 0, 5) ?></p>
+                                                <p class="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1 font-mono">
+                                                    <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                    <span><?= substr($pa['jam_mulai'], 0, 5) ?> - <?= substr($pa['jam_selesai'], 0, 5) ?> WIB</span>
+                                                </p>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="px-3 py-3 text-center">
+                                        <td class="px-4 py-3.5 text-center">
                                             <div class="inline-flex items-center gap-1.5">
                                                 <?php if (!empty($pa['foto_kegiatan'])): ?>
                                                     <?php
-                                                    $kegiatanSrc = (str_starts_with($pa['foto_kegiatan'], 'http') || str_starts_with($pa['foto_kegiatan'], '/'))
+                                                     $kegiatanSrc = (str_starts_with($pa['foto_kegiatan'], 'http') || str_starts_with($pa['foto_kegiatan'], '/'))
                                                         ? $pa['foto_kegiatan']
                                                         : \Core\Guard::url('/uploads/absensi/' . $pa['foto_kegiatan']);
                                                     ?>
                                                     <button type="button"
                                                         onclick="previewImage('<?= htmlspecialchars($kegiatanSrc, ENT_QUOTES, 'UTF-8') ?>', 'Bukti Kegiatan Praktikum')"
-                                                        class="px-2 py-1 rounded bg-slate-100 hover:bg-blue-50 text-blue-700 border border-slate-300 text-[11px] font-semibold cursor-pointer">
-                                                        Kegiatan
+                                                        class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#1867c0] border border-slate-200 text-xs font-semibold cursor-pointer transition shadow-2xs active:scale-95">
+                                                        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                        </svg>
+                                                        <span>Kegiatan</span>
                                                     </button>
                                                 <?php endif; ?>
                                                 <?php if (!empty($pa['foto_selfie'])): ?>
@@ -201,17 +277,23 @@ $totalAsdosAktif   = $totalAsdosAktif ?? 0;
                                                     ?>
                                                     <button type="button"
                                                         onclick="previewImage('<?= htmlspecialchars($selfieSrc, ENT_QUOTES, 'UTF-8') ?>', 'Foto Selfie Kehadiran')"
-                                                        class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 text-indigo-700 border border-slate-300 text-[11px] font-semibold cursor-pointer">
-                                                        Selfie
+                                                        class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#1867c0] border border-slate-200 text-xs font-semibold cursor-pointer transition shadow-2xs active:scale-95">
+                                                        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                        </svg>
+                                                        <span>Selfie</span>
                                                     </button>
                                                 <?php endif; ?>
                                             </div>
                                         </td>
-                                        <td class="px-3.5 py-3 text-center whitespace-nowrap">
+                                        <td class="px-5 py-3.5 text-center whitespace-nowrap">
                                             <button type="button"
                                                 onclick="openVerificationModal(<?= htmlspecialchars(json_encode($pa), ENT_QUOTES, 'UTF-8') ?>)"
-                                                class="px-3 py-1.5 rounded-lg bg-[#1867c0] hover:bg-[#14529d] text-white text-xs font-bold transition shadow-xs cursor-pointer active:scale-95">
-                                                Verifikasi Sekarang
+                                                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#1867c0] hover:bg-[#14529d] text-white text-xs font-bold transition shadow-xs hover:shadow cursor-pointer active:scale-95">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span>Verifikasi</span>
                                             </button>
                                         </td>
                                     </tr>
@@ -220,8 +302,8 @@ $totalAsdosAktif   = $totalAsdosAktif ?? 0;
                         </table>
                     </div>
                 <?php else: ?>
-                    <div class="p-8 text-center">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3 border border-emerald-200">
+                    <div class="p-8 sm:p-10 text-center">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-3 border border-emerald-200 shadow-2xs">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                             </svg>
@@ -505,6 +587,29 @@ $totalAsdosAktif   = $totalAsdosAktif ?? 0;
 
         function closePreviewImage() {
             document.getElementById('imagePreviewModal').classList.add('hidden');
+        }
+
+        const formVerification = document.getElementById('formVerification');
+        if (formVerification) {
+            formVerification.addEventListener('submit', function(e) {
+                const checkedRadio = formVerification.querySelector('input[name="status_verifikasi"]:checked');
+                if (!checkedRadio) {
+                    e.preventDefault();
+                    const firstRadio = formVerification.querySelector('input[name="status_verifikasi"]');
+                    window.highlightAndNotify(firstRadio, 'Silakan pilih status verifikasi (Disetujui atau Ditolak).');
+                    return false;
+                }
+
+                if (checkedRadio.value === 'ditolak') {
+                    const pesanInput = document.getElementById('modalPesanDosen');
+                    const val = pesanInput ? pesanInput.value.trim() : '';
+                    if (val.length < 5) {
+                        e.preventDefault();
+                        window.highlightAndNotify(pesanInput, 'Catatan / Alasan penolakan wajib diisi minimal 5 karakter agar asdos memahami kendalanya.');
+                        return false;
+                    }
+                }
+            });
         }
     </script>
 </body>

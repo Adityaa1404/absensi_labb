@@ -1,19 +1,45 @@
 <?php
 
 /**
- * Global Desktop Sidebar & Mobile Header Template untuk Dosen Pengampu
+ * Global Desktop Sidebar Template untuk Dosen Pengampu (Optime / Modern SaaS Inspired)
+ * Khusus untuk tampilan layar Desktop (md ke atas).
+ * Navigasi mobile ditangani secara terpisah oleh dosen_bottom_nav.php.
  */
 $currentUser = $currentUser ?? \Core\Guard::user();
 $reqUri      = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
 
-$desktopNavItems = [
+$navGroups = [
     [
-        'id'     => 'dashboard',
-        'label'  => 'Dashboard',
-        'url'    => \Core\Guard::url('/dosen/dashboard'),
-        'active' => str_contains($reqUri, '/dosen/dashboard') || str_contains($reqUri, '/dosen/matkul/'),
-        'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>'
+        'group' => 'General',
+        'items' => [
+            [
+                'id'     => 'dashboard',
+                'label'  => 'Dashboard',
+                'url'    => \Core\Guard::url('/dosen/dashboard'),
+                'active' => (str_contains($reqUri, '/dosen/dashboard') || str_contains($reqUri, '/dosen/matkul/')) && !str_contains($reqUri, '/dosen/dispensasi') && !str_contains($reqUri, '/dosen/monitoring'),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>'
+            ],
+        ]
     ],
+    [
+        'group' => 'Aktivitas & Verifikasi',
+        'items' => [
+            [
+                'id'     => 'monitoring',
+                'label'  => 'Monitoring Presensi',
+                'url'    => \Core\Guard::url('/dosen/monitoring'),
+                'active' => str_contains($reqUri, '/dosen/monitoring'),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>'
+            ],
+            [
+                'id'     => 'dispensasi',
+                'label'  => 'Surat Dispensasi',
+                'url'    => \Core\Guard::url('/dosen/dispensasi'),
+                'active' => str_contains($reqUri, '/dosen/dispensasi'),
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>'
+            ],
+        ]
+    ]
 ];
 ?>
 
@@ -58,73 +84,80 @@ $desktopNavItems = [
 </header>
 
 <!-- ========================================================================= -->
-<!-- DESKTOP SIDEBAR NAVIGATION (FIXED LEFT BAR KHUSUS DESKTOP)                -->
+<!-- DESKTOP SIDEBAR NAVIGATION (MODERN SAAS CATEGORIZED SIDEBAR)              -->
 <!-- ========================================================================= -->
 <aside class="hidden md:flex fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex-col justify-between shadow-xs select-none">
     <div class="flex flex-col flex-1 overflow-y-auto">
 
-        <!-- Brand Header -->
+        <!-- Brand Header (Optime-Style) -->
         <a href="<?= \Core\Guard::url('/dosen/dashboard') ?>" class="p-5 border-b border-slate-100 flex items-center gap-3 group transition">
-            <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-10 w-auto max-w-[40px] object-contain shrink-0 transition-transform duration-200 group-hover:scale-105">
+            <div class="w-10 h-10 rounded-xl bg-purple-50/80 border border-purple-100 flex items-center justify-center p-1 shrink-0 group-hover:scale-105 transition-transform duration-200 shadow-2xs">
+                <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-8 w-auto max-w-[32px] object-contain">
+            </div>
             <div class="min-w-0">
                 <div class="flex items-center gap-1.5">
-                    <span class="text-sm font-bold text-slate-900 leading-tight group-hover:text-[#1867c0] transition truncate">Absensi Asdos</span>
-                    <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-200 rounded-md shrink-0">
+                    <span class="text-sm font-bold text-slate-900 leading-tight group-hover:text-purple-700 transition truncate">Absensi Asdos</span>
+                    <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider bg-purple-50 text-purple-700 border border-purple-200 rounded shrink-0">
                         DOSEN
                     </span>
                 </div>
-                <p class="text-[11px] text-slate-400 truncate mt-0.5">Lab Sistem Informasi</p>
+                <p class="text-[11px] text-slate-400 truncate mt-0.5 font-medium">Lab Sistem Informasi</p>
             </div>
         </a>
 
-        <!-- Navigation Section -->
-        <div class="p-3.5 space-y-1">
-            <p class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Menu Utama</p>
-
-            <nav class="space-y-1" aria-label="Menu Dosen">
-                <?php foreach ($desktopNavItems as $nav): ?>
-                    <?php if ($nav['active']): ?>
-                        <a href="<?= $nav['url'] ?>"
-                            class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#1867c0] text-white shadow-xs shadow-blue-500/20 transition duration-150">
-                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <?= $nav['icon'] ?>
-                            </svg>
-                            <span class="truncate"><?= $nav['label'] ?></span>
-                        </a>
-                    <?php else: ?>
-                        <a href="<?= $nav['url'] ?>"
-                            class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition duration-150">
-                            <svg class="w-4 h-4 shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <?= $nav['icon'] ?>
-                            </svg>
-                            <span class="truncate"><?= $nav['label'] ?></span>
-                        </a>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </nav>
+        <!-- Categorized Nav Menu -->
+        <div class="p-3.5 space-y-4">
+            <?php foreach ($navGroups as $group): ?>
+                <div>
+                    <p class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        <?= $group['group'] ?>
+                    </p>
+                    <nav class="space-y-1 mt-1" aria-label="<?= $group['group'] ?>">
+                        <?php foreach ($group['items'] as $nav): ?>
+                            <?php if ($nav['active']): ?>
+                                <a href="<?= $nav['url'] ?>"
+                                    class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#1867c0] text-white shadow-xs shadow-blue-500/25 transition duration-150">
+                                    <svg class="w-4 h-4 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <?= $nav['icon'] ?>
+                                    </svg>
+                                    <span class="truncate"><?= $nav['label'] ?></span>
+                                </a>
+                            <?php else: ?>
+                                <a href="<?= $nav['url'] ?>"
+                                    class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition duration-150 group">
+                                    <svg class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <?= $nav['icon'] ?>
+                                    </svg>
+                                    <span class="truncate"><?= $nav['label'] ?></span>
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </nav>
+                </div>
+            <?php endforeach; ?>
         </div>
 
     </div>
 
-    <!-- Bottom User Profile & Logout -->
-    <div class="p-3.5 border-t border-slate-100 bg-slate-50/60 space-y-2.5">
-        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
-            <div class="w-8 h-8 rounded-lg bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                <?= strtoupper(substr($currentUser['nama'] ?? 'D', 0, 1)) ?>
+    <!-- Bottom User Profile Card (Optime-Style with Status Dot) -->
+    <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 space-y-2">
+        <div class="flex items-center gap-2.5 p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+            <div class="relative shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center font-bold text-xs shadow-2xs">
+                    <?= strtoupper(substr($currentUser['nama'] ?? 'D', 0, 1)) ?>
+                </div>
+                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" title="Online"></span>
             </div>
             <div class="min-w-0 flex-1">
                 <p class="text-xs font-bold text-slate-800 truncate leading-tight"><?= htmlspecialchars($currentUser['nama'] ?? 'Dosen', ENT_QUOTES, 'UTF-8') ?></p>
-                <p class="text-[10px] text-slate-400 truncate mt-0.5"><?= htmlspecialchars($currentUser['email'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                <p class="text-[10px] text-slate-400 truncate mt-0.5"><?= htmlspecialchars($currentUser['email'] ?? 'Dosen Pengampu', ENT_QUOTES, 'UTF-8') ?></p>
             </div>
+            <a href="<?= \Core\Guard::url('/logout') ?>" title="Keluar dari sistem" 
+               class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition active:scale-95">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+            </a>
         </div>
-
-        <a href="<?= \Core\Guard::url('/logout') ?>"
-            title="Keluar dari sistem"
-            class="w-full px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 text-xs font-bold transition duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            <span>Keluar Sistem</span>
-        </a>
     </div>
 </aside>

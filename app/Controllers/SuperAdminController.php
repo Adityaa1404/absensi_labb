@@ -28,11 +28,12 @@ class SuperAdminController
             'total_users'    => (int)(Database::fetch("SELECT COUNT(*) as total FROM users")['total'] ?? 0),
             'total_matkul'   => (int)(Database::fetch("SELECT COUNT(*) as total FROM mata_kuliah")['total'] ?? 0),
             'total_plotting' => (int)(Database::fetch("SELECT COUNT(*) as total FROM plotting WHERE is_active = 1")['total'] ?? 0),
+            'total_absensi'  => (int)(Database::fetch("SELECT COUNT(*) as total FROM absensi")['total'] ?? 0),
         ];
 
         // Ambil riwayat absensi terbaru untuk monitoring ringkas
         $recentAbsensi = Database::fetchAll("
-            SELECT a.*, u.nama as nama_asdos, m.nama_matkul 
+            SELECT a.*, u.nama as nama_asdos, u.identity_number as npm_asdos, m.nama_matkul 
             FROM absensi a
             JOIN plotting p ON a.plotting_id = p.id_plotting
             JOIN users u ON p.asdos_id = u.id_user
@@ -41,7 +42,7 @@ class SuperAdminController
             LIMIT 5
         ");
 
-        // Ambil data penugasan (plotting) & absensi untuk kalender tracking
+        // Ambil data absensi untuk kalender tracking
         $calendarAbsensi = Database::fetchAll("
             SELECT a.id_absensi, a.tanggal, a.pertemuan_ke, m.jam_mulai, m.jam_selesai, a.status_verifikasi, a.deskripsi_tugas,
                    u.nama as nama_asdos, m.nama_matkul, d.nama as nama_dosen
@@ -51,16 +52,6 @@ class SuperAdminController
             LEFT JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
             LEFT JOIN users d ON m.dosen_id = d.id_user
             ORDER BY a.tanggal DESC
-        ");
-
-        $calendarPlotting = Database::fetchAll("
-            SELECT p.id_plotting, p.periode_mulai, p.periode_selesai, p.is_active,
-                   u.nama as nama_asdos, m.nama_matkul, d.nama as nama_dosen
-            FROM plotting p
-            JOIN users u ON p.asdos_id = u.id_user
-            JOIN mata_kuliah m ON p.matkul_id = m.id_matkul
-            LEFT JOIN users d ON m.dosen_id = d.id_user
-            WHERE p.is_active = 1
         ");
 
         require_once __DIR__ . '/../Views/SuperAdmin/dashboard.php';
@@ -113,7 +104,7 @@ class SuperAdminController
             'identity_number' => 'required|min:2|max:100',
             'email'           => 'required|email|max:80',
             'role'            => 'required|in:dosen,asdos,super_admin',
-            'password'        => 'required|min:6',
+            'password'        => 'required|min:8',
         ], [
             'nama.required'            => 'Nama lengkap wajib diisi.',
             'nama.min'                 => 'Nama lengkap minimal 2 karakter.',
@@ -123,7 +114,7 @@ class SuperAdminController
             'role.required'            => 'Peran/Role wajib dipilih.',
             'role.in'                  => 'Peran yang dipilih tidak valid.',
             'password.required'        => 'Kata sandi wajib diisi.',
-            'password.min'             => 'Kata sandi minimal terdiri dari 6 karakter.',
+            'password.min'             => 'Password minimal terdiri dari 8 karakter.',
         ]);
 
         if ($validator->fails()) {
@@ -243,7 +234,7 @@ class SuperAdminController
 
         // Jika password diisi, validasi panjangnya
         if (!empty($password)) {
-            $rules['password'] = 'min:6';
+            $rules['password'] = 'min:8';
         }
 
         $validator = new Validator($_POST);
@@ -253,7 +244,7 @@ class SuperAdminController
             'email.required'           => 'Alamat email wajib diisi.',
             'email.email'              => 'Format alamat email tidak valid.',
             'role.required'            => 'Peran/Role wajib dipilih.',
-            'password.min'             => 'Kata sandi baru minimal 6 karakter.',
+            'password.min'             => 'Password baru minimal terdiri dari 8 karakter.',
         ]);
 
         if ($validator->fails()) {

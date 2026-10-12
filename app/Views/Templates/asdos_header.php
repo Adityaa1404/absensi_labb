@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Global Desktop Sidebar Template untuk Asisten Dosen (Asdos)
+ * Global Desktop Sidebar Template untuk Asisten Dosen (Optime / Modern SaaS Inspired)
  * Khusus untuk tampilan layar Desktop (md ke atas).
  * Navigasi mobile ditangani secara terpisah oleh asdos_bottom_nav.php.
  */
@@ -9,13 +9,33 @@ $currentUser = $currentUser ?? \Core\Guard::user();
 $reqUri      = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
 $isActive    = (int)($currentUser['is_active'] ?? 0) === 1;
 
-$desktopNavItems = [
+$isDispenActive = str_contains($reqUri, '/asdos/dispensasi');
+
+$navGroups = [
     [
-        'id'     => 'dashboard',
-        'label'  => 'Dashboard & Presensi',
-        'url'    => \Core\Guard::url('/asdos/dashboard'),
-        'active' => true,
+        'group' => 'General',
+        'items' => [
+            [
+                'id'     => 'dashboard',
+                'label'  => 'Dashboard & Presensi',
+                'url'    => \Core\Guard::url('/asdos/dashboard'),
+                'active' => !$isDispenActive,
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>'
+            ],
+        ]
     ],
+    [
+        'group' => 'Aktivitas Asistensi',
+        'items' => [
+            [
+                'id'     => 'dispensasi',
+                'label'  => 'Surat Dispensasi',
+                'url'    => \Core\Guard::url('/asdos/dispensasi'),
+                'active' => $isDispenActive,
+                'icon'   => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>'
+            ],
+        ]
+    ]
 ];
 ?>
 
@@ -63,80 +83,90 @@ $desktopNavItems = [
 </header>
 
 <!-- ========================================================================= -->
-<!-- DESKTOP SIDEBAR NAVIGATION (FIXED LEFT BAR KHUSUS DESKTOP)                -->
+<!-- DESKTOP SIDEBAR NAVIGATION (MODERN SAAS CATEGORIZED SIDEBAR)              -->
 <!-- ========================================================================= -->
 <aside class="hidden md:flex fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex-col justify-between shadow-xs select-none">
     <div class="flex flex-col flex-1 overflow-y-auto">
 
-        <!-- Brand Header -->
+        <!-- Brand Header (Optime-Style) -->
         <a href="<?= \Core\Guard::url('/asdos/dashboard') ?>" class="p-5 border-b border-slate-100 flex items-center gap-3 group transition">
-            <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-10 w-auto max-w-[40px] object-contain shrink-0 transition-transform duration-200 group-hover:scale-105">
+            <div class="w-10 h-10 rounded-xl bg-blue-50/80 border border-blue-100 flex items-center justify-center p-1 shrink-0 group-hover:scale-105 transition-transform duration-200 shadow-2xs">
+                <img src="<?= \Core\Guard::url('/assets/img/logo_SI.jpeg') ?>" alt="Logo Laboratorium Sistem Informasi" class="h-8 w-auto max-w-[32px] object-contain">
+            </div>
             <div class="min-w-0">
                 <div class="flex items-center gap-1.5">
                     <span class="text-sm font-bold text-slate-900 leading-tight group-hover:text-[#1867c0] transition truncate">Absensi Asdos</span>
-                    <span class="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider bg-blue-50 text-[#1867c0] border border-blue-200 rounded-md shrink-0">
+                    <span class="px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider bg-blue-50 text-[#1867c0] border border-blue-200 rounded shrink-0">
                         ASDOS
                     </span>
                 </div>
-                <p class="text-[11px] text-slate-400 truncate mt-0.5">Lab Sistem Informasi</p>
+                <p class="text-[11px] text-slate-400 truncate mt-0.5 font-medium">Lab Sistem Informasi</p>
             </div>
         </a>
 
         <?php if (!$isActive): ?>
-            <!-- Banner Peringatan Akun Nonaktif (F1: mode lihat saja) -->
-            <div class="mx-3.5 mt-3.5 p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-[11px] leading-relaxed flex items-start gap-2">
-                <svg class="w-3.5 h-3.5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <!-- Banner Peringatan Akun Nonaktif -->
+            <div class="mx-3.5 mt-3.5 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[11px] leading-relaxed flex items-start gap-2">
+                <svg class="w-3.5 h-3.5 shrink-0 mt-0.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
-                <span><strong>Akun Nonaktif</strong> — mode lihat saja, hanya riwayat yang dapat diakses.</span>
+                <span><strong>Akun Nonaktif</strong> — mode lihat saja, aksi penambahan presensi diblokir.</span>
             </div>
         <?php endif; ?>
 
-        <!-- Navigation Section -->
-        <div class="p-3.5 space-y-1">
-            <p class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">Menu Utama</p>
-
-            <nav class="space-y-1" aria-label="Menu Asisten Dosen">
-                <?php foreach ($desktopNavItems as $nav): ?>
-                    <?php if ($nav['active']): ?>
-                        <a href="<?= $nav['url'] ?>"
-                            class="block px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[#1867c0] text-white shadow-xs shadow-blue-500/20 transition duration-150">
-                            <span class="truncate"><?= $nav['label'] ?></span>
-                        </a>
-                    <?php else: ?>
-                        <a href="<?= $nav['url'] ?>"
-                            class="block px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition duration-150">
-                            <span class="truncate"><?= $nav['label'] ?></span>
-                        </a>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </nav>
+        <!-- Categorized Nav Menu -->
+        <div class="p-3.5 space-y-4">
+            <?php foreach ($navGroups as $group): ?>
+                <div>
+                    <p class="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        <?= $group['group'] ?>
+                    </p>
+                    <nav class="space-y-1 mt-1" aria-label="<?= $group['group'] ?>">
+                        <?php foreach ($group['items'] as $nav): ?>
+                            <?php if ($nav['active']): ?>
+                                <a href="<?= $nav['url'] ?>"
+                                    class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold bg-[#1867c0] text-white shadow-xs shadow-blue-500/25 transition duration-150">
+                                    <svg class="w-4 h-4 shrink-0 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <?= $nav['icon'] ?>
+                                    </svg>
+                                    <span class="truncate"><?= $nav['label'] ?></span>
+                                </a>
+                            <?php else: ?>
+                                <a href="<?= $nav['url'] ?>"
+                                    class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 transition duration-150 group">
+                                    <svg class="w-4 h-4 shrink-0 text-slate-400 group-hover:text-slate-600 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <?= $nav['icon'] ?>
+                                    </svg>
+                                    <span class="truncate"><?= $nav['label'] ?></span>
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </nav>
+                </div>
+            <?php endforeach; ?>
         </div>
 
     </div>
 
-    <!-- Bottom User Profile & Logout -->
-    <div class="p-3.5 border-t border-slate-100 bg-slate-50/60 space-y-2.5">
-        <div class="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
-            <div class="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 text-[#1867c0] flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
-                <?= strtoupper(substr($currentUser['nama'] ?? 'A', 0, 1)) ?>
+    <!-- Bottom User Profile Card (Optime-Style with Status Dot) -->
+    <div class="p-3.5 border-t border-slate-100 bg-slate-50/70 space-y-2">
+        <div class="flex items-center gap-2.5 p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+            <div class="relative shrink-0">
+                <div class="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 text-[#1867c0] flex items-center justify-center font-bold text-xs shadow-2xs">
+                    <?= strtoupper(substr($currentUser['nama'] ?? 'A', 0, 1)) ?>
+                </div>
+                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full <?= $isActive ? 'bg-emerald-500' : 'bg-slate-400' ?> ring-2 ring-white" title="<?= $isActive ? 'Aktif' : 'Nonaktif' ?>"></span>
             </div>
             <div class="min-w-0 flex-1">
                 <p class="text-xs font-bold text-slate-800 truncate leading-tight"><?= htmlspecialchars($currentUser['nama'] ?? 'Asdos', ENT_QUOTES, 'UTF-8') ?></p>
-                <p class="text-[10px] text-slate-400 truncate mt-0.5"><?= htmlspecialchars($currentUser['email'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
+                <p class="text-[10px] text-slate-400 truncate mt-0.5"><?= htmlspecialchars($currentUser['identity_number'] ?? 'NPM Asdos', ENT_QUOTES, 'UTF-8') ?></p>
             </div>
-            <?php if (!$isActive): ?>
-                <span class="shrink-0 px-1.5 py-0.5 rounded-md text-[9px] font-bold uppercase tracking-wider bg-slate-200 text-slate-600" title="Akun nonaktif">Off</span>
-            <?php endif; ?>
+            <a href="<?= \Core\Guard::url('/logout') ?>" title="Keluar dari sistem" 
+               class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition active:scale-95">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+            </a>
         </div>
-
-        <a href="<?= \Core\Guard::url('/logout') ?>"
-            title="Keluar dari sistem"
-            class="w-full px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-600 text-xs font-bold transition duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            <span>Keluar Sistem</span>
-        </a>
     </div>
 </aside>

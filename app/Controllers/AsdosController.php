@@ -6,6 +6,7 @@ use Core\Guard;
 use Core\Validator;
 use App\Models\Absensi;
 use App\Models\Plotting;
+use App\Models\Dispensasi;
 
 class AsdosController
 {
@@ -43,6 +44,11 @@ class AsdosController
             $p['total_absensi'] = count($p['absensi_list']);
         }
         unset($p);
+
+        // Ambil data surat dispensasi asdos ini
+        $dispensasiList     = Dispensasi::getByAsdos($asdosId);
+        $totalDispensasi    = count($dispensasiList);
+        $dispensasiDisetujui = count(array_filter($dispensasiList, static fn($d) => ($d['status'] ?? '') === 'disetujui'));
 
         require_once __DIR__ . '/../Views/Asdos/dashboard.php';
     }

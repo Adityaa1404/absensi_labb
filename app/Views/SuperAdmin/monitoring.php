@@ -119,62 +119,100 @@ $filters     = $filters ?? [
             <!-- Content Card: Toolbar Filter & Monitoring Data Table -->
             <div class="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
 
-                <!-- Card Header with Multi-Criteria Filters -->
-                <div class="p-4 sm:p-5 border-b border-slate-200 bg-slate-50/60 space-y-3">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div>
-                            <h2 class="text-base font-bold text-slate-900">Rekapitulasi Seluruh Absensi Praktikum</h2>
-                        </div>
-                    </div>
-
-                    <!-- Interactive Filters & Search Bar -->
-                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-1">
-
-                        <!-- Search Input -->
-                        <div class="sm:col-span-5 relative">
-                            <label for="searchInput" class="block text-xs font-bold text-slate-700 mb-1">Cari Absensi</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                    </svg>
-                                </div>
-                                <input type="text" id="searchInput"
-                                    placeholder="Ketik nama asdos, NPM, matkul, atau dosen..."
-                                    class="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-9 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition duration-150 shadow-2xs">
-                                <button type="button" id="clearSearchBtn" onclick="clearSearch()" title="Hapus teks pencarian" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
+                <!-- Card Header with Unified Faceted Search Toolbar -->
+                <div class="p-4 sm:p-5 border-b border-slate-200 bg-slate-50/70 space-y-3.5">
+                    
+                    <!-- Row 1: Unified Search & Filter Controls -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <!-- Left: Live Search Bar -->
+                        <div class="relative flex-1">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
                             </div>
+                            <input type="text" id="searchInput"
+                                placeholder="Cari nama asdos, NPM, matkul, atau dosen..."
+                                class="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-9 py-2.5 text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition shadow-2xs">
+                            <button type="button" id="clearSearchBtn" onclick="clearSearch()" title="Hapus pencarian" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
 
-                        <!-- Status Verifikasi Filter -->
-                        <div class="sm:col-span-3">
-                            <label for="statusFilter" class="block text-xs font-bold text-slate-700 mb-1">Status Verifikasi</label>
-                            <select id="statusFilter" onchange="applyFilters()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 font-medium focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition duration-150 cursor-pointer shadow-2xs">
-                                <option value="">Semua Status Verifikasi</option>
-                                <option value="disetujui">Disetujui Dosen</option>
-                                <option value="pending">Menunggu Verifikasi (Pending)</option>
-                                <option value="ditolak">Ditolak Dosen</option>
-                            </select>
-                        </div>
+                        <!-- Right: Mata Kuliah Dropdown & Reset Action -->
+                        <div class="flex items-center gap-2.5 shrink-0">
+                            <div class="relative">
+                                <select id="matkulFilter" onchange="applyFilters()" class="w-full sm:w-auto bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 font-medium focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition cursor-pointer shadow-2xs">
+                                    <option value="">Semua Mata Kuliah</option>
+                                    <?php foreach ($matkulList as $m): ?>
+                                        <option value="<?= $m['id_matkul'] ?>">
+                                            <?= htmlspecialchars($m['nama_matkul'], ENT_QUOTES, 'UTF-8') ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
 
-                        <!-- Matkul Filter -->
-                        <div class="sm:col-span-3">
-                            <label for="matkulFilter" class="block text-xs font-bold text-slate-700 mb-1">Mata Kuliah</label>
-                            <select id="matkulFilter" onchange="applyFilters()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-800 font-medium focus:outline-none focus:border-[#1867c0] focus:ring-2 focus:ring-[#1867c0]/20 transition duration-150 cursor-pointer shadow-2xs">
-                                <option value="">Semua Mata Kuliah</option>
-                                <?php foreach ($matkulList as $m): ?>
-                                    <option value="<?= $m['id_matkul'] ?>">
-                                        <?= htmlspecialchars($m['nama_matkul'], ENT_QUOTES, 'UTF-8') ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <button type="button" onclick="resetAllFilters()" title="Reset semua filter" class="px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-2xs shrink-0 active:scale-95">
+                                <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                <span class="hidden sm:inline">Reset</span>
+                            </button>
                         </div>
-
                     </div>
+
+                    <!-- Row 2: Instant Status Segmented Chips & Live Counter -->
+                    <div class="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-slate-200/60">
+                        <!-- Status Filter Segmented Chips -->
+                        <div class="flex flex-wrap items-center gap-1.5" id="statusChipGroup">
+                            <!-- Hidden Select for form sync -->
+                            <select id="statusFilter" class="hidden">
+                                <option value="">Semua Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="disetujui">Disetujui</option>
+                                <option value="ditolak">Ditolak</option>
+                            </select>
+
+                            <!-- Chip 1: Semua -->
+                            <button type="button" onclick="setStatusChip('')" data-status-chip=""
+                                class="status-chip active-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-[#1867c0] text-white shadow-2xs">
+                                <span>Semua</span>
+                                <span class="px-1.5 py-0.2 rounded-md bg-white/20 text-[10px] font-bold"><?= $metrics['total'] ?></span>
+                            </button>
+
+                            <!-- Chip 2: Pending -->
+                            <button type="button" onclick="setStatusChip('pending')" data-status-chip="pending"
+                                class="status-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-white hover:bg-amber-50 border border-slate-200 text-slate-700">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
+                                <span>Pending</span>
+                                <span class="px-1.5 py-0.2 rounded-md bg-amber-100 text-amber-800 text-[10px] font-bold"><?= $metrics['pending'] ?></span>
+                            </button>
+
+                            <!-- Chip 3: Disetujui -->
+                            <button type="button" onclick="setStatusChip('disetujui')" data-status-chip="disetujui"
+                                class="status-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-white hover:bg-emerald-50 border border-slate-200 text-slate-700">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+                                <span>Disetujui</span>
+                                <span class="px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-bold"><?= $metrics['disetujui'] ?></span>
+                            </button>
+
+                            <!-- Chip 4: Ditolak -->
+                            <button type="button" onclick="setStatusChip('ditolak')" data-status-chip="ditolak"
+                                class="status-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-white hover:bg-red-50 border border-slate-200 text-slate-700">
+                                <span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
+                                <span>Ditolak</span>
+                                <span class="px-1.5 py-0.2 rounded-md bg-red-100 text-red-800 text-[10px] font-bold"><?= $metrics['ditolak'] ?></span>
+                            </button>
+                        </div>
+
+                        <!-- Live Counter Badge -->
+                        <div class="text-[11px] font-medium text-slate-500">
+                            Menampilkan <span id="visibleCounterBadge" class="font-bold text-slate-800"><?= count($absensiList) ?></span> data
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Table Responsive Container (Auto-fitting without horizontal scroll on desktop) -->
@@ -262,7 +300,7 @@ $filters     = $filters ?? [
                                         </td>
 
                                         <!-- 4. Bukti Foto (Kegiatan & Selfie) -->
-                                        <td class="px-3 py-3 text-center whitespace-nowrap">
+                                        <td class="px-3.5 py-3.5 text-center whitespace-nowrap">
                                             <div class="inline-flex items-center justify-center gap-1.5">
                                                 <?php if (!empty($a['foto_kegiatan'])): ?>
                                                     <?php
@@ -273,7 +311,7 @@ $filters     = $filters ?? [
                                                     <button type="button"
                                                         onclick="previewImage('<?= htmlspecialchars($kegiatanSrc, ENT_QUOTES, 'UTF-8') ?>', 'Bukti Praktikum — <?= htmlspecialchars(addslashes($a['nama_asdos']), ENT_QUOTES, 'UTF-8') ?>')"
                                                         title="Lihat Foto Kegiatan Praktikum"
-                                                        class="px-2 py-1 rounded-md bg-slate-100 hover:bg-blue-50 hover:text-[#1867c0] border border-slate-300 text-[11px] font-semibold transition flex items-center gap-1 cursor-pointer">
+                                                        class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#1867c0] border border-slate-200 text-xs font-semibold transition flex items-center gap-1 cursor-pointer">
                                                         <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                         </svg>
@@ -292,8 +330,8 @@ $filters     = $filters ?? [
                                                     <button type="button"
                                                         onclick="previewImage('<?= htmlspecialchars($selfieSrc, ENT_QUOTES, 'UTF-8') ?>', 'Foto Selfie — <?= htmlspecialchars(addslashes($a['nama_asdos']), ENT_QUOTES, 'UTF-8') ?>')"
                                                         title="Lihat Foto Selfie Kehadiran"
-                                                        class="px-2 py-1 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 border border-slate-300 text-[11px] font-semibold transition flex items-center gap-1 cursor-pointer">
-                                                        <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-[#1867c0] border border-slate-200 text-xs font-semibold transition flex items-center gap-1 cursor-pointer">
+                                                        <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                         </svg>
                                                         <span>Selfie</span>
@@ -303,44 +341,44 @@ $filters     = $filters ?? [
                                         </td>
 
                                         <!-- 5. Status Verifikasi Dosen -->
-                                        <td class="px-3 py-3 text-center whitespace-nowrap">
+                                        <td class="px-3.5 py-3.5 text-center whitespace-nowrap">
                                             <span class="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border <?= $statusBadge['bg'] ?> <?= $statusBadge['text'] ?> <?= $statusBadge['border'] ?> inline-flex items-center gap-1.5 shadow-2xs">
                                                 <span class="w-1.5 h-1.5 rounded-full <?= $statusBadge['dot'] ?>"></span>
                                                 <?= $statusBadge['label'] ?>
                                             </span>
                                         </td>
 
-                                        <!-- 6. Aksi & Detail Audit -->
-                                        <td class="px-3.5 py-3 text-center whitespace-nowrap">
+                                        <!-- 6. Aksi & Detail Audit (Urutan Standar: Detail -> Ubah Status -> Hapus) -->
+                                        <td class="px-4 py-3.5 text-center whitespace-nowrap">
                                             <div class="inline-flex items-center justify-center gap-1.5">
-                                                <!-- Tombol Ubah Status (Super Admin) -->
-                                                <button type="button"
-                                                    onclick="openUpdateStatusModal(<?= htmlspecialchars(json_encode($a), ENT_QUOTES, 'UTF-8') ?>)"
-                                                    title="Ubah Status Verifikasi Absensi"
-                                                    class="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-600 hover:text-white text-amber-800 text-xs font-bold border border-amber-300 hover:border-amber-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
-                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                    </svg>
-                                                    <span>Ubah Status</span>
-                                                </button>
-
-                                                <!-- Tombol Detail -->
+                                                <!-- 1. Tombol Detail (Netral / View) -->
                                                 <button type="button"
                                                     onclick="openDetailModal(<?= htmlspecialchars(json_encode($a), ENT_QUOTES, 'UTF-8') ?>)"
                                                     title="Lihat Detail Lengkap Absensi"
-                                                    class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-[#1867c0] hover:text-white text-[#1867c0] text-xs font-bold border border-blue-200 hover:border-[#1867c0] transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
-                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
+                                                    <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                                     </svg>
                                                     <span>Detail</span>
                                                 </button>
 
-                                                <!-- Tombol Hapus -->
+                                                <!-- 2. Tombol Ubah Status (Super Admin Primary) -->
+                                                <button type="button"
+                                                    onclick="openUpdateStatusModal(<?= htmlspecialchars(json_encode($a), ENT_QUOTES, 'UTF-8') ?>)"
+                                                    title="Ubah Status Verifikasi Absensi"
+                                                    class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-[#1867c0] text-[#1867c0] hover:text-white text-xs font-bold border border-blue-200 hover:border-[#1867c0] transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
+                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                    </svg>
+                                                    <span>Ubah Status</span>
+                                                </button>
+
+                                                <!-- 3. Tombol Hapus (Danger Action) -->
                                                 <button type="button"
                                                     onclick="openDeleteModal(<?= (int)$a['id_absensi'] ?>, '<?= htmlspecialchars(addslashes($a['nama_asdos'] ?? ''), ENT_QUOTES, 'UTF-8') ?>', '<?= htmlspecialchars(addslashes($a['nama_matkul'] ?? ''), ENT_QUOTES, 'UTF-8') ?>', <?= (int)($a['pertemuan_ke'] ?? 1) ?>)"
                                                     title="Hapus Data Absensi"
-                                                    class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-600 hover:text-white text-red-600 text-xs font-bold border border-red-200 hover:border-red-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
+                                                    class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-600 text-red-600 hover:text-white text-xs font-bold border border-red-200 hover:border-red-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
                                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
@@ -703,11 +741,37 @@ $filters     = $filters ?? [
         const matkulFilter = document.getElementById('matkulFilter');
         const clearSearchBtn = document.getElementById('clearSearchBtn');
         const emptyState = document.getElementById('emptyState');
+        const visibleCounterBadge = document.getElementById('visibleCounterBadge');
+
+        function setStatusChip(status) {
+            if (statusFilter) statusFilter.value = status;
+            updateStatusChipsVisual(status);
+            applyFilters();
+        }
+
+        function updateStatusChipsVisual(selectedStatus) {
+            document.querySelectorAll('.status-chip').forEach(chip => {
+                const chipStatus = chip.dataset.statusChip || '';
+                if (chipStatus === selectedStatus) {
+                    if (chipStatus === 'pending') {
+                        chip.className = 'status-chip active-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-amber-500 text-white shadow-2xs';
+                    } else if (chipStatus === 'disetujui') {
+                        chip.className = 'status-chip active-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-emerald-600 text-white shadow-2xs';
+                    } else if (chipStatus === 'ditolak') {
+                        chip.className = 'status-chip active-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-red-600 text-white shadow-2xs';
+                    } else {
+                        chip.className = 'status-chip active-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-[#1867c0] text-white shadow-2xs';
+                    }
+                } else {
+                    chip.className = 'status-chip px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer bg-white hover:bg-slate-100 border border-slate-200 text-slate-700';
+                }
+            });
+        }
 
         function applyFilters() {
             const query = searchInput.value.toLowerCase().trim();
-            const status = statusFilter.value;
-            const matkul = matkulFilter.value;
+            const status = statusFilter ? statusFilter.value : '';
+            const matkul = matkulFilter ? matkulFilter.value : '';
 
             if (query.length > 0) {
                 clearSearchBtn.classList.remove('hidden');
@@ -745,6 +809,10 @@ $filters     = $filters ?? [
                 }
             });
 
+            if (visibleCounterBadge) {
+                visibleCounterBadge.textContent = visibleCount;
+            }
+
             if (visibleCount === 0) {
                 emptyState.classList.remove('hidden');
             } else {
@@ -762,9 +830,8 @@ $filters     = $filters ?? [
 
         function resetAllFilters() {
             searchInput.value = '';
-            statusFilter.value = '';
-            matkulFilter.value = '';
-            applyFilters();
+            if (matkulFilter) matkulFilter.value = '';
+            setStatusChip('');
         }
 
         // ---------------------------------------------------------------------
@@ -972,6 +1039,29 @@ $filters     = $filters ?? [
                 document.getElementById('deleteAbsensiModal').classList.contains('hidden')) {
                 document.body.style.overflow = '';
             }
+        }
+
+        const updateStatusForm = document.getElementById('updateStatusForm');
+        if (updateStatusForm) {
+            updateStatusForm.addEventListener('submit', function(e) {
+                const checkedRadio = updateStatusForm.querySelector('input[name="status_verifikasi"]:checked');
+                if (!checkedRadio) {
+                    e.preventDefault();
+                    const firstRadio = updateStatusForm.querySelector('input[name="status_verifikasi"]');
+                    window.highlightAndNotify(firstRadio, 'Silakan pilih status verifikasi (Pending, Setujui, atau Tolak).');
+                    return false;
+                }
+
+                if (checkedRadio.value === 'ditolak') {
+                    const pesanInput = document.getElementById('status_pesan_input');
+                    const val = pesanInput ? pesanInput.value.trim() : '';
+                    if (val.length < 5) {
+                        e.preventDefault();
+                        window.highlightAndNotify(pesanInput, 'Catatan / Alasan penolakan wajib diisi minimal 5 karakter agar asdos memahami kendalanya.');
+                        return false;
+                    }
+                }
+            });
         }
 
         // Close on Escape Key

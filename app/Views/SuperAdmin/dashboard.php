@@ -7,7 +7,6 @@ $stats            = $stats ?? [
     'total_plotting' => 0,
 ];
 $calendarAbsensi  = $calendarAbsensi ?? [];
-$calendarPlotting = $calendarPlotting ?? [];
 ?>
 <!DOCTYPE html>
 <html lang="id" class="h-full bg-slate-50">
@@ -202,28 +201,21 @@ $calendarPlotting = $calendarPlotting ?? [];
             text-overflow: ellipsis !important;
         }
 
-        /* 1. Plotting Aktif (Solid Royal Blue pada Grid) */
-        .fc-daygrid-event.fc-event-plotting,
-        .fc-timegrid-event.fc-event-plotting {
-            background-color: #1867c0 !important;
-            border-color: #1867c0 !important;
-        }
-
-        /* 2. Absensi Disetujui (Solid Emerald Green pada Grid) */
+        /* 1. Absensi Disetujui (Solid Emerald Green pada Grid) */
         .fc-daygrid-event.fc-event-disetujui,
         .fc-timegrid-event.fc-event-disetujui {
             background-color: #059669 !important;
             border-color: #059669 !important;
         }
 
-        /* 3. Absensi Pending / Menunggu Review (Solid Dark Amber pada Grid) */
+        /* 2. Absensi Pending / Menunggu Review (Solid Dark Amber pada Grid) */
         .fc-daygrid-event.fc-event-pending,
         .fc-timegrid-event.fc-event-pending {
             background-color: #d97706 !important;
             border-color: #d97706 !important;
         }
 
-        /* 4. Absensi Ditolak (Solid Crimson Red pada Grid) */
+        /* 3. Absensi Ditolak (Solid Crimson Red pada Grid) */
         .fc-daygrid-event.fc-event-ditolak,
         .fc-timegrid-event.fc-event-ditolak {
             background-color: #dc2626 !important;
@@ -318,10 +310,6 @@ $calendarPlotting = $calendarPlotting ?? [];
         }
 
         /* Warna Dot Lingkaran pada View Agenda */
-        .fc-list-event.fc-event-plotting .fc-list-event-dot {
-            border-color: #1867c0 !important;
-        }
-
         .fc-list-event.fc-event-disetujui .fc-list-event-dot {
             border-color: #059669 !important;
         }
@@ -357,78 +345,105 @@ $calendarPlotting = $calendarPlotting ?? [];
         <!-- Main Content Container -->
         <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 space-y-6">
 
-            <!-- Page Header Banner -->
-            <div class="bg-white border border-slate-200 p-5 sm:p-6 rounded-xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <!-- Top App Bar / Greeting Banner (Optime-Style) -->
+            <div class="bg-white border border-slate-200/90 p-5 sm:p-6 rounded-2xl shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Dashboard Super Admin</h2>
+                    <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                        Selamat Datang Kembali, <?= htmlspecialchars(explode(' ', trim($currentUser['nama'] ?? 'Admin'))[0], ENT_QUOTES, 'UTF-8') ?>! 👋
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Pantau absensi praktikum laboratorium, alokasi penugasan asdos, dan arsip persuratan resmi.</p>
                 </div>
+
+                
             </div>
 
-            <!-- Metric / Stat Cards Grid (3 Columns with Lift Hover) -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+            <!-- Optime 4-Stat Cards Row (Clean Pastel Icon Squircles + Micro-Trend Pills) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
 
-                <!-- 1. Card Total Pengguna -> Kelola Pengguna -->
+                <!-- 1. Card Total Pengguna -->
                 <a href="<?= \Core\Guard::url('/superadmin/users') ?>"
-                    class="group block bg-white p-4 sm:p-5 rounded-xl border border-blue-200/80 bg-blue-50/20 shadow-xs hover:border-[#1867c0] hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-150 cursor-pointer">
-                    <div class="flex items-center justify-between">
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-[#1867c0] group-hover:underline">Total Pengguna</p>
-                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-[#1867c0] flex items-center justify-center group-hover:bg-[#1867c0] group-hover:text-white transition-colors duration-150">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:border-[#1867c0] hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-150 block cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-50 text-[#1867c0] border border-blue-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-150">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                         </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-500 truncate">Total Pengguna</p>
+                        </div>
                     </div>
-                    <p class="text-2xl sm:text-3xl font-bold text-[#1867c0] mt-1 sm:mt-2"><?= $stats['total_users'] ?></p>
-                    <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-blue-100/80">
-                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-[#1867c0] bg-blue-100/70 px-2 py-0.5 rounded-full group-hover:bg-[#1867c0] group-hover:text-white transition-all duration-150">
-                            <span>Kelola Pengguna</span>
-                            <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                    <div class="flex items-baseline justify-between mt-3">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"><?= number_format($stats['total_users']) ?></p>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                            <svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
                             </svg>
+                            <span>Aktif</span>
                         </span>
                     </div>
                 </a>
 
-                <!-- 2. Card Total Mata Kuliah -> Kelola Mata Kuliah -->
+                <!-- 2. Card Total Mata Kuliah -->
                 <a href="<?= \Core\Guard::url('/superadmin/matkul') ?>"
-                    class="group block bg-white p-4 sm:p-5 rounded-xl border border-indigo-200/80 bg-indigo-50/20 shadow-xs hover:border-indigo-500 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-150 cursor-pointer">
-                    <div class="flex items-center justify-between">
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-indigo-700 group-hover:underline">Mata Kuliah</p>
-                        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-150">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:border-indigo-400 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-150 block cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-150">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-500 truncate">Mata Kuliah</p>
+                        </div>
                     </div>
-                    <p class="text-2xl sm:text-3xl font-bold text-indigo-700 mt-1 sm:mt-2"><?= $stats['total_matkul'] ?></p>
-                    <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-indigo-100/80">
-                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-700 bg-indigo-100/80 px-2 py-0.5 rounded-full group-hover:bg-indigo-600 group-hover:text-white transition-all duration-150">
-                            <span>Kelola Matkul</span>
-                            <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-                            </svg>
+                    <div class="flex items-baseline justify-between mt-3">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"><?= number_format($stats['total_matkul']) ?></p>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200">
+                            <span>Kurikulum</span>
                         </span>
                     </div>
                 </a>
 
-                <!-- 3. Card Plotting Aktif -> Plotting Asdos -->
+                <!-- 3. Card Plotting Aktif -->
                 <a href="<?= \Core\Guard::url('/superadmin/plotting') ?>"
-                    class="group block bg-white p-4 sm:p-5 rounded-xl border border-emerald-200 bg-emerald-50/20 shadow-xs hover:border-emerald-500 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-150 cursor-pointer">
-                    <div class="flex items-center justify-between">
-                        <p class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 group-hover:underline">Plotting Aktif</p>
-                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-150">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:border-emerald-400 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-150 block cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-150">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-500 truncate">Plotting Asdos</p>
+                        </div>
                     </div>
-                    <p class="text-2xl sm:text-3xl font-bold text-emerald-700 mt-1 sm:mt-2"><?= $stats['total_plotting'] ?></p>
-                    <div class="flex items-center justify-between mt-2.5 pt-2 border-t border-emerald-100/80">
-                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full group-hover:bg-emerald-600 group-hover:text-white transition-all duration-150">
-                            <span>Kelola Plotting</span>
-                            <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                    <div class="flex items-baseline justify-between mt-3">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"><?= number_format($stats['total_plotting']) ?></p>
+                        <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>Berjalan</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- 4. Card Total Presensi -->
+                <a href="<?= \Core\Guard::url('/superadmin/monitoring') ?>"
+                    class="group bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 shadow-xs hover:border-amber-400 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all duration-150 block cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-150">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                             </svg>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-semibold text-slate-500 truncate">Total Presensi</p>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-3">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight"><?= number_format($stats['total_absensi'] ?? 0) ?></p>
+                        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                            <span>Real-time</span>
                         </span>
                     </div>
                 </a>
@@ -449,7 +464,8 @@ $calendarPlotting = $calendarPlotting ?? [];
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Tracking Penugasan & Absensi Asdos</h3>
+                            <h3 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Tracking Absensi Asdos</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">Monitoring riwayat dan kehadiran mengajar asisten laboratorium secara real-time</p>
                         </div>
                     </div>
 
@@ -457,9 +473,6 @@ $calendarPlotting = $calendarPlotting ?? [];
                     <div class="flex flex-wrap items-center gap-1.5 text-xs font-semibold">
                         <button type="button" onclick="filterCalendar('all')" id="btn-filter-all" class="filter-btn px-3 py-1.5 rounded-lg bg-[#1867c0] text-white shadow-2xs transition cursor-pointer">
                             Semua
-                        </button>
-                        <button type="button" onclick="filterCalendar('plotting')" id="btn-filter-plotting" class="filter-btn px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer">
-                            <span class="inline-block w-2 h-2 rounded-full bg-[#1867c0] mr-1"></span>Plotting
                         </button>
                         <button type="button" onclick="filterCalendar('disetujui')" id="btn-filter-disetujui" class="filter-btn px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 transition cursor-pointer">
                             <span class="inline-block w-2 h-2 rounded-full bg-emerald-600 mr-1"></span>Disetujui
@@ -497,7 +510,7 @@ $calendarPlotting = $calendarPlotting ?? [];
                                         Hari Ini
                                     </button>
                                     <span id="selected-tasks-count" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-blue-100 text-[#1867c0]">
-                                        0 Tugas
+                                        0 Presensi
                                     </span>
                                 </div>
                             </div>
@@ -521,6 +534,117 @@ $calendarPlotting = $calendarPlotting ?? [];
 
                 </div>
 
+            <!-- Layerz-Style Recent Presensi Table Section -->
+            <div class="bg-white border border-slate-200/90 rounded-2xl shadow-xs overflow-hidden">
+                <div class="p-4 sm:p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#1867c0] flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900 tracking-tight">Presensi Praktikum Terbaru</h2>
+                            <p class="text-xs text-slate-400 mt-0.5">5 laporan kehadiran asisten laboratorium yang masuk terakhir</p>
+                        </div>
+                    </div>
+
+                    <a href="<?= \Core\Guard::url('/superadmin/monitoring') ?>" 
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-[#1867c0] hover:text-[#13529a] text-xs font-semibold border border-slate-200/80 transition active:scale-95">
+                        <span>Lihat Semua di Monitoring</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <?php if (empty($recentAbsensi)): ?>
+                    <div class="p-8 text-center text-xs text-slate-400">
+                        Belum ada data presensi yang masuk.
+                    </div>
+                <?php else: ?>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/75 border-b border-slate-200/80 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                    <th class="py-3.5 px-4">Asisten Dosen</th>
+                                    <th class="py-3.5 px-4">Mata Kuliah & Pertemuan</th>
+                                    <th class="py-3.5 px-4">Tanggal Presensi</th>
+                                    <th class="py-3.5 px-4 text-center">Bukti Foto</th>
+                                    <th class="py-3.5 px-4">Status</th>
+                                    <th class="py-3.5 px-4 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                <?php foreach ($recentAbsensi as $ra): ?>
+                                    <tr class="hover:bg-slate-50/70 transition">
+                                        <!-- Asdos -->
+                                        <td class="py-3.5 px-4 align-middle">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-xl bg-blue-50 border border-blue-100 text-[#1867c0] flex items-center justify-center font-bold text-xs shrink-0">
+                                                    <?= strtoupper(substr($ra['nama_asdos'] ?? 'A', 0, 1)) ?>
+                                                </div>
+                                                <div class="min-w-0">
+                                                    <p class="font-bold text-slate-900 truncate"><?= htmlspecialchars($ra['nama_asdos'] ?? '-', ENT_QUOTES, 'UTF-8') ?></p>
+                                                    <p class="text-[11px] text-slate-400 font-mono">NPM: <?= htmlspecialchars($ra['npm_asdos'] ?? '-', ENT_QUOTES, 'UTF-8') ?></p>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <!-- Matkul & Pertemuan -->
+                                        <td class="py-3.5 px-4 align-middle">
+                                            <p class="font-semibold text-slate-800"><?= htmlspecialchars($ra['nama_matkul'] ?? '-', ENT_QUOTES, 'UTF-8') ?></p>
+                                            <span class="inline-block mt-0.5 text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.2 rounded border border-blue-200">
+                                                Pertemuan ke-<?= $ra['pertemuan_ke'] ?? '1' ?>
+                                            </span>
+                                        </td>
+
+                                        <!-- Tanggal -->
+                                        <td class="py-3.5 px-4 align-middle text-slate-600 font-medium">
+                                            <?= date('d M Y', strtotime($ra['tanggal'] ?? 'now')) ?>
+                                        </td>
+
+                                        <!-- Bukti Foto -->
+                                        <td class="py-3.5 px-4 align-middle text-center">
+                                            <?php if (!empty($ra['foto_kegiatan'])): ?>
+                                                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-lg border border-slate-200">
+                                                    <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                                    </svg>
+                                                    <span>Terlampir</span>
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="text-slate-400 text-[11px]">-</span>
+                                            <?php endif; ?>
+                                        </td>
+
+                                        <!-- Status -->
+                                        <td class="py-3.5 px-4 align-middle">
+                                            <?php
+                                            $st = $ra['status_verifikasi'] ?? 'menunggu';
+                                            if ($st === 'disetujui') {
+                                                echo '<span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border bg-emerald-50 text-emerald-800 border-emerald-300 inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Disetujui</span>';
+                                            } elseif ($st === 'ditolak') {
+                                                echo '<span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border bg-rose-50 text-rose-800 border-rose-300 inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Ditolak</span>';
+                                            } else {
+                                                echo '<span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border bg-amber-50 text-amber-800 border-amber-300 inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>Pending</span>';
+                                            }
+                                            ?>
+                                        </td>
+
+                                        <!-- Aksi -->
+                                        <td class="py-3.5 px-4 align-middle text-right">
+                                            <a href="<?= \Core\Guard::url('/superadmin/monitoring') ?>" 
+                                                class="px-2.5 py-1 text-[11px] font-semibold text-[#1867c0] hover:text-white hover:bg-[#1867c0] rounded-lg border border-blue-200 transition">
+                                                Tinjau
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
 
         </main>
@@ -530,7 +654,6 @@ $calendarPlotting = $calendarPlotting ?? [];
             document.addEventListener('DOMContentLoaded', () => {
                 // Data dari Controller PHP
                 const absensiList = <?= json_encode($calendarAbsensi, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?> || [];
-                const plottingList = <?= json_encode($calendarPlotting, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?> || [];
 
                 const monthNames = [
                     'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -562,39 +685,20 @@ $calendarPlotting = $calendarPlotting ?? [];
                     return `${dayName}, ${dayNumber} ${monthName} ${year}`;
                 }
 
-                // Ambil data aktivitas/tugas untuk tanggal tertentu
+                // Ambil data absensi untuk tanggal tertentu
                 function getEventsForDate(dateStr) {
-                    const result = {
-                        absensi: [],
-                        plotting: []
-                    };
-
-                    // 1. Cek Absensi pada tanggal ini
+                    const result = [];
                     absensiList.forEach(item => {
                         if (item.tanggal && item.tanggal.substring(0, 10) === dateStr) {
                             if (currentFilter === 'all' || item.status_verifikasi === currentFilter) {
-                                result.absensi.push(item);
+                                result.push(item);
                             }
                         }
                     });
-
-                    // 2. Cek Plotting aktif yang mencakup tanggal ini
-                    plottingList.forEach(item => {
-                        if (item.periode_mulai && item.periode_selesai) {
-                            const start = item.periode_mulai.substring(0, 10);
-                            const end = item.periode_selesai.substring(0, 10);
-                            if (dateStr >= start && dateStr <= end) {
-                                if (currentFilter === 'all' || currentFilter === 'plotting') {
-                                    result.plotting.push(item);
-                                }
-                            }
-                        }
-                    });
-
                     return result;
                 }
 
-                // Render Panel Samping Kanan (Tugas Hari Terpilih)
+                // Render Panel Samping Kanan (Daftar Presensi Hari Terpilih)
                 function renderSelectedDateTasks() {
                     const parts = selectedDateStr.split('-');
                     const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
@@ -607,13 +711,12 @@ $calendarPlotting = $calendarPlotting ?? [];
                         quickTodayBtn.classList.add('hidden');
                     }
 
-                    const events = getEventsForDate(selectedDateStr);
-                    const totalCount = events.absensi.length + events.plotting.length;
-                    countBadgeEl.textContent = `${totalCount} Tugas`;
+                    const items = getEventsForDate(selectedDateStr);
+                    countBadgeEl.textContent = `${items.length} Presensi`;
 
                     tasksListEl.innerHTML = '';
 
-                    if (totalCount === 0) {
+                    if (items.length === 0) {
                         tasksListEl.innerHTML = `
                     <div class="text-center py-12 text-slate-400">
                         <div class="w-12 h-12 mx-auto mb-2.5 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400">
@@ -621,94 +724,62 @@ $calendarPlotting = $calendarPlotting ?? [];
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                             </svg>
                         </div>
-                        <p class="text-xs font-bold text-slate-700">Tidak ada jadwal pada tanggal ini</p>
-                        <p class="text-[11px] text-slate-400 mt-1 max-w-[220px] mx-auto">Klik tanggal lain pada kalender untuk melihat riwayat absensi atau plotting aktif.</p>
+                        <p class="text-xs font-bold text-slate-700">Tidak ada presensi pada tanggal ini</p>
+                        <p class="text-[11px] text-slate-400 mt-1 max-w-[220px] mx-auto">Klik tanggal lain pada kalender untuk melihat catatan kehadiran asdos yang mengajar.</p>
                     </div>
                 `;
                         return;
                     }
 
-                    // 1. Render Riwayat / Sesi Absensi Praktikum
-                    if (events.absensi.length > 0) {
-                        const sectionTitle = document.createElement('div');
-                        sectionTitle.className = 'text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5';
-                        sectionTitle.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Absensi Praktikum (${events.absensi.length})</span>`;
-                        tasksListEl.appendChild(sectionTitle);
+                    // Render Riwayat / Sesi Absensi Praktikum
+                    const sectionTitle = document.createElement('div');
+                    sectionTitle.className = 'text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5';
+                    sectionTitle.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Absensi Praktikum (${items.length})</span>`;
+                    tasksListEl.appendChild(sectionTitle);
 
-                        events.absensi.forEach(a => {
-                            let statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-amber-50 text-amber-700 border border-amber-200">Pending Review</span>';
-                            if (a.status_verifikasi === 'disetujui') {
-                                statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">Disetujui</span>';
-                            } else if (a.status_verifikasi === 'ditolak') {
-                                statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-red-50 text-red-700 border border-red-200">Ditolak</span>';
-                            }
+                    items.forEach(a => {
+                        let statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-amber-50 text-amber-700 border border-amber-200">Pending Review</span>';
+                        if (a.status_verifikasi === 'disetujui') {
+                            statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">Disetujui</span>';
+                        } else if (a.status_verifikasi === 'ditolak') {
+                            statusBadge = '<span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-red-50 text-red-700 border border-red-200">Ditolak</span>';
+                        }
 
-                            const card = document.createElement('div');
-                            card.className = 'p-3.5 bg-white border border-slate-200/90 rounded-xl shadow-2xs hover:shadow-xs transition duration-150';
-                            card.innerHTML = `
-                        <div class="flex items-center justify-between gap-2 mb-1.5">
-                            <span class="text-[11px] font-bold text-slate-800">Pertemuan Ke-${escapeHtml(String(a.pertemuan_ke || '1'))}</span>
-                            ${statusBadge}
+                        const jamText = (a.jam_mulai && a.jam_selesai) ? `${a.jam_mulai} - ${a.jam_selesai}` : (a.jam_mulai || '');
+
+                        const card = document.createElement('div');
+                        card.className = 'p-3.5 bg-white border border-slate-200/90 rounded-xl shadow-2xs hover:shadow-xs transition duration-150';
+                        card.innerHTML = `
+                    <div class="flex items-center justify-between gap-2 mb-1.5">
+                        <span class="text-[11px] font-bold text-slate-800">Pertemuan Ke-${escapeHtml(String(a.pertemuan_ke || '1'))}</span>
+                        ${statusBadge}
+                    </div>
+                    <h5 class="text-xs font-bold text-slate-900 leading-snug">${escapeHtml(a.nama_matkul || 'Praktikum Lab')}</h5>
+                    
+                    <div class="mt-2.5 pt-2 border-t border-slate-100 text-[11px] space-y-1.5 text-slate-600">
+                        <div class="flex items-center justify-between">
+                            <span class="text-slate-500">Asdos: <strong class="text-slate-800 font-semibold">${escapeHtml(a.nama_asdos || '—')}</strong></span>
+                            ${jamText ? `<span class="font-mono text-[10px] text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">${escapeHtml(jamText)}</span>` : ''}
                         </div>
-                        <h5 class="text-xs font-bold text-slate-900 leading-snug">${escapeHtml(a.nama_matkul || 'Praktikum Lab')}</h5>
-                        
-                        <div class="mt-2.5 pt-2 border-t border-slate-100 text-[11px] space-y-1.5 text-slate-600">
-                            <div class="flex items-center justify-between">
-                                <span class="text-slate-500">Asdos: <strong class="text-slate-800 font-semibold">${escapeHtml(a.nama_asdos || '—')}</strong></span>
-                                ${a.jam_mulai ? `<span class="font-mono text-[10px] text-slate-600 bg-slate-100 px-1.5 py-0.5 rounded">${a.jam_mulai}</span>` : ''}
+                        <div class="flex items-center justify-between text-[10px] text-slate-500">
+                            <span>Dosen: <span class="text-slate-700 font-medium">${escapeHtml(a.nama_dosen || '—')}</span></span>
+                        </div>
+                        ${a.deskripsi_tugas ? `
+                            <div class="p-2 bg-slate-50 rounded-lg border border-slate-100 text-[10px] text-slate-600 italic">
+                                "${escapeHtml(a.deskripsi_tugas)}"
                             </div>
-                            <div class="flex items-center justify-between text-[10px] text-slate-500">
-                                <span>Dosen: <span class="text-slate-700 font-medium">${escapeHtml(a.nama_dosen || '—')}</span></span>
-                            </div>
-                            ${a.deskripsi_tugas ? `
-                                <div class="p-2 bg-slate-50 rounded-lg border border-slate-100 text-[10px] text-slate-600 italic">
-                                    "${escapeHtml(a.deskripsi_tugas)}"
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                            tasksListEl.appendChild(card);
-                        });
-                    }
-
-                    // 2. Render Plotting Penugasan Aktif
-                    if (events.plotting.length > 0) {
-                        const sectionTitle = document.createElement('div');
-                        sectionTitle.className = 'text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-3 mb-1 flex items-center gap-1.5';
-                        sectionTitle.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-[#1867c0]"></span><span>Plotting Aktif (${events.plotting.length})</span>`;
-                        tasksListEl.appendChild(sectionTitle);
-
-                        events.plotting.forEach(p => {
-                            const card = document.createElement('div');
-                            card.className = 'p-3.5 bg-white border border-blue-200/80 bg-blue-50/10 rounded-xl shadow-2xs hover:shadow-xs transition duration-150';
-                            card.innerHTML = `
-                        <div class="flex items-center justify-between mb-1.5">
-                            <span class="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-md bg-blue-50 text-[#1867c0] border border-blue-200">
-                                Plotting Aktif
-                            </span>
-                            <span class="text-[10px] font-mono text-slate-400">${escapeHtml(p.periode_mulai || '')} s/d ${escapeHtml(p.periode_selesai || '')}</span>
-                        </div>
-                        <h5 class="text-xs font-bold text-slate-900 leading-snug">${escapeHtml(p.nama_matkul || 'Mata Kuliah')}</h5>
-                        <div class="mt-2.5 pt-2 border-t border-blue-100/60 text-[11px] space-y-1 text-slate-600">
-                            <p class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                <span>Asdos: <strong class="text-slate-800 font-semibold">${escapeHtml(p.nama_asdos || '—')}</strong></span>
-                            </p>
-                            <p class="text-[10px] text-slate-500">
-                                Dosen Pengampu: <span class="font-medium text-slate-700">${escapeHtml(p.nama_dosen || '—')}</span>
-                            </p>
-                        </div>
-                    `;
-                            tasksListEl.appendChild(card);
-                        });
-                    }
+                        ` : ''}
+                    </div>
+                `;
+                        tasksListEl.appendChild(card);
+                    });
                 }
 
-                // Format SEMUA data ke standar FullCalendar Event Object (Solid Colors & Text Putih Jelas)
+                // Format data absensi ke standar FullCalendar Event Object (Solid Colors & Text Putih Jelas)
                 function buildEvents() {
                     const events = [];
 
-                    // 1. Absensi Praktikum (Event Utama pada Kalender Harian)
+                    // Absensi Praktikum (Event Utama pada Kalender Harian)
                     absensiList.forEach(a => {
                         let statusClass = 'fc-event-pending';
                         let solidBg = '#d97706'; // Amber
@@ -720,9 +791,11 @@ $calendarPlotting = $calendarPlotting ?? [];
                             solidBg = '#dc2626'; // Red
                         }
 
+                        const asdosName = a.nama_asdos ? ` (${a.nama_asdos})` : '';
+
                         events.push({
                             id: 'abs-' + a.id_absensi,
-                            title: `Pert. ${a.pertemuan_ke || '1'}: ${a.nama_matkul}`,
+                            title: `Pert. ${a.pertemuan_ke || '1'}: ${a.nama_matkul}${asdosName}`,
                             start: a.tanggal,
                             allDay: true,
                             backgroundColor: solidBg,
@@ -733,36 +806,6 @@ $calendarPlotting = $calendarPlotting ?? [];
                                 type: 'absensi',
                                 category: a.status_verifikasi,
                                 data: a
-                            }
-                        });
-                    });
-
-                    // 2. Plotting Aktif (Solid Royal Blue)
-                    plottingList.forEach(p => {
-                        let endDate = p.periode_selesai;
-                        if (endDate && endDate.length === 10) {
-                            const d = new Date(endDate);
-                            d.setDate(d.getDate() + 1);
-                            const y = d.getFullYear();
-                            const m = String(d.getMonth() + 1).padStart(2, '0');
-                            const day = String(d.getDate()).padStart(2, '0');
-                            endDate = `${y}-${m}-${day}`;
-                        }
-
-                        events.push({
-                            id: 'plot-' + p.id_plotting,
-                            title: `Plot: ${p.nama_matkul} (${p.nama_asdos})`,
-                            start: p.periode_mulai,
-                            end: endDate,
-                            allDay: true,
-                            backgroundColor: '#1867c0',
-                            borderColor: '#1867c0',
-                            textColor: '#ffffff',
-                            classNames: ['fc-event-plotting'],
-                            extendedProps: {
-                                type: 'plotting',
-                                category: 'plotting',
-                                data: p
                             }
                         });
                     });

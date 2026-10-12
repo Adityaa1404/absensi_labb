@@ -192,7 +192,7 @@ if (empty($dosenList)) {
                 <!-- Table -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs text-slate-700 border-collapse" id="matkulTable">
-                        <thead class="bg-slate-100/80 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200">
+                        <thead class="bg-slate-50/90 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200">
                             <tr>
                                 <th class="px-4 py-3.5">Nama Mata Kuliah</th>
                                 <th class="px-3.5 py-3.5">Dosen Pengampu</th>
@@ -201,7 +201,7 @@ if (empty($dosenList)) {
                                 <th class="px-3.5 py-3.5 text-center">Pilihan Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-200" id="matkulTableBody">
+                        <tbody class="divide-y divide-slate-100" id="matkulTableBody">
                             <?php if (!empty($matkulList)): ?>
                                 <?php foreach ($matkulList as $m): ?>
                                     <tr class="hover:bg-blue-50/40 transition-colors duration-150 matkul-row"
@@ -293,13 +293,13 @@ if (empty($dosenList)) {
                                         </td>
 
                                         <!-- 5. Aksi -->
-                                        <td class="px-3.5 py-3 text-center whitespace-nowrap">
+                                        <td class="px-4 py-3.5 text-center whitespace-nowrap">
                                             <div class="inline-flex items-center justify-center gap-1.5">
                                                 <!-- Kelola Plotting Asdos -->
                                                 <button type="button"
                                                     onclick="openPlottingModal(<?= htmlspecialchars(json_encode($m), ENT_QUOTES, 'UTF-8') ?>)"
                                                     title="Kelola Plotting Asisten Dosen"
-                                                    class="px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-600 hover:text-white text-indigo-700 text-xs font-bold border border-indigo-200 hover:border-indigo-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
+                                                    class="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-[#1867c0] text-[#1867c0] hover:text-white text-xs font-bold border border-blue-200 hover:border-[#1867c0] transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
                                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                                     </svg>
@@ -307,7 +307,7 @@ if (empty($dosenList)) {
                                                 </button>
 
                                                 <!-- Edit -->
-                                                <button type="button" onclick="openEditMatkulModal(this.closest('tr'))" title="Edit Mata Kuliah" class="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-amber-50 hover:border-amber-300 hover:text-amber-800 text-slate-700 text-xs font-bold border border-slate-300 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
+                                                <button type="button" onclick="openEditMatkulModal(this.closest('tr'))" title="Edit Mata Kuliah" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
                                                     <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
@@ -315,7 +315,7 @@ if (empty($dosenList)) {
                                                 </button>
 
                                                 <!-- Hapus -->
-                                                <button type="button" onclick="openDeleteMatkulModal(<?= $m['id_matkul'] ?>, '<?= htmlspecialchars(addslashes($m['nama_matkul']), ENT_QUOTES, 'UTF-8') ?>')" title="Hapus Mata Kuliah" class="px-2.5 py-1.5 rounded-lg bg-red-50 hover:bg-red-600 hover:text-white text-red-600 text-xs font-bold border border-red-200 hover:border-red-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95">
+                                                <button type="button" onclick="openDeleteMatkulModal(<?= $m['id_matkul'] ?>, '<?= htmlspecialchars(addslashes($m['nama_matkul']), ENT_QUOTES, 'UTF-8') ?>')" title="Hapus Mata Kuliah" class="px-3 py-1.5 rounded-xl bg-red-50 hover:bg-red-600 hover:text-white text-red-600 text-xs font-bold border border-red-200 hover:border-red-600 transition-all duration-150 flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95">
                                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                     </svg>
@@ -378,7 +378,7 @@ if (empty($dosenList)) {
                 </button>
             </div>
 
-            <form action="<?= \Core\Guard::url('/superadmin/matkul/create') ?>" method="POST" class="p-6 space-y-4">
+            <form id="createMatkulForm" action="<?= \Core\Guard::url('/superadmin/matkul/create') ?>" method="POST" class="p-6 space-y-4">
                 <?= \Core\Guard::csrfField() ?>
 
                 <div>
@@ -665,7 +665,7 @@ if (empty($dosenList)) {
                 </button>
             </div>
 
-            <form action="<?= \Core\Guard::url('/superadmin/plotting/create') ?>" method="POST" class="p-6 space-y-4">
+            <form id="createPlottingForm" action="<?= \Core\Guard::url('/superadmin/plotting/create') ?>" method="POST" class="p-6 space-y-4">
                 <?= \Core\Guard::csrfField() ?>
                 <input type="hidden" name="redirect_to" value="/superadmin/matkul">
                 <input type="hidden" name="matkul_id" id="modal_create_plotting_matkul_id" value="">
@@ -1004,6 +1004,91 @@ if (empty($dosenList)) {
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        // ---------------------------------------------------------------------
+        // Validasi Form Modal Mata Kuliah & Plotting (Modal Tetap Terbuka jika Error)
+        // ---------------------------------------------------------------------
+        const createMatkulForm = document.getElementById('createMatkulForm');
+        if (createMatkulForm) {
+            createMatkulForm.addEventListener('submit', function(e) {
+                const nama = document.getElementById('create_nama_matkul');
+                const dosen = document.getElementById('create_dosen_id');
+                const jamMulai = document.getElementById('create_jam_mulai');
+                const jamSelesai = document.getElementById('create_jam_selesai');
+
+                if (!nama.value.trim() || nama.value.trim().length < 3) {
+                    e.preventDefault();
+                    window.highlightAndNotify(nama, 'Nama mata kuliah minimal terdiri dari 3 karakter.');
+                    return;
+                }
+                if (!dosen.value) {
+                    e.preventDefault();
+                    window.highlightAndNotify(dosen, 'Dosen pengampu mata kuliah wajib dipilih.');
+                    return;
+                }
+                if (jamMulai.value && jamSelesai.value && jamSelesai.value <= jamMulai.value) {
+                    e.preventDefault();
+                    window.highlightAndNotify(jamSelesai, 'Jam selesai praktikum harus lebih besar dari jam mulai.');
+                    return;
+                }
+            });
+        }
+
+        const editMatkulForm = document.getElementById('editMatkulForm');
+        if (editMatkulForm) {
+            editMatkulForm.addEventListener('submit', function(e) {
+                const nama = document.getElementById('edit_nama_matkul');
+                const dosen = document.getElementById('edit_dosen_id');
+                const jamMulai = document.getElementById('edit_jam_mulai');
+                const jamSelesai = document.getElementById('edit_jam_selesai');
+
+                if (!nama.value.trim() || nama.value.trim().length < 3) {
+                    e.preventDefault();
+                    window.highlightAndNotify(nama, 'Nama mata kuliah minimal terdiri dari 3 karakter.');
+                    return;
+                }
+                if (!dosen.value) {
+                    e.preventDefault();
+                    window.highlightAndNotify(dosen, 'Dosen pengampu mata kuliah wajib dipilih.');
+                    return;
+                }
+                if (jamMulai.value && jamSelesai.value && jamSelesai.value <= jamMulai.value) {
+                    e.preventDefault();
+                    window.highlightAndNotify(jamSelesai, 'Jam selesai praktikum harus lebih besar dari jam mulai.');
+                    return;
+                }
+            });
+        }
+
+        const createPlottingForm = document.getElementById('createPlottingForm');
+        if (createPlottingForm) {
+            createPlottingForm.addEventListener('submit', function(e) {
+                const asdos = document.getElementById('create_asdos_id');
+                const tglMulai = document.getElementById('create_periode_mulai');
+                const tglSelesai = document.getElementById('create_periode_selesai');
+
+                if (!asdos.value) {
+                    e.preventDefault();
+                    window.highlightAndNotify(asdos, 'Silakan pilih Asisten Dosen yang akan diplot.');
+                    return;
+                }
+                if (!tglMulai.value) {
+                    e.preventDefault();
+                    window.highlightAndNotify(tglMulai, 'Tanggal mulai mengajar wajib diisi.');
+                    return;
+                }
+                if (!tglSelesai.value) {
+                    e.preventDefault();
+                    window.highlightAndNotify(tglSelesai, 'Tanggal selesai mengajar wajib diisi.');
+                    return;
+                }
+                if (tglSelesai.value < tglMulai.value) {
+                    e.preventDefault();
+                    window.highlightAndNotify(tglSelesai, 'Tanggal selesai mengajar harus sama dengan atau setelah tanggal mulai.');
+                    return;
+                }
+            });
         }
 
         // Close on Escape Key

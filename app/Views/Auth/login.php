@@ -41,7 +41,7 @@
 
         <!-- Main Login Card (Design Token: rounded-2xl, border-slate-200, shadow-xs) -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
-            <form action="<?= \Core\Guard::url('/login') ?>" method="POST" class="space-y-4">
+            <form id="loginForm" action="<?= \Core\Guard::url('/login') ?>" method="POST" class="space-y-4">
 
                 <!-- CSRF Protection Field -->
                 <?= \Core\Guard::csrfField() ?>
@@ -95,6 +95,38 @@
 
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            if (!loginForm) return;
+
+            loginForm.addEventListener('submit', function(e) {
+                const emailInput = document.getElementById('email');
+                const passwordInput = document.getElementById('password');
+
+                const emailVal = emailInput ? emailInput.value.trim() : '';
+                const passwordVal = passwordInput ? passwordInput.value : '';
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailVal) {
+                    e.preventDefault();
+                    window.highlightAndNotify(emailInput, 'Alamat email wajib diisi.');
+                    return false;
+                }
+                if (!emailRegex.test(emailVal)) {
+                    e.preventDefault();
+                    window.highlightAndNotify(emailInput, 'Format alamat email tidak valid (contoh: user@labsi.ac.id).');
+                    return false;
+                }
+
+                if (!passwordVal) {
+                    e.preventDefault();
+                    window.highlightAndNotify(passwordInput, 'Kata sandi wajib diisi.');
+                    return false;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -22,11 +22,11 @@ class Database
         $this->loadEnv($envPath);
 
 
-        $this->host     = $this->env('DB_HOST');
-        $this->db_name  = $this->env('DB_NAME');
-        $this->username = $this->env('DB_USERNAME');
-        $this->password = $this->env('DB_PASSWORD');
-        $this->port     = $this->env('DB_PORT');
+        $this->host     = $this->env('DB_HOST', 'localhost');
+        $this->db_name  = $this->env('DB_NAME', 'absensi_asdos');
+        $this->username = $this->env('DB_USER', $this->env('DB_USERNAME', 'root'));
+        $this->password = $this->env('DB_PASSWORD', '');
+        $this->port     = $this->env('DB_PORT', '3306');
         $this->charset  = 'utf8mb4';
     }
 
@@ -36,7 +36,7 @@ class Database
     public static function getConnection(): PDO
     {
         if (self::$instance === null) {
-            $db = new self();
+            $db = new self();   
             $dsn = "mysql:host={$db->host};port={$db->port};dbname={$db->db_name};charset={$db->charset}";
 
             $options = [

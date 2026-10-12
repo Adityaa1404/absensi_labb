@@ -470,3 +470,100 @@ Stack trace:
 #6 C:\laragon\www\absensi_labb\public\index.php(72): Core\Router->dispatch()
 #7 {main}
 --------------------------------------------------------------------------------
+[2026-10-07 12:32:13] [POST /absensi_labb/login] RuntimeException: File konfigurasi .env tidak ditemukan pada: C:\laragon\www\absensi_labb/.env in C:\laragon\www\absensi_labb\Core\Database.php:103
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(22): Core\Database->loadEnv('C:\\laragon\\www\\...')
+#1 C:\laragon\www\absensi_labb\Core\Database.php(39): Core\Database->__construct()
+#2 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#3 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('SELECT * FROM u...', Array)
+#4 C:\laragon\www\absensi_labb\app\Models\User.php(78): Core\Database::fetch('SELECT * FROM u...', Array)
+#5 C:\laragon\www\absensi_labb\app\Controllers\AuthController.php(44): App\Models\User::findByEmail('25082010046@stu...')
+#6 [internal function]: App\Controllers\AuthController->processLogin()
+#7 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#8 C:\laragon\www\absensi_labb\public\index.php(73): Core\Router->dispatch()
+#9 {main}
+--------------------------------------------------------------------------------
+[2026-10-07 12:47:05] [POST /absensi_labb/login] TypeError: Cannot assign null to property Core\Database::$host of type string in C:\laragon\www\absensi_labb\Core\Database.php:25
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(39): Core\Database->__construct()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#2 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('SELECT * FROM u...', Array)
+#3 C:\laragon\www\absensi_labb\app\Models\User.php(78): Core\Database::fetch('SELECT * FROM u...', Array)
+#4 C:\laragon\www\absensi_labb\app\Controllers\AuthController.php(44): App\Models\User::findByEmail('25082010046@stu...')
+#5 [internal function]: App\Controllers\AuthController->processLogin()
+#6 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#7 C:\laragon\www\absensi_labb\public\index.php(73): Core\Router->dispatch()
+#8 {main}
+--------------------------------------------------------------------------------
+[2026-10-07 12:48:22] [POST /absensi_labb/login] TypeError: Cannot assign null to property Core\Database::$host of type string in C:\laragon\www\absensi_labb\Core\Database.php:25
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(39): Core\Database->__construct()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#2 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('SELECT * FROM u...', Array)
+#3 C:\laragon\www\absensi_labb\app\Models\User.php(78): Core\Database::fetch('SELECT * FROM u...', Array)
+#4 C:\laragon\www\absensi_labb\app\Controllers\AuthController.php(44): App\Models\User::findByEmail('25082010046@stu...')
+#5 [internal function]: App\Controllers\AuthController->processLogin()
+#6 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#7 C:\laragon\www\absensi_labb\public\index.php(73): Core\Router->dispatch()
+#8 {main}
+--------------------------------------------------------------------------------
+[2026-10-07 12:48:29] [POST /absensi_labb/login] TypeError: Cannot assign null to property Core\Database::$host of type string in C:\laragon\www\absensi_labb\Core\Database.php:25
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(39): Core\Database->__construct()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#2 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('SELECT * FROM u...', Array)
+#3 C:\laragon\www\absensi_labb\app\Models\User.php(78): Core\Database::fetch('SELECT * FROM u...', Array)
+#4 C:\laragon\www\absensi_labb\app\Controllers\AuthController.php(44): App\Models\User::findByEmail('25082010046@stu...')
+#5 [internal function]: App\Controllers\AuthController->processLogin()
+#6 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#7 C:\laragon\www\absensi_labb\public\index.php(73): Core\Router->dispatch()
+#8 {main}
+--------------------------------------------------------------------------------
+[2026-10-07 12:49:10] [POST /absensi_labb/login] TypeError: Cannot assign null to property Core\Database::$host of type string in C:\laragon\www\absensi_labb\Core\Database.php:25
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(39): Core\Database->__construct()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#2 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('SELECT * FROM u...', Array)
+#3 C:\laragon\www\absensi_labb\app\Models\User.php(78): Core\Database::fetch('SELECT * FROM u...', Array)
+#4 C:\laragon\www\absensi_labb\app\Controllers\AuthController.php(44): App\Models\User::findByEmail('25082010046@stu...')
+#5 [internal function]: App\Controllers\AuthController->processLogin()
+#6 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#7 C:\laragon\www\absensi_labb\public\index.php(73): Core\Router->dispatch()
+#8 {main}
+--------------------------------------------------------------------------------
+[2026-10-07 12:52:10] [POST /absensi_labb/login] TypeError: Cannot assign null to property Core\Database::$host of type string in C:\laragon\www\absensi_labb\Core\Database.php:25
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(39): Core\Database->__construct()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#2 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('SELECT * FROM u...', Array)
+#3 C:\laragon\www\absensi_labb\app\Models\User.php(78): Core\Database::fetch('SELECT * FROM u...', Array)
+#4 C:\laragon\www\absensi_labb\app\Controllers\AuthController.php(44): App\Models\User::findByEmail('25082010046@stu...')
+#5 [internal function]: App\Controllers\AuthController->processLogin()
+#6 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#7 C:\laragon\www\absensi_labb\public\index.php(73): Core\Router->dispatch()
+#8 {main}
+--------------------------------------------------------------------------------
+[2026-10-07 12:52:16] [POST /absensi_labb/login] TypeError: Cannot assign null to property Core\Database::$host of type string in C:\laragon\www\absensi_labb\Core\Database.php:25
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(39): Core\Database->__construct()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#2 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('SELECT * FROM u...', Array)
+#3 C:\laragon\www\absensi_labb\app\Models\User.php(78): Core\Database::fetch('SELECT * FROM u...', Array)
+#4 C:\laragon\www\absensi_labb\app\Controllers\AuthController.php(44): App\Models\User::findByEmail('25082010046@stu...')
+#5 [internal function]: App\Controllers\AuthController->processLogin()
+#6 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#7 C:\laragon\www\absensi_labb\public\index.php(73): Core\Router->dispatch()
+#8 {main}
+--------------------------------------------------------------------------------
+[2026-10-07 12:52:25] [POST /absensi_labb/login] TypeError: Cannot assign null to property Core\Database::$username of type string in C:\laragon\www\absensi_labb\Core\Database.php:27
+Stack trace:
+#0 C:\laragon\www\absensi_labb\Core\Database.php(39): Core\Database->__construct()
+#1 C:\laragon\www\absensi_labb\Core\Database.php(65): Core\Database::getConnection()
+#2 C:\laragon\www\absensi_labb\Core\Database.php(78): Core\Database::query('SELECT * FROM u...', Array)
+#3 C:\laragon\www\absensi_labb\app\Models\User.php(78): Core\Database::fetch('SELECT * FROM u...', Array)
+#4 C:\laragon\www\absensi_labb\app\Controllers\AuthController.php(44): App\Models\User::findByEmail('25082010046@stu...')
+#5 [internal function]: App\Controllers\AuthController->processLogin()
+#6 C:\laragon\www\absensi_labb\Core\Router.php(93): call_user_func_array(Array, Array)
+#7 C:\laragon\www\absensi_labb\public\index.php(73): Core\Router->dispatch()
+#8 {main}
+--------------------------------------------------------------------------------

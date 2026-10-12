@@ -70,5 +70,25 @@ $router->post('/superadmin/absensi/{id}/delete', 'SuperAdminController', 'delete
 $router->get('/uploads/absensi/{filename}', 'UploadController', 'serveAbsensi');
 $router->get('/assets/{folder}/{filename}', 'UploadController', 'serveAsset');
 
+// =========================================================================
+// 5. RUTE SURAT DISPENSASI & SETTINGS INSTITUSI
+// =========================================================================
+// Asdos
+$router->get('/asdos/dispensasi', 'DispensasiController', 'asdosIndex', ['auth', 'asdos', 'active']);
+$router->post('/asdos/dispensasi/create', 'DispensasiController', 'asdosCreate', ['auth', 'asdos', 'active', 'csrf']);
+$router->get('/asdos/dispensasi/{id}/download', 'DispensasiController', 'asdosDownload', ['auth', 'asdos']);
+
+// Dosen
+$router->get('/dosen/dispensasi', 'DispensasiController', 'dosenIndex', ['auth', 'dosen', 'active']);
+$router->post('/dosen/dispensasi/{id}/status', 'DispensasiController', 'dosenUpdateStatus', ['auth', 'dosen', 'active', 'csrf']);
+$router->get('/dosen/dispensasi/{id}/download', 'DispensasiController', 'dosenDownload', ['auth', 'dosen']);
+
+// Super Admin
+$router->get('/superadmin/dispensasi', 'DispensasiController', 'adminIndex', ['auth', 'super_admin']);
+$router->get('/superadmin/dispensasi/{id}/download', 'DispensasiController', 'adminDownload', ['auth', 'super_admin']);
+$router->post('/superadmin/dispensasi/{id}/delete', 'DispensasiController', 'adminDelete', ['auth', 'super_admin', 'csrf']);
+$router->get('/superadmin/settings', 'DispensasiController', 'adminSettings', ['auth', 'super_admin']);
+$router->post('/superadmin/settings/update', 'DispensasiController', 'adminUpdateSettings', ['auth', 'super_admin', 'csrf']);
+
 $router->dispatch();
 

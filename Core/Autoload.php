@@ -1,4 +1,9 @@
 <?php
+// Load Composer Autoloader (untuk library pihak ketiga seperti TCPDF)
+$composerAutoload = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($composerAutoload)) {
+    require_once $composerAutoload;
+}
 
 /**
  * PSR-4 Autoloader Sederhana untuk Absensi Asdos
